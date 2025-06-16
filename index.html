@@ -8,6 +8,12 @@
   </head>
   <body>
     <div id="app"></div>
+    <!-- the importmap doesn't seem to work -->
+    <script type="importmap">
+      {
+        "imports": { "three": "/three/threebuild/three_module.js" }
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
