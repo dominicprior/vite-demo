@@ -10,8 +10,5 @@ renderer.render(scene, camera);
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
     hey!
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
   </div>
 `
