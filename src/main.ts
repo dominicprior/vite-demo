@@ -1,14 +1,12 @@
 import './style.css'
-import { WebGLRenderer, PerspectiveCamera, Scene, Color } from '../three/threebuild/three_module.js';
+import { World } from './world.js';
 console.log('dominic!');
-const renderer = new WebGLRenderer({ antialias: true });
-const scene = new Scene();
-scene.background = new Color('skyblue');
-const camera = new PerspectiveCamera(35, 1, 0.1, 100);
-renderer.render(scene, camera);
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+const appElement = document.querySelector<HTMLDivElement>('#app');
+appElement!.innerHTML = `
   <div>
     hey!
   </div>
 `
+  const world = new World(appElement!);
+  world.start();
