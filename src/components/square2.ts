@@ -1,8 +1,8 @@
 // Create a square mesh with two colors using an indexed BufferGeometry
 // and groups, which allows us to use different materials for each group of faces.
 
-import { BoxGeometry, Mesh, MeshBasicMaterial, MathUtils, TextureLoader, MeshStandardMaterial,
-  DoubleSide, LineSegments, EdgesGeometry, LineBasicMaterial, TetrahedronGeometry, BufferGeometry,
+import { Mesh, MeshStandardMaterial,
+  DoubleSide, BufferGeometry,
   BufferAttribute,
  } from '../../three/threebuild/three_module.js';
 

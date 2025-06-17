@@ -1,4 +1,4 @@
-import { DirectionalLight, HemisphereLight, AmbientLight } from '../../three/threebuild/three_module.js';
+import { DirectionalLight, AmbientLight } from '../../three/threebuild/three_module.js';
 
 function createLights() {
   const sunlight = new DirectionalLight('white', 2);
