@@ -1,7 +1,7 @@
 import { createCamera } from './systems/camera.js';
 // import { createCube } from './components/cube.js';
 // import { createSquare } from './components/square.js';
-// import { createSquare2 } from './components/square2.js';
+import { createSquare2 } from './components/square2.js';
 // import { createLights } from './components/lights.js';
 import { createScene } from './scene.js';
 // import { createControls } from './systems/controls.js';
@@ -28,7 +28,7 @@ class World {
         loop = new Loop(camera, scene, renderer);
         container.append(renderer.domElement);
 
-        // const mesh = createSquare2(20, 0.15);
+        const mesh = createSquare2();
         // const lights = createLights();
         // loop.updatables.push(mesh);
         // loop.updatables.push(camera);
@@ -38,7 +38,7 @@ class World {
         //  });
         // scene.add(mesh, createCube(),
         //     lights[0], lights[1]);
-
+        scene.add(mesh);
         // const resizer = new Resizer(container, camera, renderer);
     }
 
