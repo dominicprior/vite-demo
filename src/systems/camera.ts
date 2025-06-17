@@ -11,11 +11,12 @@ function createCamera() {
   );
 
   // move the camera back so we can view the scene
-  camera.position.set(0, 0, 10);
+  camera.position.set(5, 3, 10);
 //   camera.tick = (delta) => {
 //     time += delta;
 //     camera.position.z = 10 + 2.4 * time;
 //   };
+  camera.lookAt(0, 0, 0); // look at the origin
   return camera;
 }
 
