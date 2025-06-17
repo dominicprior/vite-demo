@@ -3,10 +3,8 @@
 // Definitions by: Satoru Kimura <https://github.com/gyohk>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-/// <reference path="./three.d.ts" />
 
-declare module THREE {
-    class OrbitControls {
+export class OrbitControls {
         constructor(object:Camera, domElement?:HTMLElement);
 
         object:Camera;
@@ -55,4 +53,3 @@ declare module THREE {
         removeEventListener(type: string, listener: (event: any) => void): void;
         dispatchEvent(event: { type: string; target: any; }): void;
     }
-}
