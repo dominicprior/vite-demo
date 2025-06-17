@@ -1,6 +1,9 @@
 # vite-demo
 
-Trying some Three.js and TypeScript
+This setup achieves two goals:
+
+1. Call three.js from TypeScript and show type errors in the editor.
+2. Allow the Chrome debugger to step into the three.js source code.
 
 # Initial setup
 
