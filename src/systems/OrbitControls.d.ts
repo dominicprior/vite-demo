@@ -35,6 +35,12 @@ export class OrbitControls {
         keys: { LEFT: number; UP: number; RIGHT: number; BOTTOM: number; };
         mouseButtons: { ORBIT: MOUSE; ZOOM: MOUSE; PAN: MOUSE; };
 
+        enableDamping: boolean;
+        dampingFactor: number;
+        enableZoom: boolean;
+        enableRotate: boolean;
+        enablePan: boolean;
+
         rotateLeft(angle?: number): void;
         rotateUp(angle?: number): void;
         panLeft(distance?: number): void;
