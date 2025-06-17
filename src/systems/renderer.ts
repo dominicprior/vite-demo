@@ -4,6 +4,7 @@ import { WebGLRenderer,
 
 function createRenderer() {
   const renderer = new WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
   // renderer.shadowMap.enabled = true;
   // renderer.shadowMap.type = BasicShadowMap;
   // renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
