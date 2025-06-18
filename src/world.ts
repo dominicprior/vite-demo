@@ -4,9 +4,9 @@ import { createCamera } from './systems/camera.js';
 import { createSquare2 } from './components/square2.js';
 import { createLights } from './systems/lights.js';
 import { createScene } from './scene.js';
-// import { createControls } from './systems/controls.js';
+import { createControls } from './systems/controls.js';
 import { createRenderer } from './systems/renderer.js';
-// import { Resizer } from './systems/resizer.js';
+import { Resizer } from './systems/resizer.js';
 import { Loop } from './systems/loop.js';
 import type { PerspectiveCamera, Scene } from '../three/src/three_core.js';
 import type { WebGLRenderer } from '../three/src/Three.js';
@@ -20,11 +20,11 @@ let scene: Scene;
 let loop: Loop;
 
 class World {
-    constructor(container: HTMLElement) {
+    constructor(container: Element) {
         scene = createScene();
         renderer = createRenderer();
         camera = createCamera();
-        // const controls = createControls(camera, renderer.domElement);
+        const controls = createControls(camera, renderer.domElement);
         loop = new Loop(camera, scene, renderer);
         container.append(renderer.domElement);
 
@@ -32,7 +32,7 @@ class World {
         const lights = createLights();
         // loop.updatables.push(mesh);
         // loop.updatables.push(camera);
-        // loop.updatables.push(controls);
+        loop.updatables.push(controls);
         //   controls.addEventListener('change', () => {
         //     this.render();
         //  });
@@ -40,7 +40,7 @@ class World {
         //     lights[0], lights[1]);
         scene.add(mesh,
             lights[0], lights[1]);
-        // const resizer = new Resizer(container, camera, renderer);
+        new Resizer(container, camera, renderer);
     }
 
     render() {

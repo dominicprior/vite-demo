@@ -1,11 +1,10 @@
-import './style.css'
-import { World } from './world.js';
 console.log('dominic!');
+import { World } from './world.js';
 
-const appElement = document.querySelector<HTMLDivElement>('#app');
-appElement!.innerHTML = `
-  <div>
-  </div>
-`
-  const world = new World(appElement!);
+function main() {
+  const container = document.querySelector('#scene-container');
+  const world = new World(container!);
   world.start();
+}
+
+main();

@@ -10,7 +10,7 @@ function createControls(camera: PerspectiveCamera, canvas: HTMLCanvasElement) {
   controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
   controls.autoRotate = true;
 
-  // controls.tick = () => controls.update();
+  controls.tick = () => controls.update();
 
   //   controls.dampingFactor = 0.25;
   //   controls.target.set(1,0,0);

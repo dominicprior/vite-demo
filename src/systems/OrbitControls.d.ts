@@ -40,6 +40,7 @@ export class OrbitControls {
         enableZoom: boolean;
         enableRotate: boolean;
         enablePan: boolean;
+        tick: () => void;
 
         rotateLeft(angle?: number): void;
         rotateUp(angle?: number): void;
