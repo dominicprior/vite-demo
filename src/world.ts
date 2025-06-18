@@ -1,7 +1,7 @@
 import { createCamera } from './systems/camera.js';
 // import { createCube } from './components/cube.js';
 // import { createSquare } from './components/square.js';
-import { createSquare2 } from './components/square2.js';
+import { createDonut } from './components/donut.js';
 import { createSunlight } from './systems/sunlight.js';
 import { createAmbientLight } from './systems/ambient.js';
 import { createScene } from './scene.js';
@@ -11,6 +11,7 @@ import { Resizer } from './systems/resizer.js';
 import { Loop } from './systems/loop.js';
 import type { PerspectiveCamera, Scene } from '../three/src/three_core.js';
 import type { WebGLRenderer } from '../three/src/Three.js';
+import { createGround } from './components/ground.js';
 // import { createHexagon } from './components/hexagon.js';
 
 // These variables are module-scoped: we cannot access them
@@ -29,7 +30,8 @@ class World {
         loop = new Loop(camera, scene, renderer);
         container.append(renderer.domElement);
 
-        const mesh = createSquare2();
+        const donut = createDonut();
+        const ground = createGround();
         const ambient = createAmbientLight();
         const sunlight = createSunlight();
         // loop.updatables.push(mesh);
@@ -40,7 +42,7 @@ class World {
         //  });
         // scene.add(mesh, createCube(),
         //     lights[0], lights[1]);
-        scene.add(mesh, sunlight, ambient);
+        scene.add(donut, ground, sunlight, ambient);
         new Resizer(container, camera, renderer);
     }
 

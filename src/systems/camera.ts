@@ -7,11 +7,11 @@ function createCamera() {
     35, // fov = Field Of View
     1, // aspect ratio (dummy value)
     0.1, // near clipping plane
-    100, // far clipping plane
+    10000, // far clipping plane
   );
 
   // move the camera back so we can view the scene
-  camera.position.set(5, 3, 10);
+  camera.position.set(250, 130, 1200);
 //   camera.tick = (delta) => {
 //     time += delta;
 //     camera.position.z = 10 + 2.4 * time;
