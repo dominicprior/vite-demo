@@ -4,7 +4,7 @@
 import { Mesh, MeshStandardMaterial,
   DoubleSide, BufferGeometry,
   BufferAttribute,
- } from '../../three/threebuild/three_module.js';
+ } from '../three/threebuild/three_module.js';
 
 function createSquare2() {
 

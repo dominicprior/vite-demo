@@ -1,6 +1,6 @@
 import {
     Clock, PerspectiveCamera, WebGLRenderer, Scene,
-} from "../../three/threebuild/three_module.js";
+} from "../three/threebuild/three_module.js";
 
 const clock = new Clock();
 

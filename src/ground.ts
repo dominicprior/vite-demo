@@ -1,6 +1,6 @@
 import { Mesh, MeshStandardMaterial,
     PlaneGeometry
-} from '../../three/threebuild/three_module.js';
+} from '../three/threebuild/three_module.js';
 
 function createGround() {
     const groundGeometry = new PlaneGeometry(500, 500);

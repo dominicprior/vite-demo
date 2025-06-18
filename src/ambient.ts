@@ -1,4 +1,4 @@
-import { AmbientLight } from '../../three/threebuild/three_module.js';
+import { AmbientLight } from '../three/threebuild/three_module.js';
 
 function createAmbientLight() {
     const ambientLight = new AmbientLight(

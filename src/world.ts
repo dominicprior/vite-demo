@@ -1,17 +1,17 @@
-import { createCamera } from './systems/camera.js';
+import { createCamera } from './camera.js';
 // import { createCube } from './components/cube.js';
 // import { createSquare } from './components/square.js';
-import { createDonut } from './components/donut.js';
-import { createSunlight } from './systems/sunlight.js';
-import { createAmbientLight } from './systems/ambient.js';
+import { createDonut } from './donut.js';
+import { createSunlight } from './sunlight.js';
+import { createAmbientLight } from './ambient.js';
 import { createScene } from './scene.js';
-import { createControls } from './systems/controls.js';
-import { createRenderer } from './systems/renderer.js';
-import { Resizer } from './systems/resizer.js';
-import { Loop } from './systems/loop.js';
+import { createControls } from './controls.js';
+import { createRenderer } from './renderer.js';
+import { Resizer } from './resizer.js';
+import { Loop } from './loop.js';
 import type { PerspectiveCamera, Scene } from '../three/src/three_core.js';
 import type { WebGLRenderer } from '../three/src/Three.js';
-import { createGround } from './components/ground.js';
+import { createGround } from './ground.js';
 // import { createHexagon } from './components/hexagon.js';
 
 // These variables are module-scoped: we cannot access them

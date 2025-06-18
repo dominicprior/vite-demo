@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from '../../three/threebuild/three_module.js';
+import { PerspectiveCamera } from '../three/threebuild/three_module.js';
 
 // let time = 0;
 

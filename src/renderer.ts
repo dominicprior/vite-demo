@@ -1,6 +1,6 @@
 import { WebGLRenderer,
   BasicShadowMap
-} from '../../three/threebuild/three_module.js';
+} from '../three/threebuild/three_module.js';
 
 function createRenderer() {
   const renderer = new WebGLRenderer({ antialias: true });
