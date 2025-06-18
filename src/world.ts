@@ -2,7 +2,8 @@ import { createCamera } from './systems/camera.js';
 // import { createCube } from './components/cube.js';
 // import { createSquare } from './components/square.js';
 import { createSquare2 } from './components/square2.js';
-import { createLights } from './systems/sunlight.js';
+import { createSunlight } from './systems/sunlight.js';
+import { createAmbientLight } from './systems/ambient.js';
 import { createScene } from './scene.js';
 import { createControls } from './systems/controls.js';
 import { createRenderer } from './systems/renderer.js';
@@ -29,7 +30,8 @@ class World {
         container.append(renderer.domElement);
 
         const mesh = createSquare2();
-        const lights = createLights();
+        const ambient = createAmbientLight();
+        const sunlight = createSunlight();
         // loop.updatables.push(mesh);
         // loop.updatables.push(camera);
         loop.updatables.push(controls);
@@ -38,8 +40,7 @@ class World {
         //  });
         // scene.add(mesh, createCube(),
         //     lights[0], lights[1]);
-        scene.add(mesh,
-            lights[0], lights[1]);
+        scene.add(mesh, sunlight, ambient);
         new Resizer(container, camera, renderer);
     }
 
