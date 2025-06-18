@@ -2,7 +2,7 @@ import { createCamera } from './systems/camera.js';
 // import { createCube } from './components/cube.js';
 // import { createSquare } from './components/square.js';
 import { createSquare2 } from './components/square2.js';
-import { createLights } from './systems/lights.js';
+import { createLights } from './systems/sunlight.js';
 import { createScene } from './scene.js';
 import { createControls } from './systems/controls.js';
 import { createRenderer } from './systems/renderer.js';
