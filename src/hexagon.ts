@@ -58,9 +58,9 @@ function addRowOfTriangles(vertices: Array<number>, numTriangles: number, rowNum
 }
 
 function addVertex(vertices: Array<number>, x: number, y: number) {
-    // const r = Math.hypot(x, y);
-    // const z = 15000 / (r*r*r + 1000);
-    vertices.push(x, y, 0);
+    const r = Math.hypot(x, y);
+    const z = 5000 / (r*r*r + 1000);
+    vertices.push(x, y, z);
 }
 
 export { createHexagon };
