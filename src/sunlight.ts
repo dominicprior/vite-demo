@@ -14,6 +14,7 @@ function createSunlight() {
     sunlight.shadow.mapSize.width = 16;
     sunlight.shadow.mapSize.height = 16;
 
+    sunlight.name = 'sunlight';
     return sunlight;
 }
 

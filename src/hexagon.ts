@@ -37,6 +37,7 @@ function createHexagon(n: number, scale: number) {
     mesh.receiveShadow = true;
     mesh.position.set(0, -150, 0);
     mesh.rotation.set(-Math.PI/2, 0, 0);
+    mesh.name = 'hexagon';
     return mesh;
 }
 

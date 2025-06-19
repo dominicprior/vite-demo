@@ -14,6 +14,7 @@ function createDonut() {
     // donutMaterial.wireframe = true;
     const donut = new Mesh(donutGeometry, donutMaterial); 
     donut.castShadow = true;
+    donut.name = 'donut';
     return donut;
 }
 export { createDonut };
