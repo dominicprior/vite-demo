@@ -6446,7 +6446,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 	const vertexGlsl = versionString + prefixVertex + vertexShader;
 	const fragmentGlsl = versionString + prefixFragment + fragmentShader;
-
+	/// The shaders.
 	// console.log( '*VERTEX*', vertexGlsl );
 	// console.log( '*FRAGMENT*', fragmentGlsl );
 
@@ -11360,7 +11360,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 						}
 
 						if ( dataReady ) {
-
+							/// This is where the data is uploaded to the GPU.  'image' is an HTMLImageElement.
 							state.texSubImage2D( _gl.TEXTURE_2D, 0, 0, 0, glFormat, glType, image );
 
 						}
@@ -11376,7 +11376,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			}
 
 			if ( textureNeedsGenerateMipmaps( texture ) ) {
-
+				/// Generates the logN mipmaps for the current(?) texture.
 				generateMipmap( textureType );
 
 			}
