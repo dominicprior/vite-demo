@@ -20,8 +20,12 @@ const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshBasicMaterial({ map: texture, });
 const ground = new Mesh(groundGeometry, groundMaterial);
 scene.add(ground);
+setTimeout(() => {
+    renderer.render(scene, camera);
+}, 1);
 // const animate = () => {
 //     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+//     renderer.render(scene, camera);
 // };
 // animate();
+console.log('dominic - main2.ts done');
