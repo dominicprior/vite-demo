@@ -5817,7 +5817,7 @@ function replaceClippingPlaneNums( string, parameters ) {
 const includePattern = /^[ \t]*#include +<([\w\d./]+)>/gm;
 
 function resolveIncludes( string ) {
-
+	/// This is where the #include <...> directives are resolved.
 	return string.replace( includePattern, includeReplacer );
 
 }
