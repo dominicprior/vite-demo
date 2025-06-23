@@ -28,11 +28,13 @@ sunlight.shadow.camera.near = 1;
 sunlight.shadow.camera.far = 1000;
 sunlight.shadow.mapSize.width = 8;
 sunlight.shadow.mapSize.height = 8;
+// sunlight.shadow.camera.up = new Vector3(0.7, 0.7, 0); // to rotate the shadow by 45 degrees
 sunlight.name = 'sunlight';
 
 const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshStandardMaterial({ color: 'pink', });
 const ground = new Mesh(groundGeometry, groundMaterial);
+ground.rotation.z = -Math.PI / 4;
 ground.receiveShadow = true;
 ground.name = 'ground';
 
@@ -41,7 +43,7 @@ const shelfMaterial = new MeshStandardMaterial({ color: 'yellow', });
 shelfMaterial.shadowSide = 2; // DoubleSide for shadows
 const shelf = new Mesh(shelfGeometry, shelfMaterial);
 shelf.position.set(0, 0, 1);
-shelf.rotation.z = -Math.PI / 4; // Rotate to be horizontal
+shelf.rotation.z = -Math.PI / 4;
 shelf.castShadow = true;
 shelf.name = 'shelf';
 
