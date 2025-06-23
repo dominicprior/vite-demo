@@ -16,6 +16,7 @@ renderer.shadowMap.type = BasicShadowMap;
 const camera = new PerspectiveCamera(45, w / h, 1, 1000);
 camera.position.set(5, 0, 5);
 camera.lookAt(0, 0, 0);
+camera.name = 'perspective-camera';
 
 const sunlight = new DirectionalLight('white', 3);
 sunlight.position.set(0, 0, 100);
@@ -30,6 +31,7 @@ sunlight.shadow.mapSize.width = 8;
 sunlight.shadow.mapSize.height = 8;
 // sunlight.shadow.camera.up = new Vector3(0.7, 0.7, 0); // to rotate the shadow by 45 degrees
 sunlight.name = 'sunlight';
+sunlight.shadow.camera.name = 'sunlight-shadow-camera';
 
 const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshStandardMaterial({ color: 'pink', });
