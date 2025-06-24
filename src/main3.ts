@@ -11,6 +11,22 @@
 // The shelf's shadowSide has to be set to DoubleSide (or the material
 // itself has to be DoubleSide, or, weirdly, the shelf has to be upside down).
 
+// With this logging:
+//     console.log( object.name, drawCount, camera.name, material.constructor.name );
+// in the renderBufferDirect function, just before:
+//     renderer.render( drawStart, drawCount );
+// we get the following output:
+//     shelf 6 sunlight-shadow-camera MeshDepthMaterial
+//     ground 6 perspective-camera MeshStandardMaterial
+//     shelf 6 perspective-camera MeshStandardMaterial
+//     ground 6 perspective-camera MeshStandardMaterial
+//     shelf 6 perspective-camera MeshStandardMaterial
+
+// Amusingly, the VS Code auto-complete nearly got it right:
+//     shelf 1 perspective-camera MeshStandardMaterial
+//     ground 1 perspective-camera MeshStandardMaterial
+
+
 import {
     Scene, Color, PerspectiveCamera, DoubleSide, WebGLRenderer,
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
