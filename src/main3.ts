@@ -69,6 +69,10 @@ sunlight.shadow.intensity = 0.5;
 sunlight.name = 'sunlight';
 sunlight.shadow.camera.name = 'sunlight-shadow-camera';
 
+const sunlight2 = sunlight.clone();
+sunlight2.shadow.camera.left   =  -0.2;
+sunlight2.shadow.camera.right  =  0.2;
+
 const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshStandardMaterial({ color: 'pink', });
 const ground = new Mesh(groundGeometry, groundMaterial);
@@ -90,7 +94,9 @@ shelf.castShadow = true;
 // shelf.receiveShadow = true;
 shelf.name = 'shelf';
 
-scene.add(shelf, ground, sunlight);
+scene.add(shelf, ground, sunlight,
+    // sunlight2   // adding this second light shows that three.js can deal with multiple shadow sources.
+);
 
 renderer.shadowMap.needsUpdate = true;
 renderer.render(scene, camera);
