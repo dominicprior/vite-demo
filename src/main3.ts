@@ -104,6 +104,11 @@ renderer.render(scene, camera);
 
 camera.position.set(6, 0, 4);
 camera.lookAt(0, 0, 0);
+// const d = window.devicePixelRatio;
+// renderer.setPixelRatio(0.25);  // this made less work for the GPU, but the graphics was grainy (big pixels).
+// renderer.setPixelRatio(4);  // this makes things smooth when I zoom chrome to 400%.
+// renderer.setPixelRatio(d);  // this gives best quality.
+// renderer.setPixelRatio(Math.min(d, 2));  // this limits the cost on high-DPI screens.
 renderer.render(scene, camera);
 
 // renderer.setAnimationLoop(() => {   // simple example of setAnimationLoop
@@ -129,6 +134,8 @@ renderer.setAnimationLoop(() => {
 })
 
 window.addEventListener('resize', () => {
+    const d = window.devicePixelRatio;
+    renderer.setPixelRatio(Math.min(d, 2));  // this limits the cost on high-DPI screens.
     const w = window.innerWidth;
     const h = window.innerHeight;
     camera.aspect = w / h;
