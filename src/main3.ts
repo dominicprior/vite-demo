@@ -153,3 +153,12 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
 });
+
+// -- Fullscreen --
+window.addEventListener('dblclick', () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();  // but watch out for Safari.
+    } else {
+        container!.requestFullscreen();
+    }
+});
