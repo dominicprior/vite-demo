@@ -37,8 +37,6 @@ import {
 const w = window.innerWidth;
 const h = window.innerHeight;
 const container = document.querySelector('#scene-container');
-const scene = new Scene();
-scene.background = new Color('skyblue');
 const renderer = new WebGLRenderer({ antialias: true });
 container!.append(renderer.domElement);
 renderer.setSize(w, h);
@@ -48,11 +46,7 @@ renderer.shadowMap.autoUpdate = false;
 // renderer.shadowMap.type = BasicShadowMap;
 renderer.shadowMap.type = PCFSoftShadowMap;
 
-const camera = new PerspectiveCamera(45, w / h, 1, 1000);
-camera.position.set(5, 0, 5);
-camera.lookAt(0, 0, 0);
-camera.name = 'perspective-camera';
-
+// -- Sunlight --
 const sunlight = new DirectionalLight('white', 3);
 sunlight.position.set(0, 0, 100);
 sunlight.castShadow = true;
@@ -73,6 +67,7 @@ const sunlight2 = sunlight.clone();
 sunlight2.shadow.camera.left   =  -0.2;
 sunlight2.shadow.camera.right  =  0.2;
 
+// -- Ground --
 const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshStandardMaterial({ color: 'pink', });
 const ground = new Mesh(groundGeometry, groundMaterial);
@@ -81,6 +76,7 @@ ground.rotation.z = -Math.PI / 4;
 ground.receiveShadow = true;
 ground.name = 'ground';
 
+// -- Shelf --
 const shelfGeometry = new PlaneGeometry(1, 1);
 const shelfMaterial = new MeshStandardMaterial({ color: 'yellow', });
 shelfMaterial.shadowSide = DoubleSide;
@@ -94,28 +90,41 @@ shelf.castShadow = true;
 // shelf.receiveShadow = true;
 shelf.name = 'shelf';
 
+// -- Scene --
+const scene = new Scene();
+scene.background = new Color('skyblue');
 scene.add(shelf, ground, sunlight,
     // sunlight2   // adding this second light shows that three.js can deal with multiple shadow sources.
 );
 
-renderer.shadowMap.needsUpdate = true;
-renderer.render(scene, camera);
-// debugger;
-
-camera.position.set(6, 0, 4);
-camera.lookAt(0, 0, 0);
+// -- Pixel Ratios --
 // const d = window.devicePixelRatio;
 // renderer.setPixelRatio(0.25);  // this made less work for the GPU, but the graphics was grainy (big pixels).
 // renderer.setPixelRatio(4);  // this makes things smooth when I zoom chrome to 400%.
 // renderer.setPixelRatio(d);  // this gives best quality.
 // renderer.setPixelRatio(Math.min(d, 2));  // this limits the cost on high-DPI screens.
+
+// -- Camera --
+const camera = new PerspectiveCamera(45, w / h, 1, 1000);
+camera.position.set(5, 0, 5);
+camera.lookAt(0, 0, 0);
+camera.name = 'perspective-camera';
+
+// -- Render twice --
+renderer.shadowMap.needsUpdate = true;
+renderer.render(scene, camera);
+// debugger;
+camera.position.set(6, 0, 4);
+camera.lookAt(0, 0, 0);
 renderer.render(scene, camera);
 
+// -- Animation Loop --
 // renderer.setAnimationLoop(() => {   // simple example of setAnimationLoop
 //             shelf.rotation.z += 0.01;
 //             renderer.render(scene, camera);
 //         });
 
+// -- Simple Mouse Move --
 // window.addEventListener('mousemove', (event) => {
 //     const x =  (event.clientX / w) * 4 - 2;   // We would normally put the mouse position in a persistent variable.
 //     const y = -(event.clientY / h) * 4 + 2;   // And then use the persistent variable in the render loop.
@@ -124,6 +133,7 @@ renderer.render(scene, camera);
 //     renderer.render(scene, camera);
 // });
 
+// -- OrbitControls --
 import { OrbitControls } from './OrbitControls.js';
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -133,6 +143,7 @@ renderer.setAnimationLoop(() => {
     renderer.render(scene, camera);
 })
 
+// -- Resize --
 window.addEventListener('resize', () => {
     const d = window.devicePixelRatio;
     renderer.setPixelRatio(Math.min(d, 2));  // this limits the cost on high-DPI screens.
