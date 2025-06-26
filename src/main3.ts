@@ -105,3 +105,33 @@ renderer.render(scene, camera);
 camera.position.set(6, 0, 4);
 camera.lookAt(0, 0, 0);
 renderer.render(scene, camera);
+
+// renderer.setAnimationLoop(() => {   // simple example of setAnimationLoop
+//             shelf.rotation.z += 0.01;
+//             renderer.render(scene, camera);
+//         });
+
+// window.addEventListener('mousemove', (event) => {
+//     const x =  (event.clientX / w) * 4 - 2;   // We would normally put the mouse position in a persistent variable.
+//     const y = -(event.clientY / h) * 4 + 2;   // And then use the persistent variable in the render loop.
+//     camera.position.set(x * 2, y * 2, 4);
+//     camera.lookAt(0, 0, 0);
+//     renderer.render(scene, camera);
+// });
+
+import { OrbitControls } from './OrbitControls.js';
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+// controls.dampingFactor = 0.05;
+renderer.setAnimationLoop(() => {
+    controls.update();
+    renderer.render(scene, camera);
+})
+
+window.addEventListener('resize', () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
