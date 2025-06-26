@@ -15979,7 +15979,7 @@ class WebGLRenderer {
 				renderer.renderInstances( drawStart, drawCount, instanceCount );
 
 			} else {
-				console.log(object.name, drawCount, camera.name, material.constructor.name );  ///
+				// console.log(object.name, drawCount, camera.name, material.constructor.name );  ///
 				renderer.render( drawStart, drawCount );
 
 			}
