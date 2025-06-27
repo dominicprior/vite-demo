@@ -75,7 +75,7 @@ sunlight2.shadow.camera.left   =  -0.2;
 sunlight2.shadow.camera.right  =  0.2;
 
 // -- Ground --
-const groundGeometry = new PlaneGeometry(2, 2);
+const groundGeometry = new PlaneGeometry(2, 2);  // if we ever change to a new geometry, we will need to "dispose" of the old one.
 const groundMaterial = new MeshStandardMaterial({ color: 'pink', });
 const ground = new Mesh(groundGeometry, groundMaterial);
 ground.rotation.z = -Math.PI / 4;
@@ -98,11 +98,12 @@ shelf.castShadow = true;
 shelf.name = 'shelf';
 gui.add(shelf.position, 'z', -2, 2, 0.01).name('shelf z');
 gui.add(shelf.rotation, 'y', -2, 2, 0.01).name('shelf Y rotation');
-gui.add(shelf, 'castShadow').name('shelf castShadow');
-gui.add(shelfMaterial, 'wireframe').name('shelf wireframe');
+const foo = gui.addFolder('foo');
+foo.add(shelf, 'castShadow').name('shelf castShadow');
+foo.add(shelfMaterial, 'wireframe').name('shelf wireframe');
 gui.add(shelfMaterial, 'side', { FrontSide: 0, BackSide: 1, DoubleSide: 2 }).name('shelf side');
 
-gui.addColor(debugObject, 'color').name('shelf color').onChange((c: String) => {
+gui.addColor(debugObject, 'color').name('shelf color').onChange((c: String) => {  // see also onFinishChange
     shelfMaterial.color.set(debugObject.color);
     console.log('shelf color changed', c, shelfMaterial.color);
 });
