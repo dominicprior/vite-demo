@@ -34,6 +34,7 @@ import {
     // BasicShadowMap,
     PCFSoftShadowMap,
 } from '../three/threebuild/three_module.js';
+import gsap from 'gsap';
 import GUI from 'lil-gui';
 const gui = new GUI();
 const debugObject: any = {
@@ -106,8 +107,7 @@ gui.addColor(debugObject, 'color').name('shelf color').onChange((c) => {
     console.log('shelf color changed', c, shelfMaterial.color);
 });
 debugObject.spin = () => {
-    shelf.rotation.z += 0.1;
-    console.log('shelf rotation', shelf.rotation.z);
+    gsap.to(shelf.rotation, { z: shelf.rotation.z + Math.PI / 2, duration: 0.5 });
 };
 gui.add(debugObject, 'spin').name('shelf spin');
 
