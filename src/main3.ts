@@ -102,7 +102,7 @@ gui.add(shelf, 'castShadow').name('shelf castShadow');
 gui.add(shelfMaterial, 'wireframe').name('shelf wireframe');
 gui.add(shelfMaterial, 'side', { FrontSide: 0, BackSide: 1, DoubleSide: 2 }).name('shelf side');
 
-gui.addColor(debugObject, 'color').name('shelf color').onChange((c) => {
+gui.addColor(debugObject, 'color').name('shelf color').onChange((c: String) => {
     shelfMaterial.color.set(debugObject.color);
     console.log('shelf color changed', c, shelfMaterial.color);
 });
