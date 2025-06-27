@@ -91,6 +91,12 @@ shelf.rotation.z = -Math.PI / 4;
 shelf.castShadow = true;
 // shelf.receiveShadow = true;
 shelf.name = 'shelf';
+gui.add(shelf.position, 'z', -2, 2, 0.01).name('shelf z');
+gui.add(shelf.rotation, 'y', -2, 2, 0.01).name('shelf Y rotation');
+gui.add(shelf, 'castShadow').name('shelf castShadow');
+gui.add(shelfMaterial, 'wireframe').name('shelf wireframe');
+gui.add(shelfMaterial, 'side', { FrontSide: 0, BackSide: 1, DoubleSide: 2 }).name('shelf side');
+gui.addColor(shelfMaterial, 'color').name('shelf color');
 
 // -- Scene --
 const scene = new Scene();
