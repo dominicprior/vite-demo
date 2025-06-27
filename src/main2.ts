@@ -1,7 +1,7 @@
 console.log('dominic - main2.ts');
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
-    PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader,
+    PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader, SRGBColorSpace,
 } from '../three/threebuild/three_module.js';
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
@@ -16,6 +16,7 @@ camera.position.set(0, 0, 5);
 camera.lookAt(0, 0, 0);
 const textureLoader = new TextureLoader();
 const texture = await textureLoader.loadAsync('/assets/uv-test-col.png');
+texture.colorSpace = SRGBColorSpace;
 const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new MeshBasicMaterial({ map: texture, });
 const ground = new Mesh(groundGeometry, groundMaterial);
