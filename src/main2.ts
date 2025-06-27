@@ -20,6 +20,7 @@ loadingManager.onStart = () => {
 };
 loadingManager.onLoad = () => {
     console.log('Loading complete');
+    renderer.render(scene, camera);
 };
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
     console.log(`Loading file: ${url}, items loaded: ${itemsLoaded}, total items: ${itemsTotal}`);
@@ -36,7 +37,7 @@ const groundMaterial = new MeshBasicMaterial({ map: texture, });
 const ground = new Mesh(groundGeometry, groundMaterial);
 scene.add(ground);
 setTimeout(() => {
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
 }, 500);
 // const animate = () => {
 //     requestAnimationFrame(animate);
