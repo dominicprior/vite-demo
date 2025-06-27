@@ -36,18 +36,21 @@ import {
 } from '../three/threebuild/three_module.js';
 import gsap from 'gsap';
 import GUI from 'lil-gui';
-const gui = new GUI();
+const gui = new GUI({
+    title: 'Awesome UI', 
+    width: 300
+});
 const debugObject: any = {
     color: 'yellow',
 }
 
+// -- Renderer --
 const w = window.innerWidth;
 const h = window.innerHeight;
 const container = document.querySelector('#scene-container');
 const renderer = new WebGLRenderer({ antialias: true });
 container!.append(renderer.domElement);
 renderer.setSize(w, h);
-
 renderer.shadowMap.enabled = true;
 // renderer.shadowMap.autoUpdate = false;  // this was useful for showing how the shadow map update can be skipped.
 // renderer.shadowMap.type = BasicShadowMap;
@@ -69,7 +72,6 @@ sunlight.shadow.bias = -0.001;
 sunlight.shadow.intensity = 0.5;
 sunlight.name = 'sunlight';
 sunlight.shadow.camera.name = 'sunlight-shadow-camera';
-
 const sunlight2 = sunlight.clone();
 sunlight2.shadow.camera.left   =  -0.2;
 sunlight2.shadow.camera.right  =  0.2;
@@ -96,13 +98,14 @@ shelf.rotation.z = -Math.PI / 4;
 shelf.castShadow = true;
 // shelf.receiveShadow = true;
 shelf.name = 'shelf';
+
+// -- GUI --
 gui.add(shelf.position, 'z', -2, 2, 0.01).name('shelf z');
 gui.add(shelf.rotation, 'y', -2, 2, 0.01).name('shelf Y rotation');
 const foo = gui.addFolder('foo');
 foo.add(shelf, 'castShadow').name('shelf castShadow');
 foo.add(shelfMaterial, 'wireframe').name('shelf wireframe');
 gui.add(shelfMaterial, 'side', { FrontSide: 0, BackSide: 1, DoubleSide: 2 }).name('shelf side');
-
 gui.addColor(debugObject, 'color').name('shelf color').onChange((c: String) => {  // see also onFinishChange
     shelfMaterial.color.set(debugObject.color);
     console.log('shelf color changed', c, shelfMaterial.color);
