@@ -33,6 +33,8 @@ import {
     // BasicShadowMap,
     PCFSoftShadowMap,
 } from '../three/threebuild/three_module.js';
+import GUI from 'lil-gui';
+const gui = new GUI();
 
 const w = window.innerWidth;
 const h = window.innerHeight;
