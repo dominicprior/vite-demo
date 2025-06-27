@@ -48,7 +48,7 @@ container!.append(renderer.domElement);
 renderer.setSize(w, h);
 
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.autoUpdate = false;
+// renderer.shadowMap.autoUpdate = false;  // this was useful for showing how the shadow map update can be skipped.
 // renderer.shadowMap.type = BasicShadowMap;
 renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -132,7 +132,7 @@ camera.lookAt(0, 0, 0);
 camera.name = 'perspective-camera';
 
 // -- Render twice --
-renderer.shadowMap.needsUpdate = true;
+// renderer.shadowMap.needsUpdate = true;  // this was useful for showing how the shadow map update can be skipped.
 renderer.render(scene, camera);
 // debugger;
 camera.position.set(6, 0, 4);
