@@ -35,14 +35,21 @@ import {
     PCFSoftShadowMap,
 } from '../three/threebuild/three_module.js';
 import gsap from 'gsap';
+
+// -- GUI --
 import GUI from 'lil-gui';
 const gui = new GUI({
     title: 'Awesome UI', 
     width: 300
 });
+gui.hide();
 const debugObject: any = {
     color: 'yellow',
 }
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'h')
+        gui.show(gui._hidden);
+});
 
 // -- Renderer --
 const w = window.innerWidth;
