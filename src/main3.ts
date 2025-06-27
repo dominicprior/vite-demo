@@ -30,11 +30,15 @@
 import {
     Scene, Color, PerspectiveCamera, DoubleSide, WebGLRenderer,
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
+    MeshBasicMaterial,
     // BasicShadowMap,
     PCFSoftShadowMap,
 } from '../three/threebuild/three_module.js';
 import GUI from 'lil-gui';
 const gui = new GUI();
+const debugObject: any = {
+    color: 'yellow',
+}
 
 const w = window.innerWidth;
 const h = window.innerHeight;
@@ -80,7 +84,7 @@ ground.name = 'ground';
 
 // -- Shelf --
 const shelfGeometry = new PlaneGeometry(1, 1);
-const shelfMaterial = new MeshStandardMaterial({ color: 'yellow', });
+const shelfMaterial = new MeshBasicMaterial({ color: 'yellow', });
 shelfMaterial.shadowSide = DoubleSide;
 // shelfMaterial.side = DoubleSide;
 // shelfMaterial.transparent = true;
@@ -96,7 +100,16 @@ gui.add(shelf.rotation, 'y', -2, 2, 0.01).name('shelf Y rotation');
 gui.add(shelf, 'castShadow').name('shelf castShadow');
 gui.add(shelfMaterial, 'wireframe').name('shelf wireframe');
 gui.add(shelfMaterial, 'side', { FrontSide: 0, BackSide: 1, DoubleSide: 2 }).name('shelf side');
-gui.addColor(shelfMaterial, 'color').name('shelf color');
+
+gui.addColor(debugObject, 'color').name('shelf color').onChange((c) => {
+    shelfMaterial.color.set(debugObject.color);
+    console.log('shelf color changed', c, shelfMaterial.color);
+});
+debugObject.spin = () => {
+    shelf.rotation.z += 0.1;
+    console.log('shelf rotation', shelf.rotation.z);
+};
+gui.add(debugObject, 'spin').name('shelf spin');
 
 // -- Scene --
 const scene = new Scene();
