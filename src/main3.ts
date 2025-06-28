@@ -31,8 +31,10 @@ import {
     Scene, Color, PerspectiveCamera, DoubleSide, WebGLRenderer,
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
     MeshBasicMaterial,
+    EquirectangularReflectionMapping, SRGBColorSpace,
     // BasicShadowMap,
     PCFSoftShadowMap,
+    DataTexture,
 } from '../three/threebuild/three_module.js';
 import gsap from 'gsap';
 
@@ -124,7 +126,7 @@ gui.add(debugObject, 'spin').name('shelf spin');
 
 // -- Scene --
 const scene = new Scene();
-scene.background = new Color('skyblue');
+// scene.background = new Color('skyblue');
 scene.add(shelf, ground, sunlight,
     // sunlight2   // adding this second light shows that three.js can deal with multiple shadow sources.
 );
@@ -174,6 +176,18 @@ renderer.setAnimationLoop(() => {
     controls.update();
     renderer.render(scene, camera);
 })
+
+// -- RGBELoader --
+import { RGBELoader } from './RGBELoader.js';
+const rgbeLoader = new RGBELoader();
+rgbeLoader.load('/assets/2k.hdr',
+    (envMap: DataTexture) => {
+        console.log('HDR texture loaded:', envMap.constructor.name);
+        envMap.mapping = EquirectangularReflectionMapping;
+        // scene.environment = envMap;
+        scene.background = envMap;
+        // texture.colorSpace = SRGBColorSpace;
+    });
 
 // -- Resize --
 window.addEventListener('resize', () => {
