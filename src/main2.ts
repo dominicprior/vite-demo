@@ -2,6 +2,8 @@ console.log('dominic - main2.ts');
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer, LoadingManager,
     PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader, SRGBColorSpace,
+    // RepeatWrapping,
+    MirroredRepeatWrapping,
 } from '../three/threebuild/three_module.js';
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
@@ -32,7 +34,13 @@ const textureLoader = new TextureLoader(loadingManager);
 const texture  = textureLoader.load('/assets/uv-test-col.png');
                  textureLoader.load('/assets/uv-test-bw.png');
 texture.colorSpace = SRGBColorSpace;
+texture.wrapS = texture.wrapT = MirroredRepeatWrapping;
+texture.repeat.set(3, 3);
 const groundGeometry = new PlaneGeometry(2, 2);
+// let uvArray = groundGeometry.attributes.uv.array;
+// for (let i = 0; i < 8; i++) {
+//     uvArray[i] *= 2;
+// }
 const groundMaterial = new MeshBasicMaterial({ map: texture, });
 const ground = new Mesh(groundGeometry, groundMaterial);
 scene.add(ground);
