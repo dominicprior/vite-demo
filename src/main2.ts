@@ -3,7 +3,8 @@ import {
     Scene, Color, PerspectiveCamera, WebGLRenderer, LoadingManager,
     PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader, SRGBColorSpace,
     // RepeatWrapping,
-    MirroredRepeatWrapping,
+    // MirroredRepeatWrapping,
+    NearestFilter,
 } from '../three/threebuild/three_module.js';
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
@@ -34,8 +35,13 @@ const textureLoader = new TextureLoader(loadingManager);
 const texture  = textureLoader.load('/assets/uv-test-col.png');
                  textureLoader.load('/assets/uv-test-bw.png');
 texture.colorSpace = SRGBColorSpace;
-texture.wrapS = texture.wrapT = MirroredRepeatWrapping;
-texture.repeat.set(3, 3);
+// texture.wrapS = texture.wrapT = MirroredRepeatWrapping;
+texture.repeat.set(.05, .05);
+texture.minFilter = texture.magFilter = NearestFilter;
+// texture.offset.set(0.5, 0.5);
+texture.rotation = Math.PI / 14;
+texture.center.set(0.05, 0.05);
+
 const groundGeometry = new PlaneGeometry(2, 2);
 // let uvArray = groundGeometry.attributes.uv.array;
 // for (let i = 0; i < 8; i++) {
