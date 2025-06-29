@@ -4,6 +4,9 @@ import {
     PlaneGeometry, Mesh,
     RawShaderMaterial,
 } from '../three/threebuild/three_module.js';
+import vert from './vertex.glsl';
+import frag from './fragment.glsl';
+console.log(vert, frag);
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
 scene.background = new Color('skyblue');
@@ -22,25 +25,9 @@ const groundGeometry = new PlaneGeometry(2, 2);
 
 const groundMaterial = new RawShaderMaterial({  });
 
-groundMaterial.vertexShader = /* glsl */ `
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
-attribute vec3 position;
-attribute vec2 uv;
-varying vec2 vUv;
-void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`;
-groundMaterial.fragmentShader = /* glsl */ `
-precision mediump float;
-varying vec2 vUv;
-void main() {
-    vec2 uv = vUv;
-    gl_FragColor = vec4(uv, 1.0, 1.0);
-}
-`;
+groundMaterial.vertexShader = vert;
+groundMaterial.fragmentShader = frag;
+
 const ground = new Mesh(groundGeometry, groundMaterial);
 scene.add(ground);
 renderer.render(scene, camera);
