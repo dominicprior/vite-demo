@@ -28,10 +28,10 @@
 
 
 import {
-    Scene, Color, PerspectiveCamera, DoubleSide, WebGLRenderer,
+    Scene, PerspectiveCamera, DoubleSide, WebGLRenderer,
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
     MeshBasicMaterial,
-    EquirectangularReflectionMapping, SRGBColorSpace,
+    EquirectangularReflectionMapping,
     // BasicShadowMap,
     PCFSoftShadowMap,
     DataTexture,
