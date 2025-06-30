@@ -1,8 +1,8 @@
 precision mediump float;
-varying vec2 vUv;
 uniform float uBlue;
 uniform vec3 uColor;
 uniform sampler2D uTexture;
+varying vec2 vUv;
 void main() {
     // vec2 a = vec2(3.0);
     // vec3 b = vec3(a.yx, 0.5);
