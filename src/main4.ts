@@ -2,7 +2,7 @@ console.log('dominic - main4.ts');
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh,
-    RawShaderMaterial, TextureLoader,
+    ShaderMaterial, TextureLoader,
 } from '../three/threebuild/three_module.js';
 import vert from './vertex.glsl';
 import frag from './fragment.glsl';
@@ -23,7 +23,7 @@ camera.lookAt(0, 0, 0);
 
 const groundGeometry = new PlaneGeometry(2, 2);
 
-const groundMaterial = new RawShaderMaterial({  });
+const groundMaterial = new ShaderMaterial({  });
 
 const textureLoader = new TextureLoader();
 const uTexture = await textureLoader.loadAsync('/assets/uv-test-col.png');
