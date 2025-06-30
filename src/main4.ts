@@ -2,7 +2,7 @@ console.log('dominic - main4.ts');
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh,
-    RawShaderMaterial,
+    RawShaderMaterial, TextureLoader,
 } from '../three/threebuild/three_module.js';
 import vert from './vertex.glsl';
 import frag from './fragment.glsl';
@@ -17,17 +17,31 @@ container!.append(renderer.domElement);
 const w = window.innerWidth;
 const h = window.innerHeight;
 renderer.setSize(w, h);
-const camera = new PerspectiveCamera(45, w / h, 1, 1000);
-camera.position.set(0, 0, 5);
+const camera = new PerspectiveCamera(45, w / h, 5.5, 10);
+camera.position.set(2, 3, 5);
 camera.lookAt(0, 0, 0);
 
 const groundGeometry = new PlaneGeometry(2, 2);
 
 const groundMaterial = new RawShaderMaterial({  });
 
+const textureLoader = new TextureLoader();
+const uTexture = await textureLoader.loadAsync('/assets/uv-test-col.png');
+
 groundMaterial.vertexShader = vert;
 groundMaterial.fragmentShader = frag;
+groundMaterial.uniforms = {
+    uBlue: { value: 0.5 },
+    uColor: { value: new Color('orange') },  // not used
+    uTexture: { value: uTexture },
+    uTime: { value: 0 },  // for animation, not used yet
+};
 
 const ground = new Mesh(groundGeometry, groundMaterial);
 scene.add(ground);
 renderer.render(scene, camera);
+
+// import { Clock } from '../three/threebuild/three_module.js';
+// const clock = new Clock();
+// const t = clock.getElapsedTime();  // in a tick function
+// groundMaterial.uniforms.time.value = t;  // set the time uniform
