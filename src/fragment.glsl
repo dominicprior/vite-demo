@@ -11,6 +11,7 @@ void main() {
 
     vec2 uv = vUv * 2.5;
     vec4 textureColor = texture2D(uTexture, uv);
+    textureColor.r = 1.0 - textureColor.r; // invert red channel
     gl_FragColor = textureColor;
     // gl_FragColor = vec4(uv, uBlue, 1.0);
 }
