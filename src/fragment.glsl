@@ -8,6 +8,7 @@ void main() {
     // vec3 b = vec3(a.yx, 0.5);
     // a.r = 1.0;
     // a.g = 0.0;
+    // b.xy *= 0.5;
 
     vec2 uv = vUv * 2.5;
     vec4 textureColor = texture2D(uTexture, uv);
