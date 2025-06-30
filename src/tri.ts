@@ -1,7 +1,8 @@
 console.log('dominic - tri.ts');
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
-    MeshBasicMaterial, Mesh,
+    // MeshBasicMaterial,
+    Mesh, RawShaderMaterial,
     BufferGeometry, BufferAttribute,
 } from '../three/threebuild/three_module.js';
 const container = document.querySelector('#scene-container');
@@ -14,20 +15,37 @@ const camera = new PerspectiveCamera(45, w / h, 1, 1000);
 camera.position.set(5, 0, 5);
 camera.lookAt(0, 0, 0);
 
-// ----------------------
-
 const geom = new BufferGeometry();
 geom.setAttribute('position', new BufferAttribute(new Float32Array([
-    -1, -1, 0,
-    1, -1, 0,
-    1, 1, 0,
-]), 3));
+    -1, -1, 0,    1, -1, 0,    1, 1, 0,]), 3));
 
-// ----------------------
+// const k = geom.attributes.position.count;  // 3 vertices
+const groundMaterial = new RawShaderMaterial({  });
 
-const groundMaterial = new MeshBasicMaterial({ color: 'pink', });
+groundMaterial.vertexShader = /* glsl */ `
+uniform mat4 modelViewMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
+uniform mat4 projectionMatrix;
+attribute vec3 position;
+attribute vec2 uv;
+varying vec2 vUv;
+void main() {
+    vUv = uv;
+    // gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+groundMaterial.fragmentShader = /* glsl */ `
+precision mediump float;
+varying vec2 vUv;
+void main() {
+    vec2 uv = vUv;
+    gl_FragColor = vec4(uv, 1.0, 1.0);
+}
+`;
+
 const ground = new Mesh(geom, groundMaterial);
-
 const scene = new Scene();
 scene.background = new Color('skyblue');
 scene.add(ground);
