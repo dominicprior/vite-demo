@@ -1,22 +1,12 @@
 import {
-    Scene, Color, PerspectiveCamera, WebGLRenderer,
+    Scene, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh, AmbientLight, PointLight,
     SphereGeometry, BoxGeometry, TorusGeometry, AxesHelper, HemisphereLightHelper,
     DirectionalLightHelper,
     MeshStandardMaterial, Clock, DirectionalLight, HemisphereLight,
-    ShaderMaterial, TextureLoader, PointLightHelper,
+    PointLightHelper,
 } from '../three/threebuild/three_module.js';
 import { OrbitControls } from './OrbitControls.js';
-import GUI from 'lil-gui'
-
-/**
- * Base
- */
-// Debug
-const gui = new GUI()
-
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new Scene()
