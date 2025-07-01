@@ -9,13 +9,14 @@ float random(vec2 st) {
 void main() {
     // vec2 a = vec2(3.0);
     // vec3 b = vec3(a.yx, 0.5);
-    // a.r = 1.0;
-    // a.g = 0.0;
     // b.xy *= 0.5;
 
-    vec2 uv = vUv * 2.5;
-    vec4 textureColor = texture2D(uTexture, uv);
-    textureColor.r = 1.0 - textureColor.r; // invert red channel
-    gl_FragColor = textureColor;
-    // gl_FragColor = vec4(uv, uBlue, 1.0);
+    // float k = 0.001 / pow(distance(vUv, vec2(0.5)), 4.0);  // nice star
+    // gl_FragColor = vec4(vec3(k), 1.0);
+
+    vec2 pos = vec2(vUv.x-0.5, vUv.y-0.5);
+    float a = 120.0 * atan(pos.x, pos.y) / 6.28;
+    float s = sin(a);
+    float k = length(pos) - 0.2*s;
+    gl_FragColor = vec4(k*vUv, k, 1.0);
 }
