@@ -1,9 +1,10 @@
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh, AmbientLight, PointLight,
-    SphereGeometry, BoxGeometry, TorusGeometry,
-    MeshStandardMaterial, Clock,
-    ShaderMaterial, TextureLoader,
+    SphereGeometry, BoxGeometry, TorusGeometry, AxesHelper, HemisphereLightHelper,
+    DirectionalLightHelper,
+    MeshStandardMaterial, Clock, DirectionalLight, HemisphereLight,
+    ShaderMaterial, TextureLoader, PointLightHelper,
 } from '../three/threebuild/three_module.js';
 import { OrbitControls } from './OrbitControls.js';
 import GUI from 'lil-gui'
@@ -23,14 +24,26 @@ const scene = new Scene()
 /**
  * Lights
  */
-const ambientLight = new AmbientLight(0xffffff, 1.5)
+const ambientLight = new AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 
-const pointLight = new PointLight(0xffffff, 50)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+const directionalLight = new DirectionalLight(0x00fffc, 1);
+directionalLight.position.set(1, 0.25, 0);
+scene.add(directionalLight);
+scene.add(new DirectionalLightHelper(directionalLight, 0.2))
+
+const hemisphereLight = new HemisphereLight(0xff0000, 0x0000ff, 1.0);
+scene.add(hemisphereLight);
+scene.add(new HemisphereLightHelper(hemisphereLight, 0.2))
+
+const pointLight = new PointLight(0xff9900, 50, 0, 4)
+pointLight.position.x = .5
+pointLight.position.y = 1
+pointLight.position.z = 2
 scene.add(pointLight)
+scene.add(new PointLightHelper(pointLight, 0.2))
+
+scene.add(new AxesHelper(1))
 
 /**
  * Objects
@@ -38,6 +51,7 @@ scene.add(pointLight)
 // Material
 const material = new MeshStandardMaterial()
 material.roughness = 0.4
+// material.metalness = 1.0
 
 // Objects
 const sphere = new Mesh(
