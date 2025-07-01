@@ -1,6 +1,5 @@
 // A shadow demo, including a shadow autoUpdate of false.
 
-// For simplicity, the sunlight is directly overhead.
 // The two planes (the ground and the shelf) are rotated to be at
 // an angle to demonstrate the shadow granularity.
 
@@ -31,7 +30,7 @@ import {
     Scene, PerspectiveCamera, DoubleSide, WebGLRenderer,
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
     MeshBasicMaterial,
-    EquirectangularReflectionMapping,
+    EquirectangularReflectionMapping, CameraHelper,
     // BasicShadowMap,
     PCFSoftShadowMap,
     DataTexture,
@@ -67,14 +66,14 @@ renderer.shadowMap.type = PCFSoftShadowMap;
 
 // -- Sunlight --
 const sunlight = new DirectionalLight('white', 3);
-sunlight.position.set(0, 0, 30);
+sunlight.position.set(0, 0, 4);
 sunlight.castShadow = true;
 sunlight.shadow.camera.top    =  1;
 sunlight.shadow.camera.bottom = -1;
 sunlight.shadow.camera.left   = -1;
 sunlight.shadow.camera.right  =  1;
-sunlight.shadow.camera.near = 20;
-sunlight.shadow.camera.far = 40;
+sunlight.shadow.camera.near = 2;
+sunlight.shadow.camera.far = 5;
 sunlight.shadow.mapSize.width  = 64;
 sunlight.shadow.mapSize.height = 64;
 sunlight.shadow.bias = -0.001;
@@ -130,6 +129,7 @@ const scene = new Scene();
 scene.add(shelf, ground, sunlight,
     // sunlight2   // adding this second light shows that three.js can deal with multiple shadow sources.
 );
+scene.add(new CameraHelper(sunlight.shadow.camera));  // this shows the shadow camera's frustum.
 
 // -- Pixel Ratios --
 // const d = window.devicePixelRatio;
