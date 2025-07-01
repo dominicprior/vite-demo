@@ -1,3 +1,4 @@
+// Some lighting.
 import {
     Scene, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh, AmbientLight, PointLight,

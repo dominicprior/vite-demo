@@ -1,4 +1,4 @@
-console.log('dominic!');
+// A quilted hexagon with shadows.
 import { World } from './world.js';
 
 function main() {

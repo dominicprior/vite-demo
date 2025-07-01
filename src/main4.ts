@@ -1,4 +1,4 @@
-console.log('dominic - main4.ts');
+// Some shaders.
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh,
@@ -6,7 +6,6 @@ import {
 } from '../three/threebuild/three_module.js';
 import vert from './vertex.glsl';
 import frag from './fragment.glsl';
-console.log(vert, frag);
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
 scene.background = new Color('skyblue');

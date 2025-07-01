@@ -1,4 +1,4 @@
-console.log('dominic - main2.ts');
+// A texture.
 import {
     Scene, Color, PerspectiveCamera, WebGLRenderer, LoadingManager,
     PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader, SRGBColorSpace,
