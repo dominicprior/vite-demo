@@ -63,7 +63,7 @@ const torus = new Mesh(
 torus.position.x = 1.5
 
 const plane = new Mesh(
-    new PlaneGeometry(5, 5),
+    new PlaneGeometry(5, 5, 10,10),
     material
 )
 plane.rotation.x = - Math.PI * 0.5
