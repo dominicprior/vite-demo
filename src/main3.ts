@@ -31,8 +31,8 @@ import {
     PlaneGeometry, MeshStandardMaterial, Mesh, DirectionalLight,
     MeshBasicMaterial,
     EquirectangularReflectionMapping, CameraHelper,
-    // BasicShadowMap,
-    PCFSoftShadowMap,
+    BasicShadowMap,
+    // PCFSoftShadowMap, PCFShadowMap, VSMShadowMap,
     DataTexture,
 } from '../three/threebuild/three_module.js';
 import gsap from 'gsap';
@@ -61,8 +61,10 @@ container!.append(renderer.domElement);
 renderer.setSize(w, h);
 renderer.shadowMap.enabled = true;
 // renderer.shadowMap.autoUpdate = false;  // this was useful for showing how the shadow map update can be skipped.
-// renderer.shadowMap.type = BasicShadowMap;
-renderer.shadowMap.type = PCFSoftShadowMap;
+renderer.shadowMap.type = BasicShadowMap;  // unfiltered.  (radius has no effect).
+// renderer.shadowMap.type = PCFShadowMap;  // (default) percentage close filtering.
+// renderer.shadowMap.type = PCFSoftShadowMap;  // percentage close filtering with bilinear filtering in shader.  (radius has no effect).
+// renderer.shadowMap.type = VSMShadowMap;  // variance shadow mapping, which is a bit blurry.
 
 // -- Sunlight --
 const sunlight = new DirectionalLight('white', 3);
@@ -78,6 +80,7 @@ sunlight.shadow.mapSize.width  = 64;
 sunlight.shadow.mapSize.height = 64;
 sunlight.shadow.bias = -0.001;
 sunlight.shadow.intensity = 0.5;
+sunlight.shadow.radius = 12;
 sunlight.name = 'sunlight';
 sunlight.shadow.camera.name = 'sunlight-shadow-camera';
 const sunlight2 = sunlight.clone();
