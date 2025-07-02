@@ -20961,8 +20961,8 @@ function getUnlitUniformColorSpace( renderer ) {
 // Legacy
 
 const UniformsUtils = { clone: cloneUniforms, merge: mergeUniforms };
-
-var default_vertex = "void main() {\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
+/// where the projectionMatrix is used.
+var default_vertex = "void main() {\n\tgl_Position = projectionMatrix  * modelViewMatrix * vec4( position, 1.0 );\n}";
 
 var default_fragment = "void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}";
 
