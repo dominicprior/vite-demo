@@ -110,6 +110,17 @@ shelf.castShadow = true;
 // shelf.receiveShadow = true;
 shelf.name = 'shelf';
 
+shelfMaterial.onBeforeCompile = (shader) => {
+    console.log('onBeforeCompile', shader);
+    console.log('shader.vertexShader', shader.vertexShader);
+    console.log('shader.fragmentShader', shader.fragmentShader);
+    console.log('shader.uniforms', shader.uniforms);
+    console.log('shader.defines', shader.defines);
+    // debugger;
+}
+
+
+
 // -- GUI --
 gui.add(shelf.position, 'z', -2, 2, 0.01).name('shelf z');
 gui.add(shelf.rotation, 'y', -2, 2, 0.01).name('shelf Y rotation');
