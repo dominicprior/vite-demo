@@ -182,7 +182,7 @@ renderer.render(scene, camera);
 // });
 
 // -- OrbitControls --
-import { OrbitControls } from '../src/OrbitControls.js';
+import { OrbitControls } from '../three/threebuild/OrbitControls.js';
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 // controls.dampingFactor = 0.05;
@@ -192,7 +192,7 @@ renderer.setAnimationLoop(() => {
 })
 
 // -- RGBELoader --
-import { RGBELoader } from '../src/RGBELoader.js';
+import { RGBELoader } from '../three/threebuild/RGBELoader.js';
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load('/assets/2k.hdr',
     (envMap: DataTexture) => {

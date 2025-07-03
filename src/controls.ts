@@ -1,7 +1,7 @@
 import {
     PerspectiveCamera,
 } from "../three/threebuild/three_module.js";
-import { OrbitControls } from './OrbitControls.js';
+import { OrbitControls } from '../three/threebuild/OrbitControls.js';
 
 
 function createControls(camera: PerspectiveCamera, canvas: HTMLCanvasElement) {
