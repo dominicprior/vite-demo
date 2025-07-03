@@ -52,7 +52,7 @@ const sphere = new Mesh(
 sphere.position.x = - 1.5
 
 const cube = new Mesh(
-    new BoxGeometry(0.75, 0.75, 0.75),
+    new BoxGeometry(0.75, 0.75, 0.75, 10, 10, 10),
     material
 )
 
@@ -98,7 +98,7 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 2
