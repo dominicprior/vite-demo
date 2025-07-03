@@ -7,7 +7,7 @@ import {
     MeshStandardMaterial, Clock, DirectionalLight, HemisphereLight,
     PointLightHelper,
 } from '../three/threebuild/three_module.js';
-import { OrbitControls } from './OrbitControls.js';
+import { OrbitControls } from '../src/OrbitControls.js';
 
 // Scene
 const scene = new Scene()

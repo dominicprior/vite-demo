@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "demos/texture.ts", "demos/shadow.ts", "demos/shader.ts", "demos/lights.ts"]
 }
