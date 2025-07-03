@@ -8,3 +8,5 @@ function main() {
 }
 
 main();
+
+Object.defineProperty(window, 'foo', { value: 3, writable: true, });
