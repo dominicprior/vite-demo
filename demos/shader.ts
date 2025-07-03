@@ -4,7 +4,9 @@ import {
     PlaneGeometry, Mesh,
     ShaderMaterial, TextureLoader,
 } from '../three/threebuild/three_module.js';
+// @ts-ignore
 import vert from './vertex.glsl';
+// @ts-ignore
 import frag from './fragment.glsl';
 const container = document.querySelector('#scene-container');
 const scene = new Scene();
