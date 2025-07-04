@@ -4,6 +4,8 @@ import {
 import Sizes from "./utils/sizes.js";
 import Time from "./utils/time.js";
 import Camera from './camera.js';
+import Renderer from './renderer.js';
+import World from './world/world.js';
 
 export default class Game {
     canvas: HTMLCanvasElement | null;
@@ -11,6 +13,8 @@ export default class Game {
     time: Time;
     scene: Scene;
     camera: Camera;
+    renderer: Renderer;
+    world: World;
     constructor(canvas: (HTMLCanvasElement|null)) {
         Object.defineProperty(window, 'a', { value: { game: this },
             writable: true, });
@@ -20,6 +24,8 @@ export default class Game {
         this.time = new Time();
         this.scene = new Scene();
         this.camera = new Camera(this);
+        this.renderer = new Renderer(this);
+        this.world = new World(this);  // Initialize the world after the camera and renderer.
         this.sizes.on('resize', this.resize.bind(this));  // Note the 'bind' to ensure 'this' refers to the Game instance instead of the Sizes instance.
         // this.sizes.on('resize', () => {  // This is an alternative way to bind 'this' using an arrow function.
         //     this.resize();
@@ -32,16 +38,11 @@ export default class Game {
     resize() {
         console.log('resize!!!', this);
         this.camera.resize()
-        // if (this.canvas) {
-        //     this.canvas.width = this.sizes.width * this.sizes.pixelRatio;
-        //     this.canvas.height = this.sizes.height * this.sizes.pixelRatio;
-        //     this.canvas.style.width = `${this.sizes.width}px`;
-        //     this.canvas.style.height = `${this.sizes.height}px`;
-        // }
-    }
+        this.renderer.resize();}
 
     update() {
-        // Update game logic here
+        this.camera.update();
+        this.renderer.update();
     }
 }
 
