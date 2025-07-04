@@ -36,7 +36,6 @@ export default class Game {
     }
 
     resize() {
-        console.log('resize!!!', this);
         this.camera.resize()
         this.renderer.resize();}
 
