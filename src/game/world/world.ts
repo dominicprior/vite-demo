@@ -8,7 +8,6 @@ export default class World {
     scene: Scene;
     environment: Environment;
     constructor(game: Game) {
-        console.log('World initialized');
         this.game = game;
         this.scene = game.scene;
 

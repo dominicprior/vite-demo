@@ -16,8 +16,6 @@ export default class Resources extends EventEmitter {
         this.items = {};
         this.toLoad = this.sources.length;
         this.loaded = 0;
-        console.log(`Resources initialized with ${this.toLoad} sources.`);
-        console.log(sources);
         this.setLoaders();
         this.startLoading();
     }
@@ -28,9 +26,8 @@ export default class Resources extends EventEmitter {
         this.loaders.cubeTextureLoader = new CubeTextureLoader();
     }
     startLoading() {
-        console.log('Starting to load resources...');
         for (const source of this.sources) {
-             if (source.type === 'texture') {
+            if (source.type === 'texture') { 
                 this.loaders.textureLoader.load(
                     source.path as string,
                     (file: any) => {
@@ -39,11 +36,17 @@ export default class Resources extends EventEmitter {
                     }
                 );
             } else if (source.type === 'cubeTexture') {
+                console.log('resources.ts: ', source);
+                // this.loaders.cubeTextureLoader.path = '/static';
                 this.loaders.cubeTextureLoader.load(
                     source.path as string[],
                     (file: any) => {
                         // this.sourceLoaded(source.name, file);
                         console.log(`Loaded cube texture: ${source.name}`);
+                    },
+                    undefined,
+                    (error: any) => {
+                        console.error(`Errorz loading cube texture: ${source.name}`, error);
                     }
                 );
             }

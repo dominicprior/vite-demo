@@ -12,7 +12,6 @@ export default class Environment {
         this.game = game;
         this.scene = game.scene;
         this.setSunlight();
-        console.log('Environment initialized');
         // Initialize environment settings or properties here
     }
 
