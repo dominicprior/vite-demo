@@ -9,8 +9,8 @@ import { createControls } from './controls.js';
 import { createRenderer } from './renderer.js';
 import { Resizer } from './resizer.js';
 import { Loop } from './loop.js';
-import type { PerspectiveCamera, Scene } from '../three/src/three_core.js';
-import type { WebGLRenderer } from '../three/src/Three.js';
+import type { PerspectiveCamera, Scene } from '../../three/src/three_core.js';
+import type { WebGLRenderer } from '../../three/src/Three.js';
 import { createGround } from './ground.js';
 
 import { createHexagon } from './hexagon.js';

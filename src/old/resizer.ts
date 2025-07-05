@@ -1,4 +1,4 @@
-import { PerspectiveCamera, WebGLRenderer } from '../three/threebuild/three_module.js';
+import { PerspectiveCamera, WebGLRenderer } from '../../three/threebuild/three_module.js';
 
 function setSize(container: Element, camera: PerspectiveCamera,
                     renderer: WebGLRenderer) {

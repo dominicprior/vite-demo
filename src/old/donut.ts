@@ -1,6 +1,6 @@
 import { Mesh, MeshStandardMaterial,
     TorusGeometry
-} from '../three/threebuild/three_module.js';
+} from '../../three/threebuild/three_module.js';
 
 function createDonut() {
     const donutGeometry = new TorusGeometry(100, 50, 8, 8);

@@ -2,7 +2,7 @@
 import { World } from './world.js';
 
 function main() {
-    const container = document.querySelector('#scene-container');
+    const container = document.querySelector('canvas.webgl');
     const world = new World(container!);
     world.start();
 }

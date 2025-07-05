@@ -1,6 +1,6 @@
 import { Mesh, MeshBasicMaterial, TextureLoader,
     PlaneGeometry
-} from '../three/threebuild/three_module.js';
+} from '../../three/threebuild/three_module.js';
 
 function createGround() {
      const textureLoader = new TextureLoader();

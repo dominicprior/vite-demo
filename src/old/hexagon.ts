@@ -2,7 +2,7 @@
 
 import { BufferGeometry, MeshStandardMaterial,
     Mesh, Float32BufferAttribute, DoubleSide,
- } from '../three/threebuild/three_module.js';
+ } from '../../three/threebuild/three_module.js';
 
 function createHexagon(n: number, scale: number) {
 
