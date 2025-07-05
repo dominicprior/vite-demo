@@ -1,18 +1,24 @@
 import { Color
 , Scene, DirectionalLight,
+SRGBColorSpace,
 } from '../../../three/threebuild/three_module.js';
 import Game from '../game.js';
+import Resources from '../utils/resources.js';
 
 export default class Environment {
     game: Game;
     scene: Scene;
     // @ts-ignore: no initializer
     sunlight: DirectionalLight;
+    resources: Resources;
+    environmentMap: any;
+
      constructor(game: Game) {
         this.game = game;
         this.scene = game.scene;
+        this.resources = game.resources;
         this.setSunlight();
-        // Initialize environment settings or properties here
+        this.setEnvironmentMap();
     }
 
     setSunlight() {
@@ -30,5 +36,11 @@ export default class Environment {
         this.scene.background = new Color(color);
     }
 
-    // Additional methods for environment management can be added here
+    setEnvironmentMap() {
+        this.environmentMap = {};
+        this.environmentMap.intensity = 0.4;
+        this.environmentMap.texture = this.resources.items.environmentMapTexture;
+        this.environmentMap.texture.colorSpace = SRGBColorSpace;
+        this.scene.environment = this.environmentMap.texture;
+    }
 }

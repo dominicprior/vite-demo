@@ -36,13 +36,12 @@ export default class Resources extends EventEmitter {
                     }
                 );
             } else if (source.type === 'cubeTexture') {
-                console.log('resources.ts: ', source);
                 // this.loaders.cubeTextureLoader.path = '/static';
                 this.loaders.cubeTextureLoader.load(
                     source.path as string[],
                     (file: any) => {
                         // this.sourceLoaded(source.name, file);
-                        console.log(`Loaded cube texture: ${source.name}`);
+                        this.sourceLoaded(source, file);
                     },
                     undefined,
                     (error: any) => {
@@ -50,6 +49,14 @@ export default class Resources extends EventEmitter {
                     }
                 );
             }
+        }
+    }
+    sourceLoaded(source: any, file: any) {
+        this.items[source.name] = file;
+        this.loaded++;
+        if (this.loaded === this.toLoad) {
+            console.log('All resources loaded');
+            this.trigger('ready');
         }
     }
 }
