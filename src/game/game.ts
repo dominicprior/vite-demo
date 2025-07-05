@@ -1,5 +1,5 @@
 import {
-    Scene, 
+    Scene, Mesh,
 } from '../../three/threebuild/three_module.js';
 import Sizes from "./utils/sizes.js";
 import Time from "./utils/time.js";
@@ -50,6 +50,28 @@ export default class Game {
         this.camera.update();
         this.world.update();
         this.renderer.update();
+    }
+
+    destroy() {
+        this.sizes.off('resize');
+        this.time.off('tick');
+        this.scene.traverse((child) => {
+            if (child instanceof Mesh) {
+                child.geometry.dispose();
+                for (const key in child.material) {
+                    const value = child.material[key];
+                    if (value && typeof value.dispose === 'function') {
+                        value.dispose();
+                    }
+                }
+            }
+        });
+        this.camera.controls.dispose();
+        this.renderer.instance.dispose();
+        this.world.destroy();
+        if (this.debug.active) {
+            this.debug.gui.destroy();
+        }
     }
 }
 
