@@ -3,9 +3,12 @@ import {
     BasicShadowMap
 } from '../../three/threebuild/three_module.js';
 
-function createRenderer() {
-    const renderer = new WebGLRenderer({ antialias: true });
-    // renderer.setSize(window.innerWidth, window.innerHeight);
+function createRenderer(container: Element) {
+    const renderer = new WebGLRenderer({
+        antialias: true,
+        canvas: container,
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = BasicShadowMap;
     // renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

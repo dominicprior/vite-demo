@@ -5,7 +5,7 @@ import { Mesh, MeshBasicMaterial, TextureLoader,
 function createGround() {
      const textureLoader = new TextureLoader();
 
-    const texture = textureLoader.load('/assets/uv-test-col.png');
+    const texture = textureLoader.load('uv-test-col.png');
 
     const groundGeometry = new PlaneGeometry(500, 500);
     const groundMaterial = new MeshBasicMaterial({

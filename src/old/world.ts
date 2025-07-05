@@ -25,11 +25,10 @@ let loop: Loop;
 class World {
     constructor(container: Element) {
         scene = createScene();
-        renderer = createRenderer();
+        renderer = createRenderer(container);
         camera = createCamera();
         const controls = createControls(camera, renderer.domElement);
         loop = new Loop(camera, scene, renderer);
-        container.append(renderer.domElement);
 
         const donut = createDonut();
         const ground = createGround();
