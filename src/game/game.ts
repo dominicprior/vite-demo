@@ -7,10 +7,12 @@ import Camera from './camera.js';
 import Renderer from './renderer.js';
 import World from './world/world.js';
 import Resources from './utils/resources.js';
+import Debug from './utils/debug.js';
 import sources from './sources.js';
 
 export default class Game {
     canvas: HTMLCanvasElement | null;
+    debug: Debug;
     sizes: Sizes;
     time: Time;
     scene: Scene;
@@ -23,6 +25,7 @@ export default class Game {
             writable: true, });
         // window['a'].b = 3;
         this.canvas = canvas;
+        this.debug = new Debug();
         this.sizes = new Sizes();
         this.time = new Time();
         this.scene = new Scene();
@@ -45,6 +48,7 @@ export default class Game {
 
     update() {
         this.camera.update();
+        this.world.update();
         this.renderer.update();
     }
 }

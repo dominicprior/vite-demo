@@ -1,13 +1,15 @@
 import { Color
-, Scene, DirectionalLight,
+, Scene, DirectionalLight, MeshStandardMaterial,
 SRGBColorSpace,
 } from '../../../three/threebuild/three_module.js';
 import Game from '../game.js';
 import Resources from '../utils/resources.js';
+import Debug from '../utils/debug.js';
 
 export default class Environment {
     game: Game;
     scene: Scene;
+    debug: Debug;
     // @ts-ignore: no initializer
     sunlight: DirectionalLight;
     resources: Resources;
@@ -17,6 +19,7 @@ export default class Environment {
         this.game = game;
         this.scene = game.scene;
         this.resources = game.resources;
+        this.debug = game.debug;
         this.setSunlight();
         this.setEnvironmentMap();
     }
@@ -42,5 +45,24 @@ export default class Environment {
         this.environmentMap.texture = this.resources.items.environmentMapTexture;
         this.environmentMap.texture.colorSpace = SRGBColorSpace;
         this.scene.environment = this.environmentMap.texture;
+
+        this.environmentMap.updateMaterial = () => {
+            this.scene.traverse((child) => {
+                if (child.isMesh && child.material instanceof MeshStandardMaterial) {
+                    child.material.envMap = this.environmentMap.texture;
+                    child.material.envMapIntensity = this.environmentMap.intensity;
+                    child.material.needsUpdate = true;
+                }
+            });
+        }
+        this.environmentMap.updateMaterial();
+
+        if (this.debug.active) {  // after the "if" Copilot suggested the whole block!
+            this.debug.gui.add(this.environmentMap, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
+                .onChange(
+                    // () => { this.environmentMap.updateMaterial(); }
+                    this.environmentMap.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context
+                );
+        }
     }
 }
