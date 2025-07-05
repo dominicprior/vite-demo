@@ -52,7 +52,7 @@ export default class Game {
         this.renderer.update();
     }
 
-    destroy() {
+    destroy() {  // I'm not sure if this is right, but it's interesting anyway.
         this.sizes.off('resize');
         this.time.off('tick');
         this.scene.traverse((child) => {
@@ -66,9 +66,8 @@ export default class Game {
                 }
             }
         });
-        this.camera.controls.dispose();
+        // this.camera.controls.dispose();  // ??? This gave a warning.  Maybe the .d.ts file is wrong.
         this.renderer.instance.dispose();
-        this.world.destroy();
         if (this.debug.active) {
             this.debug.gui.destroy();
         }
