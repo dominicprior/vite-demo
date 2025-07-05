@@ -4,10 +4,12 @@ import {
     // MeshBasicMaterial,
     Mesh, RawShaderMaterial,
     BufferGeometry, BufferAttribute,
-} from '../three/threebuild/three_module.js';
-const container = document.querySelector('#scene-container');
-const renderer = new WebGLRenderer({ antialias: true });
-container!.append(renderer.domElement);
+} from '../../three/threebuild/three_module.js';
+const container = document.querySelector('canvas.webgl');
+const renderer = new WebGLRenderer({
+    antialias: true,
+    canvas: container,
+});
 const w = window.innerWidth;
 const h = window.innerHeight;
 renderer.setSize(w, h);

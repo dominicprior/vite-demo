@@ -34,7 +34,7 @@ import {
     BasicShadowMap,
     // PCFSoftShadowMap, PCFShadowMap, VSMShadowMap,
     DataTexture,
-} from '../three/threebuild/three_module.js';
+} from '../../three/threebuild/three_module.js';
 import gsap from 'gsap';
 
 // -- GUI --
@@ -55,9 +55,11 @@ window.addEventListener('keydown', (event) => {
 // -- Renderer --
 const w = window.innerWidth;
 const h = window.innerHeight;
-const container = document.querySelector('#scene-container');
-const renderer = new WebGLRenderer({ antialias: true });
-container!.append(renderer.domElement);
+const container = document.querySelector('canvas.webgl');
+const renderer = new WebGLRenderer({
+    antialias: true,
+    canvas: container,
+});
 renderer.setSize(w, h);
 renderer.shadowMap.enabled = true;
 // renderer.shadowMap.autoUpdate = false;  // this was useful for showing how the shadow map update can be skipped.
@@ -182,7 +184,7 @@ renderer.render(scene, camera);
 // });
 
 // -- OrbitControls --
-import { OrbitControls } from '../three/threebuild/OrbitControls.js';
+import { OrbitControls } from '../../three/threebuild/OrbitControls.js';
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 // controls.dampingFactor = 0.05;
@@ -192,7 +194,7 @@ renderer.setAnimationLoop(() => {
 })
 
 // -- RGBELoader --
-import { RGBELoader } from '../three/threebuild/RGBELoader.js';
+import { RGBELoader } from '../../three/threebuild/RGBELoader.js';
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load('/assets/2k.hdr',
     (envMap: DataTexture) => {

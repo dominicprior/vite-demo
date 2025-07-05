@@ -6,8 +6,8 @@ import {
     DirectionalLightHelper,
     MeshStandardMaterial, Clock, DirectionalLight, HemisphereLight,
     PointLightHelper,
-} from '../three/threebuild/three_module.js';
-import { OrbitControls } from '../three/threebuild/OrbitControls.js';
+} from '../../three/threebuild/three_module.js';
+import { OrbitControls } from '../../three/threebuild/OrbitControls.js';
 
 // Scene
 const scene = new Scene()
@@ -107,11 +107,11 @@ scene.add(camera)
 /**
  * Renderer
  */
-const container = document.querySelector('#scene-container');
+const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
     antialias: true,
+    canvas: container,
 })
-container!.append(renderer.domElement);
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 

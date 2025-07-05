@@ -3,18 +3,18 @@ import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     PlaneGeometry, Mesh,
     ShaderMaterial, TextureLoader,
-} from '../three/threebuild/three_module.js';
+} from '../../three/threebuild/three_module.js';
 // @ts-ignore
 import vert from './vertex.glsl';
 // @ts-ignore
 import frag from './fragment.glsl';
-const container = document.querySelector('#scene-container');
+const container = document.querySelector('canvas.webgl');
 const scene = new Scene();
 scene.background = new Color('skyblue');
 const renderer = new WebGLRenderer({
     // antialias: true
+    canvas: container,
 });
-container!.append(renderer.domElement);
 const w = window.innerWidth;
 const h = window.innerHeight;
 renderer.setSize(w, h);

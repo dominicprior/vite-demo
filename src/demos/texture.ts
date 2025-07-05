@@ -5,12 +5,14 @@ import {
     // RepeatWrapping,
     // MirroredRepeatWrapping,
     NearestFilter,
-} from '../three/threebuild/three_module.js';
-const container = document.querySelector('#scene-container');
+} from '../../three/threebuild/three_module.js';
+const container = document.querySelector('canvas.webgl');
 const scene = new Scene();
 scene.background = new Color('skyblue');
-const renderer = new WebGLRenderer({ antialias: true });
-container!.append(renderer.domElement);
+const renderer = new WebGLRenderer({
+    antialias: true,
+    canvas: container,
+});
 const w = window.innerWidth;
 const h = window.innerHeight;
 renderer.setSize(w, h);
