@@ -196,7 +196,7 @@ renderer.setAnimationLoop(() => {
 // -- RGBELoader --
 import { RGBELoader } from '../../three/threebuild/RGBELoader.js';
 const rgbeLoader = new RGBELoader();
-rgbeLoader.load('/assets/2k.hdr',
+rgbeLoader.load('2k.hdr',
     (envMap: DataTexture) => {
         console.log('HDR texture loaded:', envMap.constructor.name);
         envMap.mapping = EquirectangularReflectionMapping;

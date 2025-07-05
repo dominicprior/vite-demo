@@ -34,8 +34,8 @@ loadingManager.onError = (url) => {
     console.error(`Error loading file: ${url}`);
 };
 const textureLoader = new TextureLoader(loadingManager);
-const texture  = textureLoader.load('/assets/uv-test-col.png');
-                 textureLoader.load('/assets/uv-test-bw.png');
+const texture  = textureLoader.load('uv-test-col.png');
+                 textureLoader.load('uv-test-bw.png');
 texture.colorSpace = SRGBColorSpace;
 // texture.wrapS = texture.wrapT = MirroredRepeatWrapping;
 texture.repeat.set(.05, .05);

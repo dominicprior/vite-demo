@@ -27,7 +27,7 @@ const groundGeometry = new PlaneGeometry(2, 2);
 const groundMaterial = new ShaderMaterial({  });
 
 const textureLoader = new TextureLoader();
-const uTexture = await textureLoader.loadAsync('/assets/uv-test-col.png');
+const uTexture = await textureLoader.loadAsync('uv-test-col.png');
 
 groundMaterial.vertexShader = vert;
 groundMaterial.fragmentShader = frag;
