@@ -6,12 +6,15 @@ import Time from "./utils/time.js";
 import Camera from './camera.js';
 import Renderer from './renderer.js';
 import World from './world/world.js';
+import Resources from './utils/resources.js';
+import sources from './sources.js';
 
 export default class Game {
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     time: Time;
     scene: Scene;
+    resources: Resources;
     camera: Camera;
     renderer: Renderer;
     world: World;
@@ -23,6 +26,7 @@ export default class Game {
         this.sizes = new Sizes();
         this.time = new Time();
         this.scene = new Scene();
+        this.resources = new Resources(sources);
         this.camera = new Camera(this);
         this.renderer = new Renderer(this);
         this.world = new World(this);  // Initialize the world after the camera and renderer.

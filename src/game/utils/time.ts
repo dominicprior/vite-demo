@@ -1,5 +1,5 @@
 import EventEmitter from "./eventemitter.js";
-const pr = console.log;
+
 export default class Time extends EventEmitter {
     start: number;
     current: number;
