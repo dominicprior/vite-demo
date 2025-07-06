@@ -48,9 +48,13 @@ export default class Environment {
 
         this.environmentMap.updateMaterial = () => {
             this.scene.traverse((child) => {
+                // @ts-ignore: property does not exist
                 if (child.isMesh && child.material instanceof MeshStandardMaterial) {
+                    // @ts-ignore: property does not exist
                     child.material.envMap = this.environmentMap.texture;
+                    // @ts-ignore: property does not exist
                     child.material.envMapIntensity = this.environmentMap.intensity;
+                    // @ts-ignore: property does not exist
                     child.material.needsUpdate = true;
                 }
             });
