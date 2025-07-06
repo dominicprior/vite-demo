@@ -4,11 +4,14 @@ import {
 import Game from '../game.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
+import Floor from './floor.js';
 import Debug from '../utils/debug.js';
 
 export default class World {
     game: Game;
     scene: Scene;
+    // @ts-ignore: no initializer
+    floor: Floor;
     debug: Debug;
     // @ts-ignore: no initializer
     environment: Environment;
@@ -38,6 +41,7 @@ export default class World {
         this.resources.on('ready', () => {
             console.log('Resources are ready');
             this.environment = new Environment(game);
+            this.floor = new Floor(game);
             // this.environment.setBackgroundColor('pink');
         });
     }
