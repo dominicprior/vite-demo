@@ -21,9 +21,7 @@ export default class Game {
     renderer: Renderer;
     world: World;
     constructor(canvas: (HTMLCanvasElement|null)) {
-        Object.defineProperty(window, 'a', { value: { game: this },
-            writable: true, });
-        // window['a'].b = 3;
+        Object.defineProperty(window, 'a', { value: this,  writable: true, });
         this.canvas = canvas;
         this.debug = new Debug();
         this.sizes = new Sizes();
