@@ -4,7 +4,8 @@ export default class Debug {
     // @ts-ignore: no initializer
     gui: GUI;
     constructor() {
-        this.active = window.location.hash === '#debug';
+        // this.active = window.location.hash === '#debug';
+        this.active = true;
         if (this.active) {
             this.gui = new GUI({
                 width: 400,
