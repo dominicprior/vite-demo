@@ -61,12 +61,10 @@ export default class Environment {
         }
         this.environmentMap.updateMaterial();
 
-        if (this.debug.active) {  // after the "if" Copilot suggested the whole block!
-            this.debug.gui.add(this.environmentMap, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
-                .onChange(
-                    // () => { this.environmentMap.updateMaterial(); }
-                    this.environmentMap.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context
-                );
-        }
+        this.debug.gui.add(this.environmentMap, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
+            .onChange(
+                // () => { this.environmentMap.updateMaterial(); }
+                this.environmentMap.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context
+            );
     }
 }

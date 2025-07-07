@@ -66,9 +66,7 @@ export default class Game {
         });
         // this.camera.controls.dispose();  // ??? This gave a warning.  Maybe the .d.ts file is wrong.
         this.renderer.instance.dispose();
-        if (this.debug.active) {
-            this.debug.gui.destroy();
-        }
+        this.debug.gui.destroy();
     }
 }
 

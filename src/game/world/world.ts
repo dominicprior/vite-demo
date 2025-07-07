@@ -23,9 +23,7 @@ export default class World {
         this.resources = game.resources;
         this.debug = game.debug;
 
-        if (this.debug.active) {
-            this.debug.gui.addFolder('World');
-        }
+        this.debug.gui.addFolder('World');
 
         // this.scene.background = new Color('skyblue');
         const testMesh = new Mesh(
@@ -33,9 +31,7 @@ export default class World {
             new MeshStandardMaterial({ color: 0xffffff })
         );
 
-        if (this.debug.active) {
-            this.debug.gui.add(testMesh.position, 'y', -2, 2, 0.01).name('box Y');
-        }
+        this.debug.gui.add(testMesh.position, 'y', -2, 2, 0.01).name('box Y');
 
         this.scene.add(testMesh);
         this.resources.on('ready', () => {
