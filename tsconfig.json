@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+
+    "strictNullChecks": true,
+
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
