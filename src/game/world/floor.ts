@@ -29,11 +29,9 @@ export default class Floor {
         this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
         this.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
             .onChange(() => {
-                this.scene.remove(this.mesh);
                 this.geometry.dispose();
                 this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
                 this.mesh.geometry = this.geometry;
-                this.scene.add(this.mesh);
             });
     }
 
