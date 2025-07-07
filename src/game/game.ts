@@ -11,7 +11,7 @@ import Debug from './utils/debug.js';
 import sources from './sources.js';
 
 export default class Game {
-    canvas: HTMLCanvasElement | null;
+    canvas: HTMLCanvasElement;
     debug: Debug;
     sizes: Sizes;
     time: Time;
@@ -20,7 +20,7 @@ export default class Game {
     camera: Camera;
     renderer: Renderer;
     world: World;
-    constructor(canvas: (HTMLCanvasElement|null)) {
+    constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         this.canvas = canvas;
         this.debug = new Debug();
