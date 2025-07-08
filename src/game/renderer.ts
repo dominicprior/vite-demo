@@ -24,7 +24,10 @@ export default class Renderer {
     }
 
     setInstance() {
-        this.instance = new WebGLRenderer({ canvas: this.canvas! });  // Note the non-null assertion operator '!'
+        this.instance = new WebGLRenderer({
+            canvas: this.canvas!,
+            antialias: true,
+        });  // Note the non-null assertion operator '!'
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
         this.instance.shadowMap.enabled = true;
