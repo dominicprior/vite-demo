@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 1;
+    numRows: number = 6;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
@@ -29,7 +29,7 @@ export default class Floor {
     setGeometry() {
         this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
 
-        const numVertices = (this.numRows + 0) **2 * 6;
+        const numVertices = (this.numRows + 1) ** 2; // (this.numRows + 0) ** 2 * 6;
         const f32a = new Float32Array(3 * numVertices);
         for (let i=0; i < 3 * numVertices; i++) {
             f32a[i] = Math.random();
