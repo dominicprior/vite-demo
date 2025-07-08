@@ -54,6 +54,7 @@ export default class Cubes {
         let mesh = new Mesh(this.geometry, this.material);
         this.meshes.push(mesh);
         mesh.name = 'cube';
+        mesh.frustumCulled = false;
         mesh.position.x = this.stride * (i - (this.numRows - 1) / 2);
         mesh.position.y = 0.5;
         // this.mesh.receiveShadow = true
