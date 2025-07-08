@@ -8,7 +8,7 @@ import {
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
     antialias: true,
-    canvas: container,
+    canvas: container!,
 });
 const w = window.innerWidth;
 const h = window.innerHeight;

@@ -58,7 +58,7 @@ const h = window.innerHeight;
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
     antialias: true,
-    canvas: container,
+    canvas: container!,
 });
 renderer.setSize(w, h);
 renderer.shadowMap.enabled = true;

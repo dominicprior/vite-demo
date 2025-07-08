@@ -13,7 +13,7 @@ const scene = new Scene();
 scene.background = new Color('skyblue');
 const renderer = new WebGLRenderer({
     // antialias: true
-    canvas: container,
+    canvas: container!,
 });
 const w = window.innerWidth;
 const h = window.innerHeight;

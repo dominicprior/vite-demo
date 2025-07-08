@@ -110,7 +110,7 @@ scene.add(camera)
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
     antialias: true,
-    canvas: container,
+    canvas: container!,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
