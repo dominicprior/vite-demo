@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 3;
+    numRows: number = 10;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
@@ -22,33 +22,38 @@ export default class Floor {
         this.scene = game.scene;
 
         this.setGeometry();
+        this.setColours();
+        this.setDebug();
         this.setMaterial();
         this.setMesh();
     }
 
     setGeometry() {
         this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
+    }
 
+    setColours() {
         const numVertices = (this.numRows + 1) ** 2; // (this.numRows + 0) ** 2 * 6;
         const f32a = new Float32Array(3 * numVertices);
         for (let i=0; i < numVertices; i++) {
+            // Choose a random RGB where R+G+B is 2.
             const [y, x] = ([Math.random(), Math.random()] as any).toSorted((a: number, b: number) => a - b)
             const r = x;
             const g = 1 - y;
             const b = 2 - r - g;
-            
             f32a[3*i]     = r;
             f32a[3*i + 1] = g;
             f32a[3*i + 2] = b;
-            console.log(r+ g+ b)
         }
-        // nice values: [0.487, 0.013, 0.006, 0.88, 0.148, 0.965, 0.165, 0.852, 0.392, 0.523, 0.281, 0.391, 0.246, 0.991, 0.543, 0.062, 0.005, 0.806]
         this.geometry.setAttribute('color', new BufferAttribute(f32a, 3));
+    }
 
+    setDebug() {
         this.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
             .onChange(() => {
                 this.geometry.dispose();
-                this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
+                this.setGeometry();
+                this.setColours();
                 this.mesh.geometry = this.geometry;
             });
     }
@@ -57,6 +62,14 @@ export default class Floor {
         this.material = new MeshStandardMaterial({
             vertexColors: true,
         });
+    }
+
+    setMesh() {
+        this.mesh = new Mesh(this.geometry, this.material);
+        this.mesh.name = 'floor';
+        this.mesh.rotation.x = - Math.PI * 0.5;
+        // this.mesh.receiveShadow = true
+        this.scene.add(this.mesh);
     }
 
 
@@ -94,13 +107,5 @@ export default class Floor {
         this.material = new MeshStandardMaterial({
             map: texture,
         });
-    }
-
-    setMesh() {
-        this.mesh = new Mesh(this.geometry, this.material);
-        this.mesh.name = 'floor';
-        this.mesh.rotation.x = - Math.PI * 0.5;
-        // this.mesh.receiveShadow = true
-        this.scene.add(this.mesh);
     }
 }
