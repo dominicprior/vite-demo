@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 6;
+    numRows: number = 3;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
@@ -31,8 +31,16 @@ export default class Floor {
 
         const numVertices = (this.numRows + 1) ** 2; // (this.numRows + 0) ** 2 * 6;
         const f32a = new Float32Array(3 * numVertices);
-        for (let i=0; i < 3 * numVertices; i++) {
-            f32a[i] = Math.random();
+        for (let i=0; i < numVertices; i++) {
+            const [y, x] = ([Math.random(), Math.random()] as any).toSorted((a: number, b: number) => a - b)
+            const r = x;
+            const g = 1 - y;
+            const b = 2 - r - g;
+            
+            f32a[3*i]     = r;
+            f32a[3*i + 1] = g;
+            f32a[3*i + 2] = b;
+            console.log(r+ g+ b)
         }
         // nice values: [0.487, 0.013, 0.006, 0.88, 0.148, 0.965, 0.165, 0.852, 0.392, 0.523, 0.281, 0.391, 0.246, 0.991, 0.543, 0.062, 0.005, 0.806]
         this.geometry.setAttribute('color', new BufferAttribute(f32a, 3));
