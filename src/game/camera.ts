@@ -39,7 +39,7 @@ export default class Camera {
         this.controls.enableZoom = true;
         this.controls.minDistance = 2;
         this.controls.maxDistance = 20;
-        this.controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation
+        // this.controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation
     }
 
     resize() {
