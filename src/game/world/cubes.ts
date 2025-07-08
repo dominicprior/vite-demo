@@ -7,9 +7,9 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Cubes {
-    numRows: number = 4;
-    numBands: number = 2;
-    stride: number = 4;
+    numRows: number = 7;
+    numBands: number = 3;
+    stride: number = 2;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer

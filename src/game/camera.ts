@@ -27,7 +27,7 @@ export default class Camera {
 
     setInstance() {
         this.instance = new PerspectiveCamera(
-                75, this.sizes.width / this.sizes.height, 0.1, 1000);
+                75, this.sizes.width / this.sizes.height, 0.05, 100);
         this.instance.position.set(6, 4, 8);
         this.scene.add(this.instance);
     }
@@ -37,7 +37,7 @@ export default class Camera {
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
         this.controls.enableZoom = true;
-        this.controls.minDistance = 2;
+        this.controls.minDistance = 0.5;
         this.controls.maxDistance = 20;
         // this.controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation
     }

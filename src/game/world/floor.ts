@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 8;
+    numRows: number = 27;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
@@ -31,7 +31,7 @@ export default class Floor {
     setGeometry() {
         // this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
         this.geometry = new BufferGeometry();
-        const size = 10;
+        const size = 9;
         const stride = size / this.numRows;
         let vertices: Array<number> = [];
         for (let i=0; i < this.numRows; i++) {
