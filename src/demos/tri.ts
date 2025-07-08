@@ -18,12 +18,18 @@ camera.position.set(5, 0, 5);
 camera.lookAt(0, 0, 0);
 
 const geom = new BufferGeometry();
+
+// ----- Three ways of setting the positions -----
 geom.setAttribute('position', new BufferAttribute(new Float32Array([
     -1, -1, 0,    1, -1, 0,    1, 1, 0,]), 3));
 geom.setAttribute('position', new Float32BufferAttribute([
     -1, -1, 0,    1, -1, 0,    1, 1, 0,], 3));
+// The third way is to create a Float32Array directly:
+// const f32a = new Float32Array(9);
+// // ...set the elements using the [] notation
+// geom.setAttribute('position', new BufferAttribute(f32a, 3))
+// -----------------------------------------------
 
-// const k = geom.attributes.position.count;  // 3 vertices
 const groundMaterial = new RawShaderMaterial({  });
 
 groundMaterial.vertexShader = /* glsl */ `
