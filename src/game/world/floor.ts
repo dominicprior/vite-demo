@@ -105,13 +105,6 @@ export default class Floor {
         this.scene.add(this.mesh);
     }
 
-
-// .vertexColors : Boolean
-// Defines whether vertex coloring is used. Default is false. 
-// The engine supports RGB and RGBA vertex colors depending
-// on whether a three (RGB) or four (RGBA) component color 
-// buffer attribute is used.
-
     setTextureMaterial() {  // not used
 
         const width = 4;
