@@ -1,10 +1,11 @@
 import {
-    Scene, Mesh, BoxGeometry, MeshStandardMaterial,
+    Scene,
 } from '../../../three/threebuild/three_module.js';
 import Game from '../game.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Floor from './floor.js';
+import Cubes from './cubes.js';
 import Debug from '../utils/debug.js';
 
 export default class World {
@@ -12,6 +13,8 @@ export default class World {
     scene: Scene;
     // @ts-ignore: no initializer
     floor: Floor;
+    // @ts-ignore: no initializer
+    cubes: Cubes;
     debug: Debug;
     // @ts-ignore: no initializer
     environment: Environment;
@@ -25,20 +28,12 @@ export default class World {
 
         this.debug.gui.addFolder('World');
 
-        // this.scene.background = new Color('skyblue');
-        const testMesh = new Mesh(
-            new BoxGeometry(4, 4, 4,10,10,10),
-            new MeshStandardMaterial({ color: 0xffffff })
-        );
-
-        this.debug.gui.add(testMesh.position, 'y', -2, 2, 0.01).name('box Y');
-
-        this.scene.add(testMesh);
         this.resources.on('ready', () => {
             console.log('Resources are ready');
             this.environment = new Environment(game);
             this.floor = new Floor(game);
-            // this.environment.setBackgroundColor('pink');
+            this.cubes = new Cubes(game);
+            // this.environment.setBackgroundColor('skyblue');
         });
     }
 
