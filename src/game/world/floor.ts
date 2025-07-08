@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 2;
+    numRows: number = 8;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
@@ -61,9 +61,17 @@ export default class Floor {
         for (let i=0; i < numTriangles; i++) {
             // Choose a random RGB where R+G+B is 2.
             const [y, x] = ([Math.random(), Math.random()] as any).toSorted((a: number, b: number) => a - b)
-            const r = x;
-            const g = 1 - y;
-            const b = 2 - r - g;
+            let r = x;
+            let g = 1 - y;
+            let b = 2 - r - g;
+            // Now dampen the colours
+            r /= 4;
+            g /= 4;
+            b /= 4;
+            r += 0.75;
+            g += 0.75;
+            b += 0.25;
+
             for (let v=0; v < 3; v++) {
                 f32a[9*i + 3*v]     = r;
                 f32a[9*i + 3*v + 1] = g;
