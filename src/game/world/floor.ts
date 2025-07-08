@@ -56,17 +56,19 @@ export default class Floor {
     }
 
     setColours() {
-        const numVertices = (this.numRows + 0) ** 2 * 6;
-        const f32a = new Float32Array(3 * numVertices);
-        for (let i=0; i < numVertices; i++) {
+        const numTriangles = this.numRows * this.numRows * 2;
+        const f32a = new Float32Array(9 * numTriangles);
+        for (let i=0; i < numTriangles; i++) {
             // Choose a random RGB where R+G+B is 2.
             const [y, x] = ([Math.random(), Math.random()] as any).toSorted((a: number, b: number) => a - b)
             const r = x;
             const g = 1 - y;
             const b = 2 - r - g;
-            f32a[3*i]     = r;
-            f32a[3*i + 1] = g;
-            f32a[3*i + 2] = b;
+            for (let v=0; v < 3; v++) {
+                f32a[9*i + 3*v]     = r;
+                f32a[9*i + 3*v + 1] = g;
+                f32a[9*i + 3*v + 2] = b;
+            }
         }
         this.geometry.setAttribute('color', new BufferAttribute(f32a, 3));
     }
