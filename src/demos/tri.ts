@@ -3,7 +3,7 @@ import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     // MeshBasicMaterial,
     Mesh, RawShaderMaterial,
-    BufferGeometry, BufferAttribute,
+    BufferGeometry, BufferAttribute, Float32BufferAttribute,
 } from '../../three/threebuild/three_module.js';
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
@@ -20,6 +20,8 @@ camera.lookAt(0, 0, 0);
 const geom = new BufferGeometry();
 geom.setAttribute('position', new BufferAttribute(new Float32Array([
     -1, -1, 0,    1, -1, 0,    1, 1, 0,]), 3));
+geom.setAttribute('position', new Float32BufferAttribute([
+    -1, -1, 0,    1, -1, 0,    1, 1, 0,], 3));
 
 // const k = geom.attributes.position.count;  // 3 vertices
 const groundMaterial = new RawShaderMaterial({  });
