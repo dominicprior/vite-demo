@@ -1,17 +1,17 @@
 import {
-    Scene, Mesh, PlaneGeometry, MeshStandardMaterial, DataTexture, RepeatWrapping,
-    BufferAttribute,
+    Scene, Mesh, BufferGeometry, MeshStandardMaterial, DataTexture, RepeatWrapping,
+    BufferAttribute, Float32BufferAttribute,
 } from '../../../three/threebuild/three_module.js';
 
 import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 10;
+    numRows: number = 2;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
-    geometry: PlaneGeometry;
+    geometry: BufferGeometry;
     // @ts-ignore: no initializer
     material: MeshStandardMaterial;
     // @ts-ignore: no initializer
@@ -29,11 +29,34 @@ export default class Floor {
     }
 
     setGeometry() {
-        this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
+        // this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
+        this.geometry = new BufferGeometry();
+        const size = 10;
+        const stride = size / this.numRows;
+        let vertices: Array<number> = [];
+        for (let i=0; i < this.numRows; i++) {
+            for (let j=0; j < this.numRows; j++) {
+                const x = -size/2 + i * stride;
+                const y = -size/2 + j * stride;
+                if ((i+j) % 2) {
+                    vertices.push(x, y, 0,   x + stride, y, 0,   x + stride, y + stride, 0);
+                    vertices.push(x, y, 0,   x + stride, y + stride, 0,   x, y + stride, 0);
+                }
+                else {
+                    vertices.push(x, y, 0,   x + stride, y, 0,   x, y + stride, 0);
+                    vertices.push(x + stride, y, 0,   x + stride, y + stride, 0,   x, y + stride, 0);
+
+                }
+            }
+        }
+        this.geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        this.geometry.computeVertexNormals();  // what about uv values too?
+        // @ts-ignore
+        window.f = this.geometry.attributes;
     }
 
     setColours() {
-        const numVertices = (this.numRows + 1) ** 2; // (this.numRows + 0) ** 2 * 6;
+        const numVertices = (this.numRows + 0) ** 2 * 6;
         const f32a = new Float32Array(3 * numVertices);
         for (let i=0; i < numVertices; i++) {
             // Choose a random RGB where R+G+B is 2.
