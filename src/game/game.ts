@@ -9,12 +9,14 @@ import World from './world/world.js';
 import Resources from './utils/resources.js';
 import Debug from './utils/debug.js';
 import sources from './sources.js';
+import Keyboard from './utils/keyboard.js';
 
 export default class Game {
     canvas: HTMLCanvasElement;
     debug: Debug;
     sizes: Sizes;
     time: Time;
+    keyboard: Keyboard
     scene: Scene;
     resources: Resources;
     camera: Camera;
@@ -26,6 +28,7 @@ export default class Game {
         this.debug = new Debug();
         this.sizes = new Sizes();
         this.time = new Time();
+        this.keyboard = new Keyboard();
         this.scene = new Scene();
         this.resources = new Resources(sources);
         this.camera = new Camera(this);
@@ -64,7 +67,6 @@ export default class Game {
                 }
             }
         });
-        // this.camera.controls.dispose();  // ??? This gave a warning.  Maybe the .d.ts file is wrong.
         this.renderer.instance.dispose();
         this.debug.gui.destroy();
     }

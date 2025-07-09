@@ -2,27 +2,27 @@ import {
     PerspectiveCamera,
     Scene, 
 } from '../../three/threebuild/three_module.js';
-import { OrbitControls } from '../../three/threebuild/OrbitControls.js';
 
 import Game from './game.js';
 import Sizes from "./utils/sizes.js";
+import Keyboard from './utils/keyboard.js';
 
 export default class Camera {
     game: Game;
     sizes: Sizes;
+    keyboard: Keyboard;
     scene: Scene;
     canvas: HTMLCanvasElement | null;
     // @ts-ignore: no initializer
     instance: PerspectiveCamera;
-    // @ts-ignore: no initializer
-    controls: OrbitControls;
+
     constructor(game: Game) {
         this.game = game;
         this.sizes = game.sizes;
+        this.keyboard = game.keyboard;
         this.scene = game.scene;
         this.canvas = game.canvas;
         this.setInstance();
-        this.setOrbitControls();
     }
 
     setInstance() {
@@ -32,22 +32,17 @@ export default class Camera {
         this.scene.add(this.instance);
     }
 
-    setOrbitControls() {
-        this.controls = new OrbitControls(this.instance, this.canvas!);  // note the non-null assertion operator '!'
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.05;
-        this.controls.enableZoom = true;
-        this.controls.minDistance = 0.5;
-        this.controls.maxDistance = 20;
-        // this.controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation
-    }
-
     resize() {
         this.instance.aspect = this.sizes.width / this.sizes.height;
         this.instance.updateProjectionMatrix();
     }
 
     update() {
-        this.controls.update();
+        if (this.keyboard.turningLeft()) {
+            this.instance.rotateY(0.02);
+        }
+        if (this.keyboard.turningRight()) {
+            this.instance.rotateY(-0.02);
+        }
     }
 }
