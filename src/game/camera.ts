@@ -8,6 +8,7 @@ import Sizes from "./utils/sizes.js";
 import Keyboard from './utils/keyboard.js';
 
 var _dummy = new Vector3();
+const upVec = new Vector3(0, 1, 0);
 
 export default class Camera {
     game: Game;
@@ -49,6 +50,12 @@ export default class Camera {
         if (moving) {
             const fwd = this.instance.getWorldDirection(_dummy);
             this.instance.position.add(fwd.clone().multiplyScalar(0.04 * moving));
+        }
+
+        const strafing = this.keyboard.strafing();
+        if (strafing) {
+            const fwd = this.instance.getWorldDirection(_dummy).clone().cross(upVec);
+            this.instance.position.add(fwd.multiplyScalar(0.04 * strafing));
         }
     }
 }

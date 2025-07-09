@@ -2,6 +2,7 @@ import * as TYPES from './types.js';
 
 export default class Keyboard {
     pressed: { [key: string]: boolean; } = {};
+
     constructor() {
         addEventListener("keydown", (event) => {
             this.pressed[event.code] = true;
@@ -10,6 +11,7 @@ export default class Keyboard {
             this.pressed[event.code] = false;
         })
     }
+
     turning(): TYPES.Sign {
         const left  = this.turningLeft()  ? 1 : 0;
         const right = this.turningRight() ? 1 : 0;
@@ -32,5 +34,17 @@ export default class Keyboard {
     }
     goingBack(): boolean {
         return this.pressed['KeyS'] || this.pressed['ArrowDown'];
+    }
+
+    strafing(): TYPES.Sign {
+        const right = this.strafingRight() ? 1 : 0;
+        const left  = this.strafingLeft()  ? 1 : 0;
+        return (right - left) as TYPES.Sign;
+    }
+    strafingLeft(): boolean {
+        return this.pressed['KeyQ'];
+    }
+    strafingRight(): boolean {
+        return this.pressed['KeyE'];
     }
 }
