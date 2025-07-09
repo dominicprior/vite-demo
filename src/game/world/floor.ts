@@ -7,7 +7,7 @@ import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
-    numRows: number = 27;
+    numRows: number = 45;
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer

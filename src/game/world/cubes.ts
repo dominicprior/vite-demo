@@ -8,7 +8,7 @@ import Debug from '../utils/debug.js';
 
 export default class Cubes {
     numRows: number = 7;
-    numBands: number = 3;
+    numBands: number = 5;
     stride: number = 2;
     debug: Debug;
     scene: Scene;
