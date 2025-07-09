@@ -40,19 +40,15 @@ export default class Camera {
     }
 
     update() {
-        if (this.keyboard.turningLeft()) {
-            this.instance.rotateY(0.05);
+        const turning = this.keyboard.turning();
+        if (turning) {
+            this.instance.rotateY(0.05 * turning);
         }
-        if (this.keyboard.turningRight()) {
-            this.instance.rotateY(-0.05);
-        }
-        if (this.keyboard.goingForward()) {
+
+        const moving = this.keyboard.moving();
+        if (moving) {
             const fwd = this.instance.getWorldDirection(_dummy);
-            this.instance.position.add(fwd.clone().multiplyScalar(0.04));
-        }
-        if (this.keyboard.goingBack()) {
-            const fwd = this.instance.getWorldDirection(_dummy);
-            this.instance.position.add(fwd.clone().multiplyScalar(-0.04));
+            this.instance.position.add(fwd.clone().multiplyScalar(0.04 * moving));
         }
     }
 }
