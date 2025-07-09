@@ -13,19 +13,19 @@ export default class Keyboard {
     turning(): TYPES.Sign {
         const left  = this.turningLeft()  ? 1 : 0;
         const right = this.turningRight() ? 1 : 0;
-        // console.log(left, right);
         return (left - right) as TYPES.Sign;
-    }
-    moving(): TYPES.Sign {
-        const fwd   = this.goingForward() ? 1 : 0;
-        const back  = this.goingBack()    ? 1 : 0;
-        return (fwd - back) as TYPES.Sign;
     }
     turningLeft(): boolean {
         return this.pressed['KeyA'] || this.pressed['ArrowLeft'];
     }
     turningRight(): boolean {
         return this.pressed['KeyD'] || this.pressed['ArrowRight'];
+    }
+
+    moving(): TYPES.Sign {
+        const fwd   = this.goingForward() ? 1 : 0;
+        const back  = this.goingBack()    ? 1 : 0;
+        return (fwd - back) as TYPES.Sign;
     }
     goingForward(): boolean {
         return this.pressed['KeyW'] || this.pressed['ArrowUp'];
