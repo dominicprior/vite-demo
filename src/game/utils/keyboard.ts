@@ -25,14 +25,14 @@ export default class Keyboard {
     }
 
     moving(): TYPES.Sign {
-        const fwd   = this.goingForward() ? 1 : 0;
-        const back  = this.goingBack()    ? 1 : 0;
+        const fwd   = this.movingForward() ? 1 : 0;
+        const back  = this.movingBack()    ? 1 : 0;
         return (fwd - back) as TYPES.Sign;
     }
-    goingForward(): boolean {
+    movingForward(): boolean {
         return this.pressed['KeyW'] || this.pressed['ArrowUp'];
     }
-    goingBack(): boolean {
+    movingBack(): boolean {
         return this.pressed['KeyS'] || this.pressed['ArrowDown'];
     }
 
