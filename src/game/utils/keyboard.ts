@@ -6,7 +6,6 @@ export default class Keyboard {
         })
         addEventListener("keyup", (event) => {
             this.pressed[event.code] = false;
-            console.log(this.pressed);
         })
     }
     turningLeft(): boolean {
@@ -14,5 +13,11 @@ export default class Keyboard {
     }
     turningRight(): boolean {
         return this.pressed['KeyD'] || this.pressed['ArrowRight'];
+    }
+    goingForward(): boolean {
+        return this.pressed['KeyW'] || this.pressed['ArrowUp'];
+    }
+    goingBack(): boolean {
+        return this.pressed['KeyS'] || this.pressed['ArrowDown'];
     }
 }
