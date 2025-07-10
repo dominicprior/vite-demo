@@ -29,7 +29,6 @@ export default class Floor {
     }
 
     setGeometry() {
-        // this.geometry = new PlaneGeometry(10, 10, this.numRows, this.numRows);
         this.geometry = new BufferGeometry();
         const size = 9;
         const stride = size / this.numRows;
