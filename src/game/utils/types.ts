@@ -15,3 +15,10 @@ export interface Collision {
     pos: Vector2;
     newVelocity: Vector2;
 };
+
+export const noCollision = {
+    t: 1e9, pos: new Vector2(), newVelocity: new Vector2() };
+
+export function rot90(v: Vector2): Vector2 {
+    return new Vector2(-v.y, v.x);
+}

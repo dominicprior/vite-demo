@@ -4,15 +4,11 @@ import {
 import type {
     Player, Collision,
 } from '../utils/types.js';
+import {
+    noCollision, rot90,
+} from '../utils/types.js';
 
-const noCollision = {
-    t: 1e9, pos: new Vector2(), newVelocity: new Vector2() };
-
-function rot90(v: Vector2): Vector2 {
-    return new Vector2(-v.y, v.x);
-}
-
-export class VerticalFace {
+export default class VerticalFace {
     a: Vector2;
     b: Vector2;
     constructor(a: Vector2, b: Vector2) {
