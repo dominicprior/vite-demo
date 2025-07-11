@@ -15,7 +15,7 @@ export default class VerticalFace {
         this.a = a;
         this.b = b;
     }
-    firstCollision(player: Player): Collision {
+    firstCollision(player: Player): Collision {  // oops!  what about when we have gone past the face?
         const v = player.velocity;
         const bMinusA = this.b.clone().sub(this.a);
         const normal = rot90(bMinusA).normalize();

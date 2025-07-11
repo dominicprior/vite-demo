@@ -1,4 +1,6 @@
-import * as TYPES from './types.js';
+import type {
+    Sign,
+} from '../utils/types.js';
 
 export default class Keyboard {
     pressed: { [key: string]: boolean; } = {};
@@ -12,10 +14,10 @@ export default class Keyboard {
         })
     }
 
-    turning(): TYPES.Sign {
+    turning(): Sign {
         const left  = this.turningLeft()  ? 1 : 0;
         const right = this.turningRight() ? 1 : 0;
-        return (left - right) as TYPES.Sign;
+        return (left - right) as Sign;
     }
     turningLeft(): boolean {
         return this.pressed['KeyA'] || this.pressed['ArrowLeft'];
@@ -24,10 +26,10 @@ export default class Keyboard {
         return this.pressed['KeyD'] || this.pressed['ArrowRight'];
     }
 
-    moving(): TYPES.Sign {
+    moving(): Sign {
         const fwd   = this.movingForward() ? 1 : 0;
         const back  = this.movingBack()    ? 1 : 0;
-        return (fwd - back) as TYPES.Sign;
+        return (fwd - back) as Sign;
     }
     movingForward(): boolean {
         return this.pressed['KeyW'] || this.pressed['ArrowUp'];
@@ -36,10 +38,10 @@ export default class Keyboard {
         return this.pressed['KeyS'] || this.pressed['ArrowDown'];
     }
 
-    strafing(): TYPES.Sign {
+    strafing(): Sign {
         const right = this.strafingRight() ? 1 : 0;
         const left  = this.strafingLeft()  ? 1 : 0;
-        return (right - left) as TYPES.Sign;
+        return (right - left) as Sign;
     }
     strafingLeft(): boolean {
         return this.pressed['KeyQ'];
