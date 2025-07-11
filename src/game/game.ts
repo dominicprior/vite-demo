@@ -8,12 +8,14 @@ import Renderer from './renderer.js';
 import World from './world/world.js';
 import Resources from './utils/resources.js';
 import Debug from './utils/debug.js';
+import Test from './utils/test.js';
 import sources from './sources.js';
 import Keyboard from './utils/keyboard.js';
 
 export default class Game {
     canvas: HTMLCanvasElement;
     debug: Debug;
+    test: Test;
     sizes: Sizes;
     time: Time;
     keyboard: Keyboard
@@ -26,6 +28,7 @@ export default class Game {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         this.canvas = canvas;
         this.debug = new Debug();
+        this.test = new Test();
         this.sizes = new Sizes();
         this.time = new Time();
         this.keyboard = new Keyboard();
