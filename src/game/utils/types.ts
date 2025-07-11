@@ -8,7 +8,6 @@ export interface Player {
     pos: Vector2;
     radius: number;
     velocity: Vector2;
-    u: Vector2;  // swizzled
 };
 
 export interface Collision {
