@@ -1,8 +1,6 @@
 import {
     Vector3,
 } from '../../three/threebuild/three_module.js';
-
-import Game from './game.js';
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
 import Camera from './camera.js';
@@ -11,7 +9,6 @@ import Camera from './camera.js';
 // const upVec = new Vector3(0, 1, 0);
 
 export default class Player {
-    game: Game;
     keyboard: Keyboard;
     time: Time;
     camera: Camera;
@@ -22,11 +19,10 @@ export default class Player {
     bearing: number = 0;  // radians from North (negative Z) round towards positive X.
     speed: number = 0;
 
-    constructor(game: Game) {
-        this.game = game;
-        this.keyboard = game.keyboard;
-        this.time = game.time;
-        this.camera = game.camera;
+    constructor(keyboard: Keyboard, time: Time, camera: Camera) {
+        this.keyboard = keyboard;
+        this.time = time;
+        this.camera = camera;
     }
 
     update() {
