@@ -2,12 +2,10 @@ import {
     PCFSoftShadowMap,
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
-import Game from './game.js';
 import type Sizes from './utils/sizes.js';
 import type Camera from './camera.js';
 
 export default class Renderer {
-    game: Game;
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     scene: Scene;
@@ -15,12 +13,12 @@ export default class Renderer {
     // @ts-ignore: no initializer
     instance: WebGLRenderer;
 
-    constructor(game: Game) {
-        this.game = game;
-        this.canvas = game.canvas;
-        this.sizes = game.sizes;
-        this.scene = game.scene;
-        this.camera = game.camera;
+    constructor(canvas: HTMLCanvasElement,
+                sizes: Sizes, scene: Scene, camera: Camera) {
+        this.canvas = canvas;
+        this.sizes = sizes;
+        this.scene = scene;
+        this.camera = camera;
         this.setInstance();
     }
 

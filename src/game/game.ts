@@ -38,7 +38,7 @@ export default class Game {
         this.resources = new Resources(sources);
         this.camera = new Camera(this);
         this.player = new Player(this);
-        this.renderer = new Renderer(this);
+        this.renderer = new Renderer(this.canvas, this.sizes, this.scene, this.camera);
         this.world = new World(this);  // Initialize the world after the camera and renderer.
         this.sizes.on('resize', this.resize.bind(this));  // Note the 'bind' to ensure 'this' refers to the Game instance instead of the Sizes instance.
         // this.sizes.on('resize', () => {  // This is an alternative way to bind 'this' using an arrow function.
