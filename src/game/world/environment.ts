@@ -2,12 +2,10 @@ import { Color
 , Scene, DirectionalLight, MeshStandardMaterial,
 SRGBColorSpace,
 } from '../../../three/threebuild/three_module.js';
-import Game from '../game.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
 
 export default class Environment {
-    game: Game;
     scene: Scene;
     debug: Debug;
     // @ts-ignore: no initializer
@@ -15,11 +13,10 @@ export default class Environment {
     resources: Resources;
     environmentMap: any;
 
-     constructor(game: Game) {
-        this.game = game;
-        this.scene = game.scene;
-        this.resources = game.resources;
-        this.debug = game.debug;
+     constructor(scene: Scene, resources: Resources, debug: Debug) {
+        this.scene = scene;
+        this.resources = resources;
+        this.debug = debug;
         this.setSunlight();
         this.setEnvironmentMap();
     }

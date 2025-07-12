@@ -30,7 +30,7 @@ export default class World {
 
         this.resources.on('ready', () => {
             console.log('Resources are ready');
-            this.environment = new Environment(game);
+            this.environment = new Environment(this.scene, this.resources, this.debug);
             this.floor = new Floor(this.scene, this.debug);
             this.cubes = new Cubes(game);
             // this.environment.setBackgroundColor('skyblue');
