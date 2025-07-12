@@ -3,22 +3,18 @@ import {
     Scene,
     Vector3,
 } from '../../three/threebuild/three_module.js';
-
-import Game from './game.js';
 import Sizes from './utils/sizes.js';
 import Player from './player.js';
 
 export default class Camera {
-    game: Game;
     sizes: Sizes;
     scene: Scene;
     // @ts-ignore: no initializer
     instance: PerspectiveCamera;
 
-    constructor(game: Game) {
-        this.game = game;
-        this.sizes = game.sizes;
-        this.scene = game.scene;
+    constructor(sizes: Sizes, scene: Scene) {
+        this.sizes = sizes;
+        this.scene = scene;
         this.setInstance();
     }
 
