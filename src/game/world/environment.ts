@@ -16,7 +16,7 @@ export default class Environment {
     // @ts-ignore: no initializer
     updateMaterial: () => void;
 
-     constructor(scene: Scene, resources: Resources, debug: Debug) {
+    constructor(scene: Scene, resources: Resources, debug: Debug) {
         this.scene = scene;
         this.resources = resources;
         this.debug = debug;
