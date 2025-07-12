@@ -2,7 +2,7 @@ import {
     Scene,
 } from '../../../three/threebuild/three_module.js';
 
-import type { Player, Collision, } from '../utils/types.js';
+import type { Player2D, Collision, } from '../utils/types.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Floor from './floor.js';
@@ -36,7 +36,7 @@ export default class World {
         });
     }
 
-    firstCollision(player: Player): Collision {
+    firstCollision(player: Player2D): Collision {
         return this.cubes.firstCollision(player);
     }
 

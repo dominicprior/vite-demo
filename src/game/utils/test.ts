@@ -2,7 +2,7 @@ import {
     Vector2,
 } from '../../../three/threebuild/three_module.js';
 import type {
-    Player, Collision,
+    Player2D, Collision,
 } from '../utils/types.js';
 import VerticalFace from '../collisions/verticalface.js';
 import HorizontalBox from '../collisions/horizontalbox.js';
@@ -11,7 +11,7 @@ export default class Test {
     test1() : boolean {
         const face = new VerticalFace(
                 new Vector2(10, 9), new Vector2(14, 9));
-        const player: Player = {
+        const player: Player2D = {
                 pos: new Vector2(9, 13),
                 radius: 1,
                 velocity: new Vector2(0.2, -0.3)
@@ -27,7 +27,7 @@ export default class Test {
     }
     test2() : boolean {
         const box = new HorizontalBox(new Vector2(12, 8), 4, 2, 0);
-        const player: Player = {
+        const player: Player2D = {
                 pos: new Vector2(9, 13),
                 radius: 1,
                 velocity: new Vector2(0.2, -0.3)

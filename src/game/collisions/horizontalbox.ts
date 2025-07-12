@@ -1,7 +1,7 @@
 import {
     Vector2,
 } from '../../../three/threebuild/three_module.js';
-import type { Player, Collision, } from '../utils/types.js';
+import type { Player2D, Collision, } from '../utils/types.js';
 import { noCollision, } from '../utils/types.js';
 import VerticalFace from './verticalface.js';
 
@@ -19,7 +19,7 @@ export default class HorizontalBox {
         this.angle = angle;
     }
 
-    firstCollision(player: Player): Collision {
+    firstCollision(player: Player2D): Collision {
         let result = noCollision;
         let corners: Array<Vector2> = [[1,1], [1,-1], [-1,-1], [-1,1]].map(
                 a => (new Vector2(a[0], a[1]))

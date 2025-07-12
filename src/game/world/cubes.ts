@@ -3,7 +3,7 @@ import {
     BoxGeometry,
     Vector2,
 } from '../../../three/threebuild/three_module.js';
-import type { Player, Collision, } from '../utils/types.js';
+import type { Player2D, Collision, } from '../utils/types.js';
 import { noCollision, } from '../utils/types.js';
 import Debug from '../utils/debug.js';
 import HorizontalBox from '../collisions/horizontalbox.js';
@@ -42,7 +42,7 @@ export default class Cubes {
         this.scene.add(mesh);
     }
 
-    firstCollision(player: Player): Collision {
+    firstCollision(player: Player2D): Collision {
         let result = noCollision;
         for (let i=0; i < this.numRows; i++) {
             const position = this.meshes[i].position;

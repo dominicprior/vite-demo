@@ -4,7 +4,7 @@ import {
 
 export type Sign = -1 | 0 | 1;
 
-export interface Player {
+export interface Player2D {
     pos: Vector2;
     radius: number;
     velocity: Vector2;

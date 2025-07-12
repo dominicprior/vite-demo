@@ -2,7 +2,7 @@ import {
     Vector2,
 } from '../../../three/threebuild/three_module.js';
 import type {
-    Player, Collision,
+    Player2D, Collision,
 } from '../utils/types.js';
 import {
     noCollision, rot90,
@@ -17,7 +17,7 @@ export default class VerticalFace {
         this.b = b;
     }
 
-    firstCollision(player: Player): Collision {  // oops!  what about when we have gone past the face?
+    firstCollision(player: Player2D): Collision {  // oops!  what about when we have gone past the face?
         const v = player.velocity;
         const bMinusA = this.b.clone().sub(this.a);
         const normal = rot90(bMinusA).normalize();
