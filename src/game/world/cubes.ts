@@ -3,7 +3,6 @@ import {
     BoxGeometry,
 } from '../../../three/threebuild/three_module.js';
 
-import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Cubes {
@@ -14,9 +13,9 @@ export default class Cubes {
     scene: Scene;
     meshes: Array<Mesh> = [];
 
-    constructor(game: Game) {
-        this.debug = game.debug;
-        this.scene = game.scene;
+    constructor(scene: Scene, debug: Debug) {
+        this.debug = debug;
+        this.scene = scene;
         this.meshes = [];
 
         const geometry = new BoxGeometry(1, 1, 1,
