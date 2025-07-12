@@ -1,7 +1,5 @@
-import { Color
-, Scene, DirectionalLight, MeshStandardMaterial,
-SRGBColorSpace, Texture, Mesh, Material,
-Object3D,
+import { Color, Scene, DirectionalLight, MeshStandardMaterial,
+    SRGBColorSpace, Texture, Mesh, Object3D,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
