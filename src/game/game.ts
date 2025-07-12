@@ -11,6 +11,7 @@ import Debug from './utils/debug.js';
 import Test from './utils/test.js';
 import sources from './sources.js';
 import Keyboard from './utils/keyboard.js';
+import Player from './player.js';
 
 export default class Game {
     canvas: HTMLCanvasElement;
@@ -21,6 +22,7 @@ export default class Game {
     keyboard: Keyboard
     scene: Scene;
     resources: Resources;
+    player: Player;
     camera: Camera;
     renderer: Renderer;
     world: World;
@@ -35,6 +37,7 @@ export default class Game {
         this.scene = new Scene();
         this.resources = new Resources(sources);
         this.camera = new Camera(this);
+        this.player = new Player(this);
         this.renderer = new Renderer(this);
         this.world = new World(this);  // Initialize the world after the camera and renderer.
         this.sizes.on('resize', this.resize.bind(this));  // Note the 'bind' to ensure 'this' refers to the Game instance instead of the Sizes instance.
@@ -52,7 +55,8 @@ export default class Game {
     }
 
     update() {
-        this.camera.update();
+        this.player.update();
+        this.camera.update(this.player);
         this.world.update();
         this.renderer.update();
     }
