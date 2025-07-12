@@ -1,17 +1,22 @@
 import { Color
 , Scene, DirectionalLight, MeshStandardMaterial,
-SRGBColorSpace,
+SRGBColorSpace, Texture, Mesh, Material,
+Object3D,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
 
 export default class Environment {
     scene: Scene;
+    resources: Resources;
     debug: Debug;
     // @ts-ignore: no initializer
     sunlight: DirectionalLight;
-    resources: Resources;
-    environmentMap: any;
+    intensity: number = 0.4;
+    // @ts-ignore: no initializer
+    texture: Texture;
+    // @ts-ignore: no initializer
+    updateMaterial: () => void;
 
      constructor(scene: Scene, resources: Resources, debug: Debug) {
         this.scene = scene;
@@ -35,31 +40,27 @@ export default class Environment {
     }
 
     setEnvironmentMap() {
-        this.environmentMap = {};
-        this.environmentMap.intensity = 0.4;
-        this.environmentMap.texture = this.resources.items.environmentMapTexture;
-        this.environmentMap.texture.colorSpace = SRGBColorSpace;
-        this.scene.environment = this.environmentMap.texture;
+        this.texture = this.resources.items.environmentMapTexture;
+        this.texture.colorSpace = SRGBColorSpace;
+        this.scene.environment = this.texture;
 
-        this.environmentMap.updateMaterial = () => {
-            this.scene.traverse((child) => {
+        this.updateMaterial = () => {
+            this.scene.traverse((child: Object3D) => {
                 // @ts-ignore: property does not exist
                 if (child.isMesh && child.material instanceof MeshStandardMaterial) {
-                    // @ts-ignore: property does not exist
-                    child.material.envMap = this.environmentMap.texture;
-                    // @ts-ignore: property does not exist
-                    child.material.envMapIntensity = this.environmentMap.intensity;
-                    // @ts-ignore: property does not exist
-                    child.material.needsUpdate = true;
+                    const material = (child as Mesh).material as MeshStandardMaterial;
+                    material.envMap = this.texture;
+                    material.envMapIntensity = this.intensity;
+                    material.needsUpdate = true;
                 }
             });
         }
-        this.environmentMap.updateMaterial();
+        this.updateMaterial();
 
-        this.debug.gui.add(this.environmentMap, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
+        this.debug.gui.add(this, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
             .onChange(
                 // () => { this.environmentMap.updateMaterial(); }
-                this.environmentMap.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context
+                this.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context
             );
     }
 }
