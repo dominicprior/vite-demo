@@ -4,25 +4,28 @@ import {
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
 import Camera from './camera.js';
+import World from './world/world.js';
 
 // var _dummy = new Vector3();
 // const upVec = new Vector3(0, 1, 0);
 
 export default class Player {
-    keyboard: Keyboard;
-    time: Time;
-    camera: Camera;
-    rotationSpeed: number = 3;  // in radians per second
-    movementSpeed: number = 2.4;
-    pos: Vector3 = new Vector3(0, 0.5, 6);
     radius: number = 1;
     bearing: number = 0;  // radians from North (negative Z) round towards positive X.
     speed: number = 0;
+    rotationSpeed: number = 3;  // in radians per second
+    movementSpeed: number = 2.4;
+    pos: Vector3 = new Vector3(0, 0.5, 6);
+    keyboard: Keyboard;
+    time: Time;
+    camera: Camera;
+    world: World;
 
-    constructor(keyboard: Keyboard, time: Time, camera: Camera) {
+    constructor(keyboard: Keyboard, time: Time, camera: Camera, world: World) {
         this.keyboard = keyboard;
         this.time = time;
         this.camera = camera;
+        this.world = world;
     }
 
     update() {
@@ -39,8 +42,10 @@ export default class Player {
             this.pos.x -= distance * Math.sin(this.bearing);
             this.pos.z -= distance * Math.cos(this.bearing);
 
+
+
             // if (0) {  ////////// Think about plugging collisions into the player movements.
-            //           ////////// Separate player-state (speed, dir, pos) from camera things like FoV.
+            //
             //     const box = new HorizontalBox(new Vector2(), 1, 1, 0);
             //     const pos = this.instance.position;
             //     const angle = this.instance.rotation.y;

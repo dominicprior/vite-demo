@@ -2,6 +2,7 @@ import {
     Scene,
 } from '../../../three/threebuild/three_module.js';
 
+import type { Player, Collision, } from '../utils/types.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Floor from './floor.js';
@@ -33,6 +34,10 @@ export default class World {
             this.cubes = new Cubes(this.scene, this.debug);
             // this.environment.setBackgroundColor('skyblue');
         });
+    }
+
+    firstCollision(player: Player): Collision {
+        return this.cubes.firstCollision(player);
     }
 
     update() {

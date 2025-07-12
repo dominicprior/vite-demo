@@ -1,12 +1,8 @@
 import {
     Vector2,
 } from '../../../three/threebuild/three_module.js';
-import type {
-    Player, Collision,
-} from '../utils/types.js';
-import {
-    noCollision,
-} from '../utils/types.js';
+import type { Player, Collision, } from '../utils/types.js';
+import { noCollision, } from '../utils/types.js';
 import VerticalFace from './verticalface.js';
 
 export default class HorizontalBox {

@@ -6,6 +6,7 @@ import type {
 } from '../utils/types.js';
 import VerticalFace from '../collisions/verticalface.js';
 import HorizontalBox from '../collisions/horizontalbox.js';
+
 export default class Test {
     test1() : boolean {
         const face = new VerticalFace(
