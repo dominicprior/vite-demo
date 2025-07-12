@@ -1,7 +1,7 @@
 import {
     Scene,
 } from '../../../three/threebuild/three_module.js';
-import Game from '../game.js';
+
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Floor from './floor.js';
@@ -9,7 +9,6 @@ import Cubes from './cubes.js';
 import Debug from '../utils/debug.js';
 
 export default class World {
-    game: Game;
     scene: Scene;
     // @ts-ignore: no initializer
     floor: Floor;
@@ -20,11 +19,10 @@ export default class World {
     environment: Environment;
     resources: Resources;
 
-    constructor(game: Game) {
-        this.game = game;
-        this.scene = game.scene;
-        this.resources = game.resources;
-        this.debug = game.debug;
+    constructor(scene: Scene, resources: Resources, debug: Debug) {
+        this.scene = scene;
+        this.resources = resources;
+        this.debug = debug;
 
         this.debug.gui.addFolder('World');
 
