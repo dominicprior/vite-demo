@@ -11,10 +11,12 @@ import {
 export default class VerticalFace {
     a: Vector2;
     b: Vector2;
+
     constructor(a: Vector2, b: Vector2) {
         this.a = a;
         this.b = b;
     }
+
     firstCollision(player: Player): Collision {  // oops!  what about when we have gone past the face?
         const v = player.velocity;
         const bMinusA = this.b.clone().sub(this.a);

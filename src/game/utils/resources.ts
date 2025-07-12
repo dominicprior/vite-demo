@@ -10,6 +10,7 @@ export default class Resources extends EventEmitter {
     loaded: number;
     // @ts-ignore: no initializer.
     loaders: { [key: string]: any };
+
     constructor(sources: Array<{ name: string, type: string, path: string | string[] }>) {
         super();
         this.sources = sources;

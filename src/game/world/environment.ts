@@ -33,9 +33,7 @@ export default class Environment {
         this.scene.add(this.sunlight);
     }
 
-    // Example method to set the background color of the scene
     setBackgroundColor(color: string) {
-        // Assuming `this.scene` is available in the context
         this.scene.background = new Color(color);
     }
 

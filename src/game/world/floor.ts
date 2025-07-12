@@ -2,8 +2,6 @@ import {
     Scene, Mesh, BufferGeometry, MeshStandardMaterial, DataTexture, RepeatWrapping,
     BufferAttribute, Float32BufferAttribute,
 } from '../../../three/threebuild/three_module.js';
-
-import Game from '../game.js'
 import Debug from '../utils/debug.js';
 
 export default class Floor {
@@ -11,25 +9,25 @@ export default class Floor {
     debug: Debug;
     scene: Scene;
     // @ts-ignore: no initializer
-    geometry: BufferGeometry;
+    // geometry: BufferGeometry;
     // @ts-ignore: no initializer
-    material: MeshStandardMaterial;
+    // material: MeshStandardMaterial;
     // @ts-ignore: no initializer
     mesh: Mesh;
 
-    constructor(game: Game) {
-        this.debug = game.debug;
-        this.scene = game.scene;
+    constructor(scene: Scene, debug: Debug) {
+        this.debug = debug;
+        this.scene = scene;
 
-        this.setGeometry();
-        this.setColours();
+        const geometry = this.setGeometry();
+        this.setColours(geometry);
         this.setDebug();
-        this.setMaterial();
-        this.setMesh();
+        const material = this.setMaterial();
+        this.setMesh(geometry, material);
     }
 
-    setGeometry() {
-        this.geometry = new BufferGeometry();
+    setGeometry(): BufferGeometry {
+        const geometry = new BufferGeometry();
         const size = 9;
         const stride = size / this.numRows;
         let vertices: Array<number> = [];
@@ -48,13 +46,12 @@ export default class Floor {
                 }
             }
         }
-        this.geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
-        this.geometry.computeVertexNormals();  // what about uv values too?
-        // @ts-ignore
-        window.f = this.geometry.attributes;
+        geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        geometry.computeVertexNormals();  // what about uv values too?
+        return geometry;
     }
 
-    setColours() {
+    setColours(geometry: BufferGeometry) {
         const numTriangles = this.numRows * this.numRows * 2;
         const f32a = new Float32Array(9 * numTriangles);
         for (let i=0; i < numTriangles; i++) {
@@ -77,27 +74,27 @@ export default class Floor {
                 f32a[9*i + 3*v + 2] = b;
             }
         }
-        this.geometry.setAttribute('color', new BufferAttribute(f32a, 3));
+        geometry.setAttribute('color', new BufferAttribute(f32a, 3));
     }
 
     setDebug() {
         this.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
             .onChange(() => {
-                this.geometry.dispose();
-                this.setGeometry();
-                this.setColours();
-                this.mesh.geometry = this.geometry;
+                this.mesh.geometry.dispose();
+                const geometry = this.setGeometry();
+                this.setColours(geometry);
+                this.mesh.geometry = geometry;
             });
     }
 
     setMaterial() {
-        this.material = new MeshStandardMaterial({
+        return new MeshStandardMaterial({
             vertexColors: true,
         });
     }
 
-    setMesh() {
-        this.mesh = new Mesh(this.geometry, this.material);
+    setMesh(geometry: BufferGeometry, material: MeshStandardMaterial) {
+        this.mesh = new Mesh(geometry, material);
         this.mesh.name = 'floor';
         this.mesh.rotation.x = - Math.PI * 0.5;
         // this.mesh.receiveShadow = true
@@ -129,7 +126,7 @@ export default class Floor {
         texture.wrapT = RepeatWrapping;
         texture.needsUpdate = true;
 
-        this.material = new MeshStandardMaterial({
+        return new MeshStandardMaterial({
             map: texture,
         });
     }

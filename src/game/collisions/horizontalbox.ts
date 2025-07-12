@@ -14,6 +14,7 @@ export default class HorizontalBox {
     width: number;
     depth: number;
     angle: number;
+
     constructor(centre: Vector2, width: number,
                 depth: number, angle: number) {
         this.centre = centre;
@@ -21,6 +22,7 @@ export default class HorizontalBox {
         this.depth = depth;
         this.angle = angle;
     }
+
     firstCollision(player: Player): Collision {
         let result = noCollision;
         let corners: Array<Vector2> = [[1,1], [1,-1], [-1,-1], [-1,1]].map(

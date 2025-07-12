@@ -5,6 +5,7 @@ import {
 import Game from './game.js';
 import type Sizes from './utils/sizes.js';
 import type Camera from './camera.js';
+
 export default class Renderer {
     game: Game;
     canvas: HTMLCanvasElement | null;
