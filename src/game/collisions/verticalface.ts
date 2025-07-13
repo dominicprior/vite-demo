@@ -23,8 +23,7 @@ export default class VerticalFace {
         const epsilon = 0.01;
         debugger;
         const pos = new Vector2(player.pos.x, player.pos.z);
-        const v = new Vector2(Math.sin(player.bearing), -Math.cos(player.bearing))
-                    .multiplyScalar(player.movementSpeed);
+        const v = player.velocity();
         const bMinusA = this.b.clone().sub(this.a);
         const normal = rot90(bMinusA).normalize();
         const vDotNormal = v.dot(normal);

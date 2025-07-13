@@ -1,4 +1,5 @@
 import {
+    Vector2,
     Vector3,
 } from '../../three/threebuild/three_module.js';
 
@@ -16,10 +17,13 @@ export default class Player {
     radius: number = 1;
     rotationSpeed: number = 3;  // in radians per second
     movementSpeed: number = 2.4;
+    collisionDuration: number = 2;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards positive X.
     pos: Vector3 = new Vector3(0, 0.5, 6);
+    collisionTime: number = -100;  // when the last collision occurred.
+    bounceVelocity: Vector2 = new Vector2();
 
     keyboard: Keyboard;
     time: Time;
@@ -33,33 +37,57 @@ export default class Player {
         this.world = world;
     }
 
+    velocity() {
+        return new Vector2(Math.sin(this.bearing), -Math.cos(this.bearing))
+                    .multiplyScalar(this.movementSpeed);
+    }
+
     update() {
         const delta = this.time.delta / 1000;
         const turning = this.keyboard.turning();
         const moving = this.keyboard.moving();
         const strafing = this.keyboard.strafing();
+        const bouncing = this.time.elapsed < this.collisionTime + this.collisionDuration;
 
         if (turning) {
             this.bearing += this.rotationSpeed * delta * turning;
         }
 
-        if (moving) {
-            this.world.firstCollision(this);
+        if (bouncing) {
+            // bouncing, ignore movement keys
+            this.pos.x += this.bounceVelocity.x;
+            this.pos.z += this.bounceVelocity.y;
+        }
+        else {
 
+            if (moving) {
+                const collision = this.world.firstCollision(this);
+                if (collision.t < delta) {
+                    this.bounceVelocity = collision.newVelocity.clone()
+                            .multiplyScalar(2)
+                            .sub(this.velocity());
+                    const newPos = this.bounceVelocity.clone()
+                            .multiplyScalar(collision.t - delta)
+                            .add(collision.pos);
+                    this.pos.x = newPos.x;
+                    this.pos.z = newPos.y;
+                    this.collisionTime = this.time.elapsed;  // ? plus spare time?
+                }
+                else {
+                    const distance = this.movementSpeed * delta * moving;
+                    this.pos.x -= distance * Math.sin(this.bearing);  // ? += instead?
+                    this.pos.z -= distance * Math.cos(this.bearing);
+                }
+            }
 
-            const distance = this.movementSpeed * delta * moving;
-            this.pos.x -= distance * Math.sin(this.bearing);
-            this.pos.z -= distance * Math.cos(this.bearing);
-
+            if (strafing) {
+                const distance = this.movementSpeed * delta * strafing;
+                this.pos.x += distance * Math.cos(this.bearing);
+                this.pos.z -= distance * Math.sin(this.bearing);
+            }
         }
 
-        if (strafing) {
-            const distance = this.movementSpeed * delta * strafing;
-            this.pos.x += distance * Math.cos(this.bearing);
-            this.pos.z -= distance * Math.sin(this.bearing);
-        }
-
-        if (turning || moving || strafing) {
+        if (turning || moving || strafing || bouncing) {
             this.camera.update(this);
         }
     }
