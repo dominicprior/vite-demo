@@ -21,7 +21,6 @@ export default class VerticalFace {
     firstCollision(player: Player): Collision {  // oops!  what about when we have gone past the face?
 
         const epsilon = 0.01;
-        debugger;
         const pos = new Vector2(player.pos.x, player.pos.z);
         const v = player.velocity();
         const bMinusA = this.b.clone().sub(this.a);

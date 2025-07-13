@@ -14,10 +14,10 @@ import World from './world/world.js';
 export default class Player {
 
     // constants
-    radius: number = 1;
+    radius: number = 0.25;
     rotationSpeed: number = 3;  // in radians per second
     movementSpeed: number = 2.4;
-    collisionDuration: number = 2;
+    collisionDuration: number = 0.25;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards positive X.
@@ -43,7 +43,7 @@ export default class Player {
     }
 
     update() {
-        const delta = this.time.delta / 1000;
+        const delta = this.time.delta;
         const turning = this.keyboard.turning();
         const moving = this.keyboard.moving();
         const strafing = this.keyboard.strafing();
@@ -55,8 +55,8 @@ export default class Player {
 
         if (bouncing) {
             // bouncing, ignore movement keys
-            this.pos.x += this.bounceVelocity.x;
-            this.pos.z += this.bounceVelocity.y;
+            this.pos.x += this.bounceVelocity.x * delta;
+            this.pos.z += this.bounceVelocity.y * delta;
         }
         else {
 
@@ -67,7 +67,7 @@ export default class Player {
                             .multiplyScalar(2)
                             .sub(this.velocity());
                     const newPos = this.bounceVelocity.clone()
-                            .multiplyScalar(collision.t - delta)
+                            .multiplyScalar(delta - collision.t)
                             .add(collision.pos);
                     this.pos.x = newPos.x;
                     this.pos.z = newPos.y;

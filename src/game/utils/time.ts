@@ -8,10 +8,10 @@ export default class Time extends EventEmitter {
 
     constructor() {
         super();
-        this.start = Date.now();
+        this.start = Date.now() / 1000;
         this.current = this.start;
         this.elapsed = 0;
-        this.delta = 16.6667;
+        this.delta = 0.016;
 
         window.requestAnimationFrame(() => {
             this.tick();
@@ -19,7 +19,7 @@ export default class Time extends EventEmitter {
     }
 
     tick() {
-        const currentTime = Date.now();
+        const currentTime = Date.now() / 1000;
         this.delta = currentTime - this.current;
         this.current = currentTime;
         this.elapsed = this.current - this.start;
