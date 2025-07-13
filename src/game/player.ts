@@ -11,12 +11,16 @@ import World from './world/world.js';
 // const upVec = new Vector3(0, 1, 0);
 
 export default class Player {
+
+    // constants
     radius: number = 1;
-    bearing: number = 0;  // radians from North (negative Z) round towards positive X.
-    speed: number = 0;
     rotationSpeed: number = 3;  // in radians per second
     movementSpeed: number = 2.4;
+
+    // variables
+    bearing: number = 0;  // radians from North (negative Z) round towards positive X.
     pos: Vector3 = new Vector3(0, 0.5, 6);
+
     keyboard: Keyboard;
     time: Time;
     camera: Camera;
@@ -31,22 +35,24 @@ export default class Player {
 
     update() {
         const delta = this.time.delta / 1000;
-
         const turning = this.keyboard.turning();
+        const moving = this.keyboard.moving();
+        const strafing = this.keyboard.strafing();
+
         if (turning) {
             this.bearing += this.rotationSpeed * delta * turning;
         }
 
-        const moving = this.keyboard.moving();
         if (moving) {
+            this.world.firstCollision(this);
+
+
             const distance = this.movementSpeed * delta * moving;
             this.pos.x -= distance * Math.sin(this.bearing);
             this.pos.z -= distance * Math.cos(this.bearing);
 
-            this.world.firstCollision(this);
         }
 
-        const strafing = this.keyboard.strafing();
         if (strafing) {
             const distance = this.movementSpeed * delta * strafing;
             this.pos.x += distance * Math.cos(this.bearing);
