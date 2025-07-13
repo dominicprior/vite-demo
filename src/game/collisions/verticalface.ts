@@ -2,11 +2,14 @@ import {
     Vector2,
 } from '../../../three/threebuild/three_module.js';
 import type {
-    Player2D, Collision,
+    Collision,
 } from '../utils/types.js';
 import {
     noCollision, rot90,
 } from '../utils/types.js';
+import Player from '../player.js';
+
+
 
 export default class VerticalFace {
     a: Vector2;
@@ -17,8 +20,11 @@ export default class VerticalFace {
         this.b = b;
     }
 
-    firstCollision(player: Player2D): Collision {  // oops!  what about when we have gone past the face?
-        const v = player.velocity;
+    firstCollision(player: Player): Collision {  // oops!  what about when we have gone past the face?
+
+        const pos = new Vector2(player.pos.x, player.pos.z);
+        const v = new Vector2(Math.sin(player.bearing), -Math.cos(player.bearing))
+                    .multiplyScalar(player.movementSpeed);
         const bMinusA = this.b.clone().sub(this.a);
         const normal = rot90(bMinusA).normalize();
         const vDotNormal = v.dot(normal);
@@ -32,7 +38,7 @@ export default class VerticalFace {
         }
         const normalTimesRad = normal.clone().multiplyScalar(player.radius);
         const a = this.a.clone().add(normalTimesRad);
-        const playerMinusA = player.pos.clone().sub(a)
+        const playerMinusA = pos.clone().sub(a)
         const numer = playerMinusA.dot(u);
         const μ = numer / denom;
         if (μ >= 1 || μ <= 0) {

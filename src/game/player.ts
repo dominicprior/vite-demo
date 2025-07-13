@@ -1,8 +1,7 @@
 import {
-    Vector3, Vector2,
+    Vector3,
 } from '../../three/threebuild/three_module.js';
 
-// import type { Player2D, Collision, } from './utils/types.js';
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
 import Camera from './camera.js';
@@ -44,15 +43,7 @@ export default class Player {
             this.pos.x -= distance * Math.sin(this.bearing);
             this.pos.z -= distance * Math.cos(this.bearing);
 
-            const pos = this.pos;
-            const player = {
-                pos: new Vector2(pos.x, pos.z),
-                radius: this.radius,
-                velocity: new Vector2(Math.sin(this.bearing), -Math.cos(this.bearing))
-                    .multiplyScalar(this.movementSpeed)
-            };
-            debugger;
-            const collision = this.world.firstCollision(player);
+            this.world.firstCollision(this);
         }
 
         const strafing = this.keyboard.strafing();
