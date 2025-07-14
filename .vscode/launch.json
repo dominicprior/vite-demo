@@ -8,7 +8,7 @@
             "request": "launch",
             "name": "Vite: Chrome Debug",
             "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/src/",
             "trace": true,
             "sourceMaps": true,
             "skipFiles": ["<node_internals>/**"]
