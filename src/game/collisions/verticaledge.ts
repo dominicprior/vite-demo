@@ -22,16 +22,20 @@ export default class VerticalEdge {
         const relPos = new Vector2(player.pos.x, player.pos.z).sub(this.c);  // pos relative to the cylinder centre.
         const v = player.velocity();
         const pDotV = relPos.dot(v);
+        if (pDotV >= 0) {
+            return noCollision;  // moving away from the cylinder
+        }
         const vDotV = v.dot(v);
         const pDotP = relPos.dot(relPos);
-        const discr = pDotV ** 2 + player.radius ** 2 - pDotP ** 2;
+        const radSq = player.radius ** 2;
+        const discr = pDotV ** 2 + (radSq - pDotP) * vDotV;
         if (discr <= 0) {
             return noCollision;  // no solutions to the quadratic
         }
-        if (pDotP < player.radius - epsilon) {
+        if (pDotP < radSq - epsilon) {
             return noCollision;  // already inside the cylinder
         }
-        const t = (pDotV - Math.sqrt(discr)) / vDotV;
+        const t = (- pDotV - Math.sqrt(discr)) / vDotV;
         const relCollisionPos = v.clone().multiplyScalar(t).add(relPos);
         const collisionPos = relCollisionPos.clone().add(this.c);
         const normal = relCollisionPos.clone().normalize();

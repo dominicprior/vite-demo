@@ -43,6 +43,7 @@ export default class Player {
     }
 
     update() {
+        // console.log(this.keyboard.pressed);
         const delta = this.time.delta;
         const turning = this.keyboard.turning();
         const moving = this.keyboard.moving();
