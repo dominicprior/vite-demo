@@ -20,7 +20,7 @@ export default class Player {
     collisionDuration: number = 0.25;
 
     // variables
-    bearing: number = 0;  // radians from North (negative Z) round towards positive X.
+    bearing: number = 0;  // radians from North (negative Z) round towards negative X.
     pos: Vector3 = new Vector3(0, 0.5, 6);
     collisionTime: number = -100;  // when the last collision occurred.
     bounceVelocity: Vector2 = new Vector2();
@@ -38,7 +38,7 @@ export default class Player {
     }
 
     velocity() {
-        return new Vector2(Math.sin(this.bearing), -Math.cos(this.bearing))
+        return new Vector2(-Math.sin(this.bearing), -Math.cos(this.bearing))
                     .multiplyScalar(this.movementSpeed);
     }
 
@@ -74,9 +74,9 @@ export default class Player {
                     this.collisionTime = this.time.elapsed;  // ? plus spare time?
                 }
                 else {
-                    const distance = this.movementSpeed * delta * moving;
-                    this.pos.x -= distance * Math.sin(this.bearing);  // ? += instead?
-                    this.pos.z -= distance * Math.cos(this.bearing);
+                    const velocity = this.velocity();
+                    this.pos.x += delta * moving * velocity.x;
+                    this.pos.z += delta * moving * velocity.y;
                 }
             }
 
