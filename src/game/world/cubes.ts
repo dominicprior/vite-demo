@@ -10,7 +10,7 @@ import HorizontalBox from '../collisions/horizontalbox.js';
 import Player from '../player.js';
 
 export default class Cubes {
-    numRows: number = 1;
+    numRows: number = 2;
     numBands: number = 5;
     stride: number = 2;
     boxSize: number = 1;
