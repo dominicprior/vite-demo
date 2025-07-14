@@ -4,6 +4,7 @@ import {
 import type { Collision, } from '../utils/types.js';
 import { noCollision, } from '../utils/types.js';
 import VerticalFace from './verticalface.js';
+import VerticalEdge from './verticaledge.js';
 import Player from '../player.js';
 
 export default class HorizontalBox {
@@ -31,6 +32,11 @@ export default class HorizontalBox {
         for (let i=0; i < 4; i++) {
             let face = new VerticalFace(corners[i], corners[(i+1) % 4]);
             let collision = face.firstCollision(player);
+            if (collision.t < result.t) {
+                result = collision;
+            }
+            let edge = new VerticalEdge(corners[i]);
+            collision = edge.firstCollision(player);
             if (collision.t < result.t) {
                 result = collision;
             }
