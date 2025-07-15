@@ -289,7 +289,7 @@ function WebGLAttributes( gl ) {
 
 }
 
-var alphahash_fragment = `
+var alphahash_fragment = /* glsl */ `
 #ifdef USE_ALPHAHASH
 	if ( diffuseColor.a < getAlphaHashThreshold( vPosition ) ) discard;
 #endif`;
@@ -448,7 +448,7 @@ float G_BlinnPhong_Implicit( ) {
 	return F * ( G * D );
 } // validated`;
 
-var iridescence_fragment = `
+var iridescence_fragment = /* glsl */ `
 #ifdef USE_IRIDESCENCE
 	const mat3 XYZ_TO_REC709 = mat3(
 		 3.2404542, -0.9692660,  0.0556434,
@@ -701,7 +701,7 @@ var common = `
 	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
 } // validated`;
 
-var cube_uv_reflection_fragment = `
+var cube_uv_reflection_fragment = /* glsl */ `
 #ifdef ENVMAP_TYPE_CUBE_UV
 	#define cubeUV_minMipLevel 4.0
 	#define cubeUV_minTileSize 16.0
