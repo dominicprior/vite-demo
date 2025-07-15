@@ -436,9 +436,11 @@ vec3 objectNormal = vec3( normal );
 var bsdfs = `
 float G_BlinnPhong_Implicit( ) {
 	return 0.25;
-}\nfloat D_BlinnPhong( const in float shininess, const in float dotNH ) {
+}
+float D_BlinnPhong( const in float shininess, const in float dotNH ) {
 	return RECIPROCAL_PI * ( shininess * 0.5 + 1.0 ) * pow( dotNH, shininess );
-}\nvec3 BRDF_BlinnPhong( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, const in vec3 specularColor, const in float shininess ) {
+}
+vec3 BRDF_BlinnPhong( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, const in vec3 specularColor, const in float shininess ) {
 	vec3 halfDir = normalize( lightDir + viewDir );
 	float dotNH = saturate( dot( normal, halfDir ) );
 	float dotVH = saturate( dot( viewDir, halfDir ) );
@@ -651,7 +653,14 @@ var common = `
 #ifndef saturate
 #define saturate( a ) clamp( a, 0.0, 1.0 )
 #endif
-#define whiteComplement( a ) ( 1.0 - saturate( a ) )\nfloat pow2( const in float x ) { return x*x; }\nvec3 pow2( const in vec3 x ) { return x*x; }\nfloat pow3( const in float x ) { return x*x*x; }\nfloat pow4( const in float x ) { float x2 = x*x; return x2*x2; }\nfloat max3( const in vec3 v ) { return max( max( v.x, v.y ), v.z ); }\nfloat average( const in vec3 v ) { return dot( v, vec3( 0.3333333 ) ); }\nhighp float rand( const in vec2 uv ) {
+#define whiteComplement( a ) ( 1.0 - saturate( a ) )
+float pow2( const in float x ) { return x*x; }
+vec3 pow2( const in vec3 x ) { return x*x; }
+float pow3( const in float x ) { return x*x*x; }
+float pow4( const in float x ) { float x2 = x*x; return x2*x2; }
+float max3( const in vec3 v ) { return max( max( v.x, v.y ), v.z ); }
+float average( const in vec3 v ) { return dot( v, vec3( 0.3333333 ) ); }
+highp float rand( const in vec2 uv ) {
 	const highp float a = 12.9898, b = 78.233, c = 43758.5453;
 	highp float dt = dot( uv.xy, vec2( a,b ) ), sn = mod( dt, PI );
 	return fract( sin( sn ) * c );
@@ -663,11 +672,13 @@ var common = `
 		float maxComponent = max3( abs( v ) );
 		return length( v / maxComponent ) * maxComponent;
 	}
-#endif\nstruct IncidentLight {
+#endif
+struct IncidentLight {
 	vec3 color;
 	vec3 direction;
 	bool visible;
-};\nstruct ReflectedLight {
+};
+struct ReflectedLight {
 	vec3 directDiffuse;
 	vec3 directSpecular;
 	vec3 indirectDiffuse;
@@ -675,28 +686,36 @@ var common = `
 };
 #ifdef USE_ALPHAHASH
 	varying vec3 vPosition;
-#endif\nvec3 transformDirection( in vec3 dir, in mat4 matrix ) {
+#endif
+vec3 transformDirection( in vec3 dir, in mat4 matrix ) {
 	return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );
-}\nvec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+}
+vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 	return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
-}\nmat3 transposeMat3( const in mat3 m ) {
+}
+mat3 transposeMat3( const in mat3 m ) {
 	mat3 tmp;
 	tmp[ 0 ] = vec3( m[ 0 ].x, m[ 1 ].x, m[ 2 ].x );
 	tmp[ 1 ] = vec3( m[ 0 ].y, m[ 1 ].y, m[ 2 ].y );
 	tmp[ 2 ] = vec3( m[ 0 ].z, m[ 1 ].z, m[ 2 ].z );
 	return tmp;
-}\nbool isPerspectiveMatrix( mat4 m ) {
+}
+bool isPerspectiveMatrix( mat4 m ) {
 	return m[ 2 ][ 3 ] == - 1.0;
-}\nvec2 equirectUv( in vec3 dir ) {
+}
+vec2 equirectUv( in vec3 dir ) {
 	float u = atan( dir.z, dir.x ) * RECIPROCAL_PI2 + 0.5;
 	float v = asin( clamp( dir.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;
 	return vec2( u, v );
-}\nvec3 BRDF_Lambert( const in vec3 diffuseColor ) {
+}
+vec3 BRDF_Lambert( const in vec3 diffuseColor ) {
 	return RECIPROCAL_PI * diffuseColor;
-}\nvec3 F_Schlick( const in vec3 f0, const in float f90, const in float dotVH ) {
+}
+vec3 F_Schlick( const in vec3 f0, const in float f90, const in float dotVH ) {
 	float fresnel = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
 	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
-}\nfloat F_Schlick( const in float f0, const in float f90, const in float dotVH ) {
+}
+float F_Schlick( const in float f0, const in float f90, const in float dotVH ) {
 	float fresnel = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
 	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
 } // validated`;
@@ -817,7 +836,8 @@ vec3 transformedNormal = objectNormal;
 	#ifdef USE_TANGENT
 		transformedTangent = im * transformedTangent;
 	#endif
-#endif\ntransformedNormal = normalMatrix * transformedNormal;
+#endif
+transformedNormal = normalMatrix * transformedNormal;
 #ifdef FLIP_SIDED
 	transformedNormal = - transformedNormal;
 #endif
@@ -860,9 +880,11 @@ gl_FragColor = linearToOutputTexel( gl_FragColor );`;
 var colorspace_pars_fragment = `
 vec4 LinearTransferOETF( in vec4 value ) {
 	return value;
-}\nvec4 sRGBTransferEOTF( in vec4 value ) {
+}
+vec4 sRGBTransferEOTF( in vec4 value ) {
 	return vec4( mix( pow( value.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), value.rgb * 0.0773993808, vec3( lessThanEqual( value.rgb, vec3( 0.04045 ) ) ) ), value.a );
-}\nvec4 sRGBTransferOETF( in vec4 value ) {
+}
+vec4 sRGBTransferOETF( in vec4 value ) {
 	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
 }`;
 
@@ -994,7 +1016,8 @@ var fog_pars_fragment = `
 var gradientmap_pars_fragment = `
 #ifdef USE_GRADIENTMAP
 	uniform sampler2D gradientMap;
-#endif\nvec3 getGradientIrradiance( vec3 normal, vec3 lightDirection ) {
+#endif
+vec3 getGradientIrradiance( vec3 normal, vec3 lightDirection ) {
 	float dotNL = dot( normal, lightDirection );
 	vec2 coord = vec2( dotNL * 0.5 + 0.5, 0.0 );
 	#ifdef USE_GRADIENTMAP
@@ -1012,27 +1035,34 @@ var lightmap_pars_fragment = `
 #endif`;
 
 var lights_lambert_fragment = `
-LambertMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb;\nmaterial.specularStrength = specularStrength;`;
+LambertMaterial material;
+material.diffuseColor = diffuseColor.rgb;
+material.specularStrength = specularStrength;`;
 
 var lights_lambert_pars_fragment = `
-varying vec3 vViewPosition;\nstruct LambertMaterial {
+varying vec3 vViewPosition;
+struct LambertMaterial {
 	vec3 diffuseColor;
 	float specularStrength;
-};\nvoid RE_Direct_Lambert( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
+};
+void RE_Direct_Lambert( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
 	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}\nvoid RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
+}
+void RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_Lambert
 #define RE_IndirectDiffuse		RE_IndirectDiffuse_Lambert`;
 
 var lights_pars_begin = `
-uniform bool receiveShadow;\nuniform vec3 ambientLightColor;
+uniform bool receiveShadow;
+uniform vec3 ambientLightColor;
 #if defined( USE_LIGHT_PROBES )
 	uniform vec3 lightProbe[ 9 ];
-#endif\nvec3 shGetIrradianceAt( in vec3 normal, in vec3 shCoefficients[ 9 ] ) {
+#endif
+vec3 shGetIrradianceAt( in vec3 normal, in vec3 shCoefficients[ 9 ] ) {
 	float x = normal.x, y = normal.y, z = normal.z;
 	vec3 result = shCoefficients[ 0 ] * 0.886227;
 	result += shCoefficients[ 1 ] * 2.0 * 0.511664 * y;
@@ -1044,20 +1074,24 @@ uniform bool receiveShadow;\nuniform vec3 ambientLightColor;
 	result += shCoefficients[ 7 ] * 2.0 * 0.429043 * x * z;
 	result += shCoefficients[ 8 ] * 0.429043 * ( x * x - y * y );
 	return result;
-}\nvec3 getLightProbeIrradiance( const in vec3 lightProbe[ 9 ], const in vec3 normal ) {
+}
+vec3 getLightProbeIrradiance( const in vec3 lightProbe[ 9 ], const in vec3 normal ) {
 	vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
 	vec3 irradiance = shGetIrradianceAt( worldNormal, lightProbe );
 	return irradiance;
-}\nvec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
+}
+vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 	vec3 irradiance = ambientLightColor;
 	return irradiance;
-}\nfloat getDistanceAttenuation( const in float lightDistance, const in float cutoffDistance, const in float decayExponent ) {
+}
+float getDistanceAttenuation( const in float lightDistance, const in float cutoffDistance, const in float decayExponent ) {
 	float distanceFalloff = 1.0 / max( pow( lightDistance, decayExponent ), 0.01 );
 	if ( cutoffDistance > 0.0 ) {
 		distanceFalloff *= pow2( saturate( 1.0 - pow4( lightDistance / cutoffDistance ) ) );
 	}
 	return distanceFalloff;
-}\nfloat getSpotAttenuation( const in float coneCosine, const in float penumbraCosine, const in float angleCosine ) {
+}
+float getSpotAttenuation( const in float coneCosine, const in float penumbraCosine, const in float angleCosine ) {
 	return smoothstep( coneCosine, penumbraCosine, angleCosine );
 }
 #if NUM_DIR_LIGHTS > 0
@@ -1178,42 +1212,58 @@ var envmap_physical_pars_fragment = `
 #endif`;
 
 var lights_toon_fragment = `
-ToonMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb;`;
+ToonMaterial material;
+material.diffuseColor = diffuseColor.rgb;`;
 
 var lights_toon_pars_fragment = `
-varying vec3 vViewPosition;\nstruct ToonMaterial {
+varying vec3 vViewPosition;
+struct ToonMaterial {
 	vec3 diffuseColor;
-};\nvoid RE_Direct_Toon( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
+};
+void RE_Direct_Toon( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
 	vec3 irradiance = getGradientIrradiance( geometryNormal, directLight.direction ) * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}\nvoid RE_IndirectDiffuse_Toon( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
+}
+void RE_IndirectDiffuse_Toon( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_Toon
 #define RE_IndirectDiffuse		RE_IndirectDiffuse_Toon`;
 
 var lights_phong_fragment = `
-BlinnPhongMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb;\nmaterial.specularColor = specular;\nmaterial.specularShininess = shininess;\nmaterial.specularStrength = specularStrength;`;
+BlinnPhongMaterial material;
+material.diffuseColor = diffuseColor.rgb;
+material.specularColor = specular;
+material.specularShininess = shininess;
+material.specularStrength = specularStrength;`;
 
 var lights_phong_pars_fragment = `
-varying vec3 vViewPosition;\nstruct BlinnPhongMaterial {
+varying vec3 vViewPosition;
+struct BlinnPhongMaterial {
 	vec3 diffuseColor;
 	vec3 specularColor;
 	float specularShininess;
 	float specularStrength;
-};\nvoid RE_Direct_BlinnPhong( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
+};
+void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
 	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 	reflectedLight.directSpecular += irradiance * BRDF_BlinnPhong( directLight.direction, geometryViewDir, geometryNormal, material.specularColor, material.specularShininess ) * material.specularStrength;
-}\nvoid RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
+}
+void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_BlinnPhong
 #define RE_IndirectDiffuse		RE_IndirectDiffuse_BlinnPhong`;
 
 var lights_physical_fragment = `
-PhysicalMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );\nvec3 dxy = max( abs( dFdx( nonPerturbedNormal ) ), abs( dFdy( nonPerturbedNormal ) ) );\nfloat geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );\nmaterial.roughness = max( roughnessFactor, 0.0525 );material.roughness += geometryRoughness;\nmaterial.roughness = min( material.roughness, 1.0 );
+PhysicalMaterial material;
+material.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );
+vec3 dxy = max( abs( dFdx( nonPerturbedNormal ) ), abs( dFdy( nonPerturbedNormal ) ) );
+float geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );
+material.roughness = max( roughnessFactor, 0.0525 );material.roughness += geometryRoughness;
+material.roughness = min( material.roughness, 1.0 );
 #ifdef IOR
 	material.ior = ior;
 	#ifdef USE_SPECULAR
@@ -1336,17 +1386,24 @@ struct PhysicalMaterial {
 		vec3 anisotropyT;
 		vec3 anisotropyB;
 	#endif
-};\nvec3 clearcoatSpecularDirect = vec3( 0.0 );\nvec3 clearcoatSpecularIndirect = vec3( 0.0 );\nvec3 sheenSpecularDirect = vec3( 0.0 );\nvec3 sheenSpecularIndirect = vec3(0.0 );\nvec3 Schlick_to_F0( const in vec3 f, const in float f90, const in float dotVH ) {
+};
+vec3 clearcoatSpecularDirect = vec3( 0.0 );
+vec3 clearcoatSpecularIndirect = vec3( 0.0 );
+vec3 sheenSpecularDirect = vec3( 0.0 );
+vec3 sheenSpecularIndirect = vec3(0.0 );
+vec3 Schlick_to_F0( const in vec3 f, const in float f90, const in float dotVH ) {
     float x = clamp( 1.0 - dotVH, 0.0, 1.0 );
     float x2 = x * x;
     float x5 = clamp( x * x2 * x2, 0.0, 0.9999 );
     return ( f - vec3( f90 ) * x5 ) / ( 1.0 - x5 );
-}\nfloat V_GGX_SmithCorrelated( const in float alpha, const in float dotNL, const in float dotNV ) {
+}
+float V_GGX_SmithCorrelated( const in float alpha, const in float dotNL, const in float dotNV ) {
 	float a2 = pow2( alpha );
 	float gv = dotNL * sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNV ) );
 	float gl = dotNV * sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNL ) );
 	return 0.5 / max( gv + gl, EPSILON );
-}\nfloat D_GGX( const in float alpha, const in float dotNH ) {
+}
+float D_GGX( const in float alpha, const in float dotNH ) {
 	float a2 = pow2( alpha );
 	float denom = pow2( dotNH ) * ( a2 - 1.0 ) + 1.0;
 	return RECIPROCAL_PI * a2 / pow2( denom );
@@ -1382,7 +1439,8 @@ struct PhysicalMaterial {
 		float D = D_GGX( alpha, dotNH );
 		return F * ( V * D );
 	}
-#endif\nvec3 BRDF_GGX( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, const in PhysicalMaterial material ) {
+#endif
+vec3 BRDF_GGX( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, const in PhysicalMaterial material ) {
 	vec3 f0 = material.specularColor;
 	float f90 = material.specularF90;
 	float roughness = material.roughness;
@@ -1410,7 +1468,8 @@ struct PhysicalMaterial {
 		float D = D_GGX( alpha, dotNH );
 	#endif
 	return F * ( V * D );
-}\nvec2 LTC_Uv( const in vec3 N, const in vec3 V, const in float roughness ) {
+}
+vec2 LTC_Uv( const in vec3 N, const in vec3 V, const in float roughness ) {
 	const float LUT_SIZE = 64.0;
 	const float LUT_SCALE = ( LUT_SIZE - 1.0 ) / LUT_SIZE;
 	const float LUT_BIAS = 0.5 / LUT_SIZE;
@@ -1418,10 +1477,12 @@ struct PhysicalMaterial {
 	vec2 uv = vec2( roughness, sqrt( 1.0 - dotNV ) );
 	uv = uv * LUT_SCALE + LUT_BIAS;
 	return uv;
-}\nfloat LTC_ClippedSphereFormFactor( const in vec3 f ) {
+}
+float LTC_ClippedSphereFormFactor( const in vec3 f ) {
 	float l = length( f );
 	return max( ( l * l + f.z ) / ( l + 1.0 ), 0.0 );
-}\nvec3 LTC_EdgeVectorFormFactor( const in vec3 v1, const in vec3 v2 ) {
+}
+vec3 LTC_EdgeVectorFormFactor( const in vec3 v1, const in vec3 v2 ) {
 	float x = dot( v1, v2 );
 	float y = abs( x );
 	float a = 0.8543985 + ( 0.4965155 + 0.0145206 * y ) * y;
@@ -1429,7 +1490,8 @@ struct PhysicalMaterial {
 	float v = a / b;
 	float theta_sintheta = ( x > 0.0 ) ? v : 0.5 * inversesqrt( max( 1.0 - x * x, 1e-7 ) ) - v;
 	return cross( v1, v2 ) * theta_sintheta;
-}\nvec3 LTC_Evaluate( const in vec3 N, const in vec3 V, const in vec3 P, const in mat3 mInv, const in vec3 rectCoords[ 4 ] ) {
+}
+vec3 LTC_Evaluate( const in vec3 N, const in vec3 V, const in vec3 P, const in mat3 mInv, const in vec3 rectCoords[ 4 ] ) {
 	vec3 v1 = rectCoords[ 1 ] - rectCoords[ 0 ];
 	vec3 v2 = rectCoords[ 3 ] - rectCoords[ 0 ];
 	vec3 lightNormal = cross( v1, v2 );
@@ -1455,15 +1517,18 @@ struct PhysicalMaterial {
 	float result = LTC_ClippedSphereFormFactor( vectorFormFactor );
 	return vec3( result );
 }
-#if defined( USE_SHEEN )\nfloat D_Charlie( float roughness, float dotNH ) {
+#if defined( USE_SHEEN )
+float D_Charlie( float roughness, float dotNH ) {
 	float alpha = pow2( roughness );
 	float invAlpha = 1.0 / alpha;
 	float cos2h = dotNH * dotNH;
 	float sin2h = max( 1.0 - cos2h, 0.0078125 );
 	return ( 2.0 + invAlpha ) * pow( sin2h, invAlpha * 0.5 ) / ( 2.0 * PI );
-}\nfloat V_Neubelt( float dotNV, float dotNL ) {
+}
+float V_Neubelt( float dotNV, float dotNL ) {
 	return saturate( 1.0 / ( 4.0 * ( dotNL + dotNV - dotNL * dotNV ) ) );
-}\nvec3 BRDF_Sheen( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, vec3 sheenColor, const in float sheenRoughness ) {
+}
+vec3 BRDF_Sheen( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, vec3 sheenColor, const in float sheenRoughness ) {
 	vec3 halfDir = normalize( lightDir + viewDir );
 	float dotNL = saturate( dot( normal, lightDir ) );
 	float dotNV = saturate( dot( normal, viewDir ) );
@@ -1472,14 +1537,16 @@ struct PhysicalMaterial {
 	float V = V_Neubelt( dotNV, dotNL );
 	return sheenColor * ( D * V );
 }
-#endif\nfloat IBLSheenBRDF( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {
+#endif
+float IBLSheenBRDF( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {
 	float dotNV = saturate( dot( normal, viewDir ) );
 	float r2 = roughness * roughness;
 	float a = roughness < 0.25 ? -339.2 * r2 + 161.4 * roughness - 25.9 : -8.48 * r2 + 14.3 * roughness - 9.95;
 	float b = roughness < 0.25 ? 44.0 * r2 - 23.7 * roughness + 3.26 : 1.97 * r2 - 3.27 * roughness + 0.72;
 	float DG = exp( a * dotNV + b ) + ( roughness < 0.25 ? 0.0 : 0.1 * ( roughness - 0.25 ) );
 	return saturate( DG * RECIPROCAL_PI );
-}\nvec2 DFGApprox( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {
+}
+vec2 DFGApprox( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {
 	float dotNV = saturate( dot( normal, viewDir ) );
 	const vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );
 	const vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );
@@ -1487,12 +1554,15 @@ struct PhysicalMaterial {
 	float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;
 	vec2 fab = vec2( - 1.04, 1.04 ) * a004 + r.zw;
 	return fab;
-}\nvec3 EnvironmentBRDF( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness ) {
+}
+vec3 EnvironmentBRDF( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness ) {
 	vec2 fab = DFGApprox( normal, viewDir, roughness );
 	return specularColor * fab.x + specularF90 * fab.y;
 }
-#ifdef USE_IRIDESCENCE\nvoid computeMultiscatteringIridescence( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float iridescence, const in vec3 iridescenceF0, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {
-#else\nvoid computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {
+#ifdef USE_IRIDESCENCE
+void computeMultiscatteringIridescence( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float iridescence, const in vec3 iridescenceF0, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {
+#else
+void computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {
 #endif
 	vec2 fab = DFGApprox( normal, viewDir, roughness );
 	#ifdef USE_IRIDESCENCE
@@ -1533,7 +1603,8 @@ struct PhysicalMaterial {
 		reflectedLight.directSpecular += lightColor * fresnel * LTC_Evaluate( normal, viewDir, position, mInv, rectCoords );
 		reflectedLight.directDiffuse += lightColor * material.diffuseColor * LTC_Evaluate( normal, viewDir, position, mat3( 1.0 ), rectCoords );
 	}
-#endif\nvoid RE_Direct_Physical( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+#endif
+void RE_Direct_Physical( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
 	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	#ifdef USE_CLEARCOAT
@@ -1546,9 +1617,11 @@ struct PhysicalMaterial {
 	#endif
 	reflectedLight.directSpecular += irradiance * BRDF_GGX( directLight.direction, geometryViewDir, geometryNormal, material );
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}\nvoid RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+}
+void RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}\nvoid RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {
+}
+void RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {
 	#ifdef USE_CLEARCOAT
 		clearcoatSpecularIndirect += clearcoatRadiance * EnvironmentBRDF( geometryClearcoatNormal, geometryViewDir, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );
 	#endif
@@ -1572,12 +1645,17 @@ struct PhysicalMaterial {
 #define RE_Direct				RE_Direct_Physical
 #define RE_Direct_RectArea		RE_Direct_RectArea_Physical
 #define RE_IndirectDiffuse		RE_IndirectDiffuse_Physical
-#define RE_IndirectSpecular		RE_IndirectSpecular_Physical\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {
+#define RE_IndirectSpecular		RE_IndirectSpecular_Physical
+float computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {
 	return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );
 }`;
 
 var lights_fragment_begin = `
-\nvec3 geometryPosition = - vViewPosition;\nvec3 geometryNormal = normal;\nvec3 geometryViewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );\nvec3 geometryClearcoatNormal = vec3( 0.0 );
+
+vec3 geometryPosition = - vViewPosition;
+vec3 geometryNormal = normal;
+vec3 geometryViewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );
+vec3 geometryClearcoatNormal = vec3( 0.0 );
 #ifdef USE_CLEARCOAT
 	geometryClearcoatNormal = clearcoatNormal;
 #endif
@@ -1592,7 +1670,8 @@ var lights_fragment_begin = `
 		material.iridescenceFresnel = evalIridescence( 1.0, material.iridescenceIOR, dotNVi, material.iridescenceThickness, material.specularColor );
 		material.iridescenceF0 = Schlick_to_F0( material.iridescenceFresnel, 1.0, dotNVi );
 	}
-#endif\nIncidentLight directLight;
+#endif
+IncidentLight directLight;
 #if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )
 	PointLight pointLight;
 	#if defined( USE_SHADOWMAP ) && NUM_POINT_LIGHT_SHADOWS > 0
@@ -1894,7 +1973,8 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 		tbn2[0] *= faceDirection;
 		tbn2[1] *= faceDirection;
 	#endif
-#endif\nvec3 nonPerturbedNormal = normal;`;
+#endif
+vec3 nonPerturbedNormal = normal;`;
 
 var normal_fragment_maps = `
 #ifdef USE_NORMALMAP_OBJECTSPACE
@@ -1999,17 +2079,28 @@ var iridescence_pars_fragment = `
 #endif`;
 
 var opaque_fragment = `
-#ifdef OPAQUE\ndiffuseColor.a = 1.0;
+#ifdef OPAQUE
+diffuseColor.a = 1.0;
 #endif
-#ifdef USE_TRANSMISSION\ndiffuseColor.a *= material.transmissionAlpha;
-#endif\ngl_FragColor = vec4( outgoingLight, diffuseColor.a );`;
+#ifdef USE_TRANSMISSION
+diffuseColor.a *= material.transmissionAlpha;
+#endif
+gl_FragColor = vec4( outgoingLight, diffuseColor.a );`;
 
 var packing = `
 vec3 packNormalToRGB( const in vec3 normal ) {
 	return normalize( normal ) * 0.5 + 0.5;
-}\nvec3 unpackRGBToNormal( const in vec3 rgb ) {
+}
+vec3 unpackRGBToNormal( const in vec3 rgb ) {
 	return 2.0 * rgb.xyz - 1.0;
-}\nconst float PackUpscale = 256. / 255.;const float UnpackDownscale = 255. / 256.;const float ShiftRight8 = 1. / 256.;\nconst float Inv255 = 1. / 255.;\nconst vec4 PackFactors = vec4( 1.0, 256.0, 256.0 * 256.0, 256.0 * 256.0 * 256.0 );\nconst vec2 UnpackFactors2 = vec2( UnpackDownscale, 1.0 / PackFactors.g );\nconst vec3 UnpackFactors3 = vec3( UnpackDownscale / PackFactors.rg, 1.0 / PackFactors.b );\nconst vec4 UnpackFactors4 = vec4( UnpackDownscale / PackFactors.rgb, 1.0 / PackFactors.a );\nvec4 packDepthToRGBA( const in float v ) {
+}
+const float PackUpscale = 256. / 255.;const float UnpackDownscale = 255. / 256.;const float ShiftRight8 = 1. / 256.;
+const float Inv255 = 1. / 255.;
+const vec4 PackFactors = vec4( 1.0, 256.0, 256.0 * 256.0, 256.0 * 256.0 * 256.0 );
+const vec2 UnpackFactors2 = vec2( UnpackDownscale, 1.0 / PackFactors.g );
+const vec3 UnpackFactors3 = vec3( UnpackDownscale / PackFactors.rg, 1.0 / PackFactors.b );
+const vec4 UnpackFactors4 = vec4( UnpackDownscale / PackFactors.rgb, 1.0 / PackFactors.a );
+vec4 packDepthToRGBA( const in float v ) {
 	if( v <= 0.0 )
 		return vec4( 0., 0., 0., 0. );
 	if( v >= 1.0 )
@@ -2019,7 +2110,8 @@ vec3 packNormalToRGB( const in vec3 normal ) {
 	float bf = modf( vuf * ShiftRight8, vuf );
 	float gf = modf( vuf * ShiftRight8, vuf );
 	return vec4( vuf * Inv255, gf * PackUpscale, bf * PackUpscale, af );
-}\nvec3 packDepthToRGB( const in float v ) {
+}
+vec3 packDepthToRGB( const in float v ) {
 	if( v <= 0.0 )
 		return vec3( 0., 0., 0. );
 	if( v >= 1.0 )
@@ -2028,7 +2120,8 @@ vec3 packNormalToRGB( const in vec3 normal ) {
 	float bf = modf( v * PackFactors.b, vuf );
 	float gf = modf( vuf * ShiftRight8, vuf );
 	return vec3( vuf * Inv255, gf * PackUpscale, bf );
-}\nvec2 packDepthToRG( const in float v ) {
+}
+vec2 packDepthToRG( const in float v ) {
 	if( v <= 0.0 )
 		return vec2( 0., 0. );
 	if( v >= 1.0 )
@@ -2036,24 +2129,33 @@ vec3 packNormalToRGB( const in vec3 normal ) {
 	float vuf;
 	float gf = modf( v * 256., vuf );
 	return vec2( vuf * Inv255, gf );
-}\nfloat unpackRGBAToDepth( const in vec4 v ) {
+}
+float unpackRGBAToDepth( const in vec4 v ) {
 	return dot( v, UnpackFactors4 );
-}\nfloat unpackRGBToDepth( const in vec3 v ) {
+}
+float unpackRGBToDepth( const in vec3 v ) {
 	return dot( v, UnpackFactors3 );
-}\nfloat unpackRGToDepth( const in vec2 v ) {
+}
+float unpackRGToDepth( const in vec2 v ) {
 	return v.r * UnpackFactors2.r + v.g * UnpackFactors2.g;
-}\nvec4 pack2HalfToRGBA( const in vec2 v ) {
+}
+vec4 pack2HalfToRGBA( const in vec2 v ) {
 	vec4 r = vec4( v.x, fract( v.x * 255.0 ), v.y, fract( v.y * 255.0 ) );
 	return vec4( r.x - r.y / 255.0, r.y, r.z - r.w / 255.0, r.w );
-}\nvec2 unpackRGBATo2Half( const in vec4 v ) {
+}
+vec2 unpackRGBATo2Half( const in vec4 v ) {
 	return vec2( v.x + ( v.y / 255.0 ), v.z + ( v.w / 255.0 ) );
-}\nfloat viewZToOrthographicDepth( const in float viewZ, const in float near, const in float far ) {
+}
+float viewZToOrthographicDepth( const in float viewZ, const in float near, const in float far ) {
 	return ( viewZ + near ) / ( near - far );
-}\nfloat orthographicDepthToViewZ( const in float depth, const in float near, const in float far ) {
+}
+float orthographicDepthToViewZ( const in float depth, const in float near, const in float far ) {
 	return depth * ( near - far ) - near;
-}\nfloat viewZToPerspectiveDepth( const in float viewZ, const in float near, const in float far ) {
+}
+float viewZToPerspectiveDepth( const in float viewZ, const in float near, const in float far ) {
 	return ( ( near + viewZ ) * far ) / ( ( far - near ) * viewZ );
-}\nfloat perspectiveDepthToViewZ( const in float depth, const in float near, const in float far ) {
+}
+float perspectiveDepthToViewZ( const in float depth, const in float near, const in float far ) {
 	return ( near * far ) / ( ( far - near ) * depth - far );
 }`;
 
@@ -2481,20 +2583,26 @@ var tonemapping_fragment = `
 var tonemapping_pars_fragment = `
 #ifndef saturate
 #define saturate( a ) clamp( a, 0.0, 1.0 )
-#endif\nuniform float toneMappingExposure;\nvec3 LinearToneMapping( vec3 color ) {
+#endif
+uniform float toneMappingExposure;
+vec3 LinearToneMapping( vec3 color ) {
 	return saturate( toneMappingExposure * color );
-}\nvec3 ReinhardToneMapping( vec3 color ) {
+}
+vec3 ReinhardToneMapping( vec3 color ) {
 	color *= toneMappingExposure;
 	return saturate( color / ( vec3( 1.0 ) + color ) );
-}\nvec3 CineonToneMapping( vec3 color ) {
+}
+vec3 CineonToneMapping( vec3 color ) {
 	color *= toneMappingExposure;
 	color = max( vec3( 0.0 ), color - 0.004 );
 	return pow( ( color * ( 6.2 * color + 0.5 ) ) / ( color * ( 6.2 * color + 1.7 ) + 0.06 ), vec3( 2.2 ) );
-}\nvec3 RRTAndODTFit( vec3 v ) {
+}
+vec3 RRTAndODTFit( vec3 v ) {
 	vec3 a = v * ( v + 0.0245786 ) - 0.000090537;
 	vec3 b = v * ( 0.983729 * v + 0.4329510 ) + 0.238081;
 	return a / b;
-}\nvec3 ACESFilmicToneMapping( vec3 color ) {
+}
+vec3 ACESFilmicToneMapping( vec3 color ) {
 	const mat3 ACESInputMat = mat3(
 		vec3( 0.59719, 0.07600, 0.02840 ),		vec3( 0.35458, 0.90834, 0.13383 ),
 		vec3( 0.04823, 0.01566, 0.83777 )
@@ -2508,15 +2616,18 @@ var tonemapping_pars_fragment = `
 	color = RRTAndODTFit( color );
 	color = ACESOutputMat * color;
 	return saturate( color );
-}\nconst mat3 LINEAR_REC2020_TO_LINEAR_SRGB = mat3(
+}
+const mat3 LINEAR_REC2020_TO_LINEAR_SRGB = mat3(
 	vec3( 1.6605, - 0.1246, - 0.0182 ),
 	vec3( - 0.5876, 1.1329, - 0.1006 ),
 	vec3( - 0.0728, - 0.0083, 1.1187 )
-);\nconst mat3 LINEAR_SRGB_TO_LINEAR_REC2020 = mat3(
+);
+const mat3 LINEAR_SRGB_TO_LINEAR_REC2020 = mat3(
 	vec3( 0.6274, 0.0691, 0.0164 ),
 	vec3( 0.3293, 0.9195, 0.0880 ),
 	vec3( 0.0433, 0.0113, 0.8956 )
-);\nvec3 agxDefaultContrastApprox( vec3 x ) {
+);
+vec3 agxDefaultContrastApprox( vec3 x ) {
 	vec3 x2 = x * x;
 	vec3 x4 = x2 * x2;
 	return + 15.5 * x4 * x2
@@ -2526,7 +2637,8 @@ var tonemapping_pars_fragment = `
 		+ 0.4298 * x2
 		+ 0.1191 * x
 		- 0.00232;
-}\nvec3 AgXToneMapping( vec3 color ) {
+}
+vec3 AgXToneMapping( vec3 color ) {
 	const mat3 AgXInsetMatrix = mat3(
 		vec3( 0.856627153315983, 0.137318972929847, 0.11189821299995 ),
 		vec3( 0.0951212405381588, 0.761241990602591, 0.0767994186031903 ),
@@ -2550,7 +2662,8 @@ var tonemapping_pars_fragment = `
 	color = LINEAR_REC2020_TO_LINEAR_SRGB * color;
 	color = clamp( color, 0.0, 1.0 );
 	return color;
-}\nvec3 NeutralToneMapping( vec3 color ) {
+}
+vec3 NeutralToneMapping( vec3 color ) {
 	const float StartCompression = 0.8 - 0.04;
 	const float Desaturation = 0.15;
 	color *= toneMappingExposure;
@@ -2564,7 +2677,8 @@ var tonemapping_pars_fragment = `
 	color *= newPeak / peak;
 	float g = 1. - 1. / ( Desaturation * ( peak - newPeak ) + 1. );
 	return mix( color, vec3( newPeak ), g );
-}\nvec3 CustomToneMapping( vec3 color ) { return color; }`;
+}
+vec3 CustomToneMapping( vec3 color ) { return color; }`;
 
 var transmission_fragment = `
 #ifdef USE_TRANSMISSION
@@ -2976,13 +3090,18 @@ var worldpos_vertex = `
 #endif`;
 
 const vertex$h = `
-varying vec2 vUv;\nuniform mat3 uvTransform;\nvoid main() {
+varying vec2 vUv;
+uniform mat3 uvTransform;
+void main() {
 	vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
 	gl_Position = vec4( position.xy, 1.0, 1.0 );
 }`;
 
 const fragment$h = `
-uniform sampler2D t2D;\nuniform float backgroundIntensity;\nvarying vec2 vUv;\nvoid main() {
+uniform sampler2D t2D;
+uniform float backgroundIntensity;
+varying vec2 vUv;
+void main() {
 	vec4 texColor = texture2D( t2D, vUv );
 	#ifdef DECODE_VIDEO_TEXTURE
 		texColor = vec4( mix( pow( texColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), texColor.rgb * 0.0773993808, vec3( lessThanEqual( texColor.rgb, vec3( 0.04045 ) ) ) ), texColor.w );
@@ -2995,7 +3114,8 @@ uniform sampler2D t2D;\nuniform float backgroundIntensity;\nvarying vec2 vUv;\nv
 
 const vertex$g = `
 varying vec3 vWorldDirection;
-#include <common>\nvoid main() {
+#include <common>
+void main() {
 	vWorldDirection = transformDirection( position, modelMatrix );
 	#include <begin_vertex>
 	#include <project_vertex>
@@ -3007,8 +3127,14 @@ const fragment$g = `
 	uniform samplerCube envMap;
 #elif defined( ENVMAP_TYPE_CUBE_UV )
 	uniform sampler2D envMap;
-#endif\nuniform float flipEnvMap;\nuniform float backgroundBlurriness;\nuniform float backgroundIntensity;\nuniform mat3 backgroundRotation;\nvarying vec3 vWorldDirection;
-#include <cube_uv_reflection_fragment>\nvoid main() {
+#endif
+uniform float flipEnvMap;
+uniform float backgroundBlurriness;
+uniform float backgroundIntensity;
+uniform mat3 backgroundRotation;
+varying vec3 vWorldDirection;
+#include <cube_uv_reflection_fragment>
+void main() {
 	#ifdef ENVMAP_TYPE_CUBE
 		vec4 texColor = textureCube( envMap, backgroundRotation * vec3( flipEnvMap * vWorldDirection.x, vWorldDirection.yz ) );
 	#elif defined( ENVMAP_TYPE_CUBE_UV )
@@ -3024,7 +3150,8 @@ const fragment$g = `
 
 const vertex$f = `
 varying vec3 vWorldDirection;
-#include <common>\nvoid main() {
+#include <common>
+void main() {
 	vWorldDirection = transformDirection( position, modelMatrix );
 	#include <begin_vertex>
 	#include <project_vertex>
@@ -3032,7 +3159,11 @@ varying vec3 vWorldDirection;
 }`;
 
 const fragment$f = `
-uniform samplerCube tCube;\nuniform float tFlip;\nuniform float opacity;\nvarying vec3 vWorldDirection;\nvoid main() {
+uniform samplerCube tCube;
+uniform float tFlip;
+uniform float opacity;
+varying vec3 vWorldDirection;
+void main() {
 	vec4 texColor = textureCube( tCube, vec3( tFlip * vWorldDirection.x, vWorldDirection.yz ) );
 	gl_FragColor = texColor;
 	gl_FragColor.a *= opacity;
@@ -3048,7 +3179,9 @@ const vertex$e = `
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvarying vec2 vHighPrecisionZW;\nvoid main() {
+#include <clipping_planes_pars_vertex>
+varying vec2 vHighPrecisionZW;
+void main() {
 	#include <uv_vertex>
 	#include <batching_vertex>
 	#include <skinbase_vertex>
@@ -3080,7 +3213,9 @@ const fragment$e = `
 #include <alphatest_pars_fragment>
 #include <alphahash_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvarying vec2 vHighPrecisionZW;\nvoid main() {
+#include <clipping_planes_pars_fragment>
+varying vec2 vHighPrecisionZW;
+void main() {
 	vec4 diffuseColor = vec4( 1.0 );
 	#include <clipping_planes_fragment>
 	#if DEPTH_PACKING == 3200
@@ -3104,14 +3239,16 @@ const fragment$e = `
 }`;
 
 const vertex$d = `
-#define DISTANCE\nvarying vec3 vWorldPosition;
+#define DISTANCE
+varying vec3 vWorldPosition;
 #include <common>
 #include <batching_pars_vertex>
 #include <uv_pars_vertex>
 #include <displacementmap_pars_vertex>
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <batching_vertex>
 	#include <skinbase_vertex>
@@ -3132,7 +3269,11 @@ const vertex$d = `
 }`;
 
 const fragment$d = `
-#define DISTANCE\nuniform vec3 referencePosition;\nuniform float nearDistance;\nuniform float farDistance;\nvarying vec3 vWorldPosition;
+#define DISTANCE
+uniform vec3 referencePosition;
+uniform float nearDistance;
+uniform float farDistance;
+varying vec3 vWorldPosition;
 #include <common>
 #include <packing>
 #include <uv_pars_fragment>
@@ -3140,7 +3281,8 @@ const fragment$d = `
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
 #include <alphahash_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main () {
+#include <clipping_planes_pars_fragment>
+void main () {
 	vec4 diffuseColor = vec4( 1.0 );
 	#include <clipping_planes_fragment>
 	#include <map_fragment>
@@ -3155,15 +3297,18 @@ const fragment$d = `
 
 const vertex$c = `
 varying vec3 vWorldDirection;
-#include <common>\nvoid main() {
+#include <common>
+void main() {
 	vWorldDirection = transformDirection( position, modelMatrix );
 	#include <begin_vertex>
 	#include <project_vertex>
 }`;
 
 const fragment$c = `
-uniform sampler2D tEquirect;\nvarying vec3 vWorldDirection;
-#include <common>\nvoid main() {
+uniform sampler2D tEquirect;
+varying vec3 vWorldDirection;
+#include <common>
+void main() {
 	vec3 direction = normalize( vWorldDirection );
 	vec2 sampleUV = equirectUv( direction );
 	gl_FragColor = texture2D( tEquirect, sampleUV );
@@ -3172,14 +3317,17 @@ uniform sampler2D tEquirect;\nvarying vec3 vWorldDirection;
 }`;
 
 const vertex$b = `
-uniform float scale;\nattribute float lineDistance;\nvarying float vLineDistance;
+uniform float scale;
+attribute float lineDistance;
+varying float vLineDistance;
 #include <common>
 #include <uv_pars_vertex>
 #include <color_pars_vertex>
 #include <fog_pars_vertex>
 #include <morphtarget_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	vLineDistance = scale * lineDistance;
 	#include <uv_vertex>
 	#include <color_vertex>
@@ -3194,14 +3342,19 @@ uniform float scale;\nattribute float lineDistance;\nvarying float vLineDistance
 }`;
 
 const fragment$b = `
-uniform vec3 diffuse;\nuniform float opacity;\nuniform float dashSize;\nuniform float totalSize;\nvarying float vLineDistance;
+uniform vec3 diffuse;
+uniform float opacity;
+uniform float dashSize;
+uniform float totalSize;
+varying float vLineDistance;
 #include <common>
 #include <color_pars_fragment>
 #include <uv_pars_fragment>
 #include <map_pars_fragment>
 #include <fog_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	if ( mod( vLineDistance, totalSize ) > dashSize ) {
@@ -3229,7 +3382,8 @@ const vertex$a = `
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphinstance_vertex>
@@ -3254,7 +3408,8 @@ const vertex$a = `
 }`;
 
 const fragment$a = `
-uniform vec3 diffuse;\nuniform float opacity;
+uniform vec3 diffuse;
+uniform float opacity;
 #ifndef FLAT_SHADED
 	varying vec3 vNormal;
 #endif
@@ -3273,7 +3428,8 @@ uniform vec3 diffuse;\nuniform float opacity;
 #include <fog_pars_fragment>
 #include <specularmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	#include <logdepthbuf_fragment>
@@ -3303,7 +3459,8 @@ uniform vec3 diffuse;\nuniform float opacity;
 }`;
 
 const vertex$9 = `
-#define LAMBERT\nvarying vec3 vViewPosition;
+#define LAMBERT
+varying vec3 vViewPosition;
 #include <common>
 #include <batching_pars_vertex>
 #include <uv_pars_vertex>
@@ -3316,7 +3473,8 @@ const vertex$9 = `
 #include <skinning_pars_vertex>
 #include <shadowmap_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphinstance_vertex>
@@ -3343,7 +3501,10 @@ const vertex$9 = `
 }`;
 
 const fragment$9 = `
-#define LAMBERT\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float opacity;
+#define LAMBERT
+uniform vec3 diffuse;
+uniform vec3 emissive;
+uniform float opacity;
 #include <common>
 #include <packing>
 #include <dithering_pars_fragment>
@@ -3368,7 +3529,8 @@ const fragment$9 = `
 #include <normalmap_pars_fragment>
 #include <specularmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
@@ -3399,7 +3561,8 @@ const fragment$9 = `
 }`;
 
 const vertex$8 = `
-#define MATCAP\nvarying vec3 vViewPosition;
+#define MATCAP
+varying vec3 vViewPosition;
 #include <common>
 #include <batching_pars_vertex>
 #include <uv_pars_vertex>
@@ -3410,7 +3573,8 @@ const vertex$8 = `
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphinstance_vertex>
@@ -3434,7 +3598,11 @@ const vertex$8 = `
 }`;
 
 const fragment$8 = `
-#define MATCAP\nuniform vec3 diffuse;\nuniform float opacity;\nuniform sampler2D matcap;\nvarying vec3 vViewPosition;
+#define MATCAP
+uniform vec3 diffuse;
+uniform float opacity;
+uniform sampler2D matcap;
+varying vec3 vViewPosition;
 #include <common>
 #include <dithering_pars_fragment>
 #include <color_pars_fragment>
@@ -3448,7 +3616,8 @@ const fragment$8 = `
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	#include <logdepthbuf_fragment>
@@ -3490,7 +3659,8 @@ const vertex$7 = `
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <batching_vertex>
 	#include <beginnormal_vertex>
@@ -3513,7 +3683,8 @@ const vertex$7 = `
 }`;
 
 const fragment$7 = `
-#define NORMAL\nuniform float opacity;
+#define NORMAL
+uniform float opacity;
 #if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP_TANGENTSPACE )
 	varying vec3 vViewPosition;
 #endif
@@ -3523,7 +3694,8 @@ const fragment$7 = `
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( 0.0, 0.0, 0.0, opacity );
 	#include <clipping_planes_fragment>
 	#include <logdepthbuf_fragment>
@@ -3536,7 +3708,8 @@ const fragment$7 = `
 }`;
 
 const vertex$6 = `
-#define PHONG\nvarying vec3 vViewPosition;
+#define PHONG
+varying vec3 vViewPosition;
 #include <common>
 #include <batching_pars_vertex>
 #include <uv_pars_vertex>
@@ -3549,7 +3722,8 @@ const vertex$6 = `
 #include <skinning_pars_vertex>
 #include <shadowmap_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphcolor_vertex>
@@ -3576,7 +3750,12 @@ const vertex$6 = `
 }`;
 
 const fragment$6 = `
-#define PHONG\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform vec3 specular;\nuniform float shininess;\nuniform float opacity;
+#define PHONG
+uniform vec3 diffuse;
+uniform vec3 emissive;
+uniform vec3 specular;
+uniform float shininess;
+uniform float opacity;
 #include <common>
 #include <packing>
 #include <dithering_pars_fragment>
@@ -3601,7 +3780,8 @@ const fragment$6 = `
 #include <normalmap_pars_fragment>
 #include <specularmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
@@ -3632,7 +3812,8 @@ const fragment$6 = `
 }`;
 
 const vertex$5 = `
-#define STANDARD\nvarying vec3 vViewPosition;
+#define STANDARD
+varying vec3 vViewPosition;
 #ifdef USE_TRANSMISSION
 	varying vec3 vWorldPosition;
 #endif
@@ -3647,7 +3828,8 @@ const vertex$5 = `
 #include <skinning_pars_vertex>
 #include <shadowmap_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphinstance_vertex>
@@ -3680,7 +3862,12 @@ const fragment$5 = `
 #ifdef PHYSICAL
 	#define IOR
 	#define USE_SPECULAR
-#endif\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;
+#endif
+uniform vec3 diffuse;
+uniform vec3 emissive;
+uniform float roughness;
+uniform float metalness;
+uniform float opacity;
 #ifdef IOR
 	uniform float ior;
 #endif
@@ -3722,7 +3909,8 @@ const fragment$5 = `
 	#ifdef USE_ANISOTROPYMAP
 		uniform sampler2D anisotropyMap;
 	#endif
-#endif\nvarying vec3 vViewPosition;
+#endif
+varying vec3 vViewPosition;
 #include <common>
 #include <packing>
 #include <dithering_pars_fragment>
@@ -3752,7 +3940,8 @@ const fragment$5 = `
 #include <roughnessmap_pars_fragment>
 #include <metalnessmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
@@ -3797,7 +3986,8 @@ const fragment$5 = `
 }`;
 
 const vertex$4 = `
-#define TOON\nvarying vec3 vViewPosition;
+#define TOON
+varying vec3 vViewPosition;
 #include <common>
 #include <batching_pars_vertex>
 #include <uv_pars_vertex>
@@ -3809,7 +3999,8 @@ const vertex$4 = `
 #include <skinning_pars_vertex>
 #include <shadowmap_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
 	#include <morphinstance_vertex>
@@ -3835,7 +4026,10 @@ const vertex$4 = `
 }`;
 
 const fragment$4 = `
-#define TOON\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float opacity;
+#define TOON
+uniform vec3 diffuse;
+uniform vec3 emissive;
+uniform float opacity;
 #include <common>
 #include <packing>
 #include <dithering_pars_fragment>
@@ -3858,7 +4052,8 @@ const fragment$4 = `
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
@@ -3887,7 +4082,8 @@ const fragment$4 = `
 }`;
 
 const vertex$3 = `
-uniform float size;\nuniform float scale;
+uniform float size;
+uniform float scale;
 #include <common>
 #include <color_pars_vertex>
 #include <fog_pars_vertex>
@@ -3897,7 +4093,8 @@ uniform float size;\nuniform float scale;
 #ifdef USE_POINTS_UV
 	varying vec2 vUv;
 	uniform mat3 uvTransform;
-#endif\nvoid main() {
+#endif
+void main() {
 	#ifdef USE_POINTS_UV
 		vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
 	#endif
@@ -3919,7 +4116,8 @@ uniform float size;\nuniform float scale;
 }`;
 
 const fragment$3 = `
-uniform vec3 diffuse;\nuniform float opacity;
+uniform vec3 diffuse;
+uniform float opacity;
 #include <common>
 #include <color_pars_fragment>
 #include <map_particle_pars_fragment>
@@ -3927,7 +4125,8 @@ uniform vec3 diffuse;\nuniform float opacity;
 #include <alphahash_pars_fragment>
 #include <fog_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	vec3 outgoingLight = vec3( 0.0 );
@@ -3951,7 +4150,8 @@ const vertex$2 = `
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <shadowmap_pars_vertex>\nvoid main() {
+#include <shadowmap_pars_vertex>
+void main() {
 	#include <batching_vertex>
 	#include <beginnormal_vertex>
 	#include <morphinstance_vertex>
@@ -3970,7 +4170,8 @@ const vertex$2 = `
 }`;
 
 const fragment$2 = `
-uniform vec3 color;\nuniform float opacity;
+uniform vec3 color;
+uniform float opacity;
 #include <common>
 #include <packing>
 #include <fog_pars_fragment>
@@ -3978,7 +4179,8 @@ uniform vec3 color;\nuniform float opacity;
 #include <lights_pars_begin>
 #include <logdepthbuf_pars_fragment>
 #include <shadowmap_pars_fragment>
-#include <shadowmask_pars_fragment>\nvoid main() {
+#include <shadowmask_pars_fragment>
+void main() {
 	#include <logdepthbuf_fragment>
 	gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );
 	#include <tonemapping_fragment>
@@ -3987,12 +4189,14 @@ uniform vec3 color;\nuniform float opacity;
 }`;
 
 const vertex$1 = `
-uniform float rotation;\nuniform vec2 center;
+uniform float rotation;
+uniform vec2 center;
 #include <common>
 #include <uv_pars_vertex>
 #include <fog_pars_vertex>
 #include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>\nvoid main() {
+#include <clipping_planes_pars_vertex>
+void main() {
 	#include <uv_vertex>
 	vec4 mvPosition = modelViewMatrix[ 3 ];
 	vec2 scale = vec2( length( modelMatrix[ 0 ].xyz ), length( modelMatrix[ 1 ].xyz ) );
@@ -4012,7 +4216,8 @@ uniform float rotation;\nuniform vec2 center;
 }`;
 
 const fragment$1 = `
-uniform vec3 diffuse;\nuniform float opacity;
+uniform vec3 diffuse;
+uniform float opacity;
 #include <common>
 #include <uv_pars_fragment>
 #include <map_pars_fragment>
@@ -4021,7 +4226,8 @@ uniform vec3 diffuse;\nuniform float opacity;
 #include <alphahash_pars_fragment>
 #include <fog_pars_fragment>
 #include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>\nvoid main() {
+#include <clipping_planes_pars_fragment>
+void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	#include <clipping_planes_fragment>
 	vec3 outgoingLight = vec3( 0.0 );
