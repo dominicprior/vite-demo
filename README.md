@@ -31,4 +31,10 @@ Based on https://www.youtufbe.com/watch?v=p4BHphMBlFA
 
 # Jest
 
-I followed the instructions from here: https://jestjs.io/docs/getting-started
+I followed the instructions from here: https://jestjs.io/docs/getting-started and then gave up, due to
+https://jestjs.io/docs/getting-started#:~:text=Jest%20is%20not%20supported%20by%20Vite
+
+# Vitest
+
+I worked from this: https://vitest.dev/guide/
+
