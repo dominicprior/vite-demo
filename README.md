@@ -28,3 +28,7 @@ Based on https://www.youtufbe.com/watch?v=p4BHphMBlFA
 * `three/threebuild/three_core.js` from `r177 Three.js`.  Note the underscore instead of the dot.
 * Ditto for `three_module.js`.
 * `three/src/**/*.d.ts` from an `npm install @types/three`.
+
+# Jest
+
+I followed the instructions from here: https://jestjs.io/docs/getting-started
