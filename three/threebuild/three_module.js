@@ -8264,7 +8264,7 @@ function setValueV2f( gl, v ) {
 }
 
 function setValueV3f( gl, v ) {
-
+//debugger;
 	const cache = this.cache;
 
 	if ( v.x !== undefined ) {
@@ -8304,7 +8304,7 @@ function setValueV3f( gl, v ) {
 }
 
 function setValueV4f( gl, v ) {
-
+//debugger;
 	const cache = this.cache;
 
 	if ( v.x !== undefined ) {
@@ -8396,7 +8396,7 @@ function setValueM4( gl, v ) {
 	if ( elements === undefined ) {
 
 		if ( arraysEqual( cache, v ) ) return;
-
+//debugger;
 		gl.uniformMatrix4fv( this.addr, false, v );
 
 		copyArray( cache, v );
@@ -8406,7 +8406,7 @@ function setValueM4( gl, v ) {
 		if ( arraysEqual( cache, elements ) ) return;
 
 		mat4array.set( elements );
-
+//debugger;
 		gl.uniformMatrix4fv( this.addr, false, mat4array );
 
 		copyArray( cache, elements );
@@ -9157,7 +9157,7 @@ function parseUniform( activeInfo, addr, container ) {
 class WebGLUniforms {
 
 	constructor( gl, program ) {
-
+//debugger;
 		this.seq = [];
 		this.map = {};
 
@@ -9888,7 +9888,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 			'uniform mat4 modelMatrix;',
 			'uniform mat4 modelViewMatrix;',
-			'uniform mat4 projectionMatrix;',
+			'uniform mat4 projectionMatrix;',  ///
 			'uniform mat4 viewMatrix;',
 			'uniform mat3 normalMatrix;',
 			'uniform vec3 cameraPosition;',
@@ -20816,7 +20816,7 @@ class WebGLRenderer {
 
 				} else {
 
-					p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );
+					p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );  ///
 
 				}
 
