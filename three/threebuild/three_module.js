@@ -8396,7 +8396,7 @@ function setValueM4( gl, v ) {
 	if ( elements === undefined ) {
 
 		if ( arraysEqual( cache, v ) ) return;
-//debugger;
+// debugger;
 		gl.uniformMatrix4fv( this.addr, false, v );
 
 		copyArray( cache, v );
@@ -8406,7 +8406,7 @@ function setValueM4( gl, v ) {
 		if ( arraysEqual( cache, elements ) ) return;
 
 		mat4array.set( elements );
-//debugger;
+// debugger;
 		gl.uniformMatrix4fv( this.addr, false, mat4array );
 
 		copyArray( cache, elements );
@@ -8804,7 +8804,7 @@ function setValueM3Array( gl, v ) {
 function setValueM4Array( gl, v ) {
 
 	const data = flatten( v, this.size, 16 );
-
+// debugger;
 	gl.uniformMatrix4fv( this.addr, false, data );
 
 }
@@ -9157,12 +9157,12 @@ function parseUniform( activeInfo, addr, container ) {
 class WebGLUniforms {
 
 	constructor( gl, program ) {
-//debugger;
+
 		this.seq = [];
 		this.map = {};
-
+// debugger;
 		const n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
-
+// debugger;
 		for ( let i = 0; i < n; ++ i ) {
 
 			const info = gl.getActiveUniform( program, i ),
@@ -9171,13 +9171,13 @@ class WebGLUniforms {
 			parseUniform( info, addr, this );
 
 		}
-
+// debugger;
 	}
 
 	setValue( gl, name, value, textures ) {
 
 		const u = this.map[ name ];
-
+// if (u !== undefined && name === 'projectionMatrix') debugger;
 		if ( u !== undefined ) u.setValue( gl, value, textures );
 
 	}
@@ -20506,7 +20506,7 @@ class WebGLRenderer {
 
 			} else {
 
-				parameters.uniforms = programCache.getUniforms( material );
+				parameters.uniforms = programCache.getUniforms( material );  ///
 
 				material.onBeforeCompile( parameters, _this );
 
@@ -20780,9 +20780,9 @@ class WebGLRenderer {
 			let refreshProgram = false;
 			let refreshMaterial = false;
 			let refreshLights = false;
-
+// debugger;
 			const p_uniforms = program.getUniforms(),
-				m_uniforms = materialProperties.uniforms;
+				m_uniforms = materialProperties.uniforms;  ///
 
 			if ( state.useProgram( program.program ) ) {
 
@@ -20818,7 +20818,7 @@ p_uniforms.setValue( _gl, 'dominic', 0.6);
 
 				} else {
 
-					p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );  ///
+					p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );  /////
 
 				}
 
