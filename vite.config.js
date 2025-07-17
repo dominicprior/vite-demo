@@ -1,9 +1,10 @@
+import { defineConfig } from 'vite';
 import glsl from 'vite-plugin-glsl';
 
 
 // import restart from 'vite-plugin-restart'  // Cannot find package 'vite-plugin-restart'
 
-export default {
+export default defineConfig({
     root: 'src/', // Sources files (typically where index.html is)
     publicDir: '../static/', // Path from "root" to static assets (files that are served as they are)
     server:
@@ -22,4 +23,4 @@ export default {
         // restart({ restart: [ '../static/**', ] }), // Restart server on static file change
         glsl(), // GLSL shader support
     ],
-}
+});
