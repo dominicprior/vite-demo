@@ -4392,7 +4392,7 @@ const ShaderChunk = {
 const UniformsLib = {
 
 	common: {
-
+		dominic: { value: 0.3 },  /////
 		diffuse: { value: /*@__PURE__*/ new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
@@ -9888,7 +9888,8 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 			'uniform mat4 modelMatrix;',
 			'uniform mat4 modelViewMatrix;',
-			'uniform mat4 projectionMatrix;',  ///
+			'uniform mat4 projectionMatrix;',
+			'uniform float dominic;',  /////
 			'uniform mat4 viewMatrix;',
 			'uniform mat3 normalMatrix;',
 			'uniform vec3 cameraPosition;',
@@ -20798,7 +20799,8 @@ class WebGLRenderer {
 				refreshMaterial = true;
 
 			}
-
+// debugger;
+p_uniforms.setValue( _gl, 'dominic', 0.2);
 			if ( refreshProgram || _currentCamera !== camera ) {
 
 				// common camera uniforms
