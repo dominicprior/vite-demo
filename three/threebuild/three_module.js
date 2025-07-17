@@ -2175,7 +2175,7 @@ vec4 mvPosition = vec4( transformed, 1.0 );
 #endif
 vec4 q = modelViewMatrix * mvPosition;
 float d = length( q.xyz );
-q.z -= d;
+q.z -= d * dominic;
 gl_Position = projectionMatrix * q;
 // gl_Position.x *= 0.5;
 `;
@@ -4392,7 +4392,7 @@ const ShaderChunk = {
 const UniformsLib = {
 
 	common: {
-		dominic: { value: 0.3 },  /////
+		dominic: { value: 0.6 },  /////
 		diffuse: { value: /*@__PURE__*/ new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
@@ -20800,7 +20800,7 @@ class WebGLRenderer {
 
 			}
 // debugger;
-p_uniforms.setValue( _gl, 'dominic', 0.2);
+p_uniforms.setValue( _gl, 'dominic', 0.6);
 			if ( refreshProgram || _currentCamera !== camera ) {
 
 				// common camera uniforms
