@@ -29,8 +29,8 @@ export default class Renderer {
         });  // Note the non-null assertion operator '!'
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-        this.instance.shadowMap.enabled = true;
-        this.instance.shadowMap.type = PCFSoftShadowMap;
+        // this.instance.shadowMap.enabled = true;
+        // this.instance.shadowMap.type = PCFSoftShadowMap;
     }
 
     resize() {
@@ -39,6 +39,8 @@ export default class Renderer {
     }
 
     update() {
+        ////debugger;
         this.instance.render(this.scene, this.camera.instance);
+        ////debugger;
     }
 }
