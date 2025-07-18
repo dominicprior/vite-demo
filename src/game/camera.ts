@@ -20,7 +20,7 @@ export default class Camera {
 
     setInstance() {
         this.instance = new Wide(
-                75, this.sizes.width / this.sizes.height, 0.05, 100, 0.4);
+                75, this.sizes.width / this.sizes.height, 0.05, 100, 1.0);
     }
             
     update(player: Player) {
