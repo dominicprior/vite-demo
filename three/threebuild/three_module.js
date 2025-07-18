@@ -4392,7 +4392,7 @@ const ShaderChunk = {
 const UniformsLib = {
 
 	common: {
-		dominic: { value: 1 },  /////
+		dominic: { value: 0.8 },  /////
 		diffuse: { value: /*@__PURE__*/ new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
@@ -8228,6 +8228,10 @@ function setValueV1f( gl, v ) {
 
 	if ( cache[ 0 ] === v ) return;
 
+	if (v === 0.4 || v === 0.8 || v === 0.9) {
+		////debugger;  /////
+	}
+
 	gl.uniform1f( this.addr, v );
 
 	cache[ 0 ] = v;
@@ -8752,6 +8756,10 @@ function getSingularSetter( type ) {
 // Array of scalars
 
 function setValueV1fArray( gl, v ) {
+
+	if (v === 0.4 || v === 0.8 || v === 0.9) {
+		////debugger;  /////
+	}
 
 	gl.uniform1fv( this.addr, v );
 
@@ -18482,6 +18490,8 @@ function WebGLUniformsGroups( gl, info, capabilities, state ) {
 
 }
 
+let dominicCount = 0;
+
 /**
  * This renderer uses WebGL 2 to display scenes.
  *
@@ -20799,9 +20809,11 @@ class WebGLRenderer {
 				refreshMaterial = true;
 
 			}
-// debugger;
+////debugger;
 if (camera.isWide) {
+	////debugger;
 	p_uniforms.setValue( _gl, 'dominic', camera.bend);
+	////debugger;
 }
 			if ( refreshProgram || _currentCamera !== camera ) {
 
@@ -20966,9 +20978,11 @@ if (camera.isWide) {
 				}
 
 				materials.refreshMaterialUniforms( m_uniforms, material, _pixelRatio, _height, currentRenderState.state.transmissionRenderTarget[ camera.id ] );
-
+////d if (dominicCount >= 48) debugger;
+dominicCount++;
 				WebGLUniforms.upload( _gl, getUniformList( materialProperties ), m_uniforms, textures );
-
+////d if (dominicCount >= 48) debugger;
+dominicCount++;
 			}
 
 			if ( material.isShaderMaterial && material.uniformsNeedUpdate === true ) {
