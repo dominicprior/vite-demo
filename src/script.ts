@@ -1,6 +1,8 @@
 import './style.css';
 import Game from './game/game.js';
+
 new Game(document.querySelector('canvas.webgl') as HTMLCanvasElement);
+
 const newDiv = document.createElement("div");
 newDiv.innerHTML = "+";
 newDiv.style.zIndex = "3";
