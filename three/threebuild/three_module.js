@@ -4392,7 +4392,7 @@ const ShaderChunk = {
 const UniformsLib = {
 
 	common: {
-		dominic: { value: 0.8 },  /////
+		// dominic: { value: 0.8 },  /////
 		diffuse: { value: /*@__PURE__*/ new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
