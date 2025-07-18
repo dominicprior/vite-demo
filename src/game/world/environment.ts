@@ -1,5 +1,5 @@
 import { Color, Scene, DirectionalLight, MeshStandardMaterial,
-    SRGBColorSpace, Texture, Mesh, Object3D,
+    SRGBColorSpace, Texture, Mesh, Object3D, AmbientLight,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
@@ -20,7 +20,8 @@ export default class Environment {
         this.scene = scene;
         this.resources = resources;
         this.debug = debug;
-        this.setSunlight();
+        // this.setSunlight();
+        this.scene.add(new AmbientLight());
         this.setEnvironmentMap();
     }
 
