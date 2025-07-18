@@ -25,11 +25,11 @@ export default class Game {
     camera: Camera;
     renderer: Renderer;
     world: World;
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, fullScreen: boolean) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         this.debug = new Debug();
         this.test = new Test();
-        this.sizes = new Sizes();
+        this.sizes = new Sizes(fullScreen, canvas);
         this.time = new Time();
         this.keyboard = new Keyboard();
         this.scene = new Scene();

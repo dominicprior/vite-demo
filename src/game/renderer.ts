@@ -1,5 +1,5 @@
 import {
-    PCFSoftShadowMap,
+    // PCFSoftShadowMap,
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
 import type Sizes from './utils/sizes.js';
@@ -9,7 +9,7 @@ export default class Renderer {
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     scene: Scene;
-    camera: Camera
+    camera: Camera;
     // @ts-ignore: no initializer
     instance: WebGLRenderer;
 
