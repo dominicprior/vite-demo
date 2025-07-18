@@ -1,0 +1,17 @@
+import {
+    PerspectiveCamera,
+} from '../../../three/threebuild/three_module.js';
+
+
+export function sum(a: number, b: number) {
+    return a + b
+}
+
+export default class Wide extends PerspectiveCamera {
+    bend: number;
+
+    constructor( fov = 50, aspect = 1, near = 0.1, far = 2000 ) {
+		super(fov, aspect, near, far);
+        this.bend = 0;
+    }
+}

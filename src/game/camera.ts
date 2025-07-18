@@ -1,16 +1,16 @@
 import {
-    PerspectiveCamera,
     Scene,
     Vector3,
 } from '../../three/threebuild/three_module.js';
 import Sizes from './utils/sizes.js';
 import Player from './player.js';
+import Wide from './utils/wide.js';
 
 export default class Camera {
     sizes: Sizes;
     scene: Scene;
     // @ts-ignore: no initializer
-    instance: PerspectiveCamera;
+    instance: Wide;
 
     constructor(sizes: Sizes, scene: Scene) {
         this.sizes = sizes;
@@ -19,7 +19,7 @@ export default class Camera {
     }
 
     setInstance() {
-        this.instance = new PerspectiveCamera(
+        this.instance = new Wide(
                 75, this.sizes.width / this.sizes.height, 0.05, 100);
     }
             

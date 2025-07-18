@@ -4392,7 +4392,7 @@ const ShaderChunk = {
 const UniformsLib = {
 
 	common: {
-		dominic: { value: 0.6 },  /////
+		dominic: { value: 1 },  /////
 		diffuse: { value: /*@__PURE__*/ new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
@@ -20800,7 +20800,7 @@ class WebGLRenderer {
 
 			}
 // debugger;
-p_uniforms.setValue( _gl, 'dominic', 0.6);
+p_uniforms.setValue( _gl, 'dominic', 1);
 			if ( refreshProgram || _currentCamera !== camera ) {
 
 				// common camera uniforms
