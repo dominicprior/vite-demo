@@ -19983,7 +19983,7 @@ class WebGLRenderer {
 
 			renderStateStack.push( currentRenderState );
 
-			_projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+			_projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );  /////
 			_frustum.setFromProjectionMatrix( _projScreenMatrix );
 
 			_localClippingEnabled = this.localClippingEnabled;
@@ -20800,7 +20800,9 @@ class WebGLRenderer {
 
 			}
 // debugger;
-p_uniforms.setValue( _gl, 'dominic', 1);
+if (camera.isWide) {
+	p_uniforms.setValue( _gl, 'dominic', camera.bend);
+}
 			if ( refreshProgram || _currentCamera !== camera ) {
 
 				// common camera uniforms
