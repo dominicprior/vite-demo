@@ -22,7 +22,7 @@ export default class Environment {
         this.debug = debug;
         // this.setSunlight();
         this.scene.add(new AmbientLight());
-        this.setEnvironmentMap();
+        // this.setEnvironmentMap();
     }
 
     setSunlight() {
