@@ -14,7 +14,6 @@ import Keyboard from './utils/keyboard.js';
 import Player from './player.js';
 
 export default class Game {
-    canvas: HTMLCanvasElement;
     debug: Debug;
     test: Test;
     sizes: Sizes;
@@ -28,7 +27,6 @@ export default class Game {
     world: World;
     constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
-        this.canvas = canvas;
         this.debug = new Debug();
         this.test = new Test();
         this.sizes = new Sizes();
@@ -37,7 +35,7 @@ export default class Game {
         this.scene = new Scene();
         this.resources = new Resources(sources);
         this.camera = new Camera(this.sizes, this.scene);
-        this.renderer = new Renderer(this.canvas, this.sizes, this.scene, this.camera);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
         this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
         this.player = new Player(this.keyboard, this.time, this.camera, this.world);
         this.sizes.on('resize', this.resize.bind(this));  // See note 1.
