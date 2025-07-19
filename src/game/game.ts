@@ -23,10 +23,13 @@ export default class Game {
     resources: Resources;
     player: Player;
     camera: Camera;
+    camera2: Camera;
     renderer: Renderer;
+    renderer2: Renderer;
     world: World;
     constructor(canvas: HTMLCanvasElement, fullScreen: boolean) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
+        const canvas2 = document.querySelector('canvas.webgl2') as HTMLCanvasElement;
         this.debug = new Debug();
         this.test = new Test();
         this.sizes = new Sizes(fullScreen, canvas);
@@ -34,10 +37,12 @@ export default class Game {
         this.keyboard = new Keyboard();
         this.scene = new Scene();
         this.resources = new Resources(sources);
-        this.camera = new Camera(this.sizes, this.scene);
+        this.camera = new Camera(this.sizes, this.scene, 1.0, 75);
+        this.camera2 = new Camera(this.sizes, this.scene, 0.0, 120);
         this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
+        this.renderer2 = new Renderer(canvas2, this.sizes, this.scene, this.camera2);
         this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
-        this.player = new Player(this.keyboard, this.time, this.camera, this.world);
+        this.player = new Player(this.keyboard, this.time, this.camera, this.camera2, this.world);
         this.sizes.on('resize', this.resize.bind(this));  // See note 1.
         this.time.on('tick', () => {
             this.update();
@@ -47,13 +52,16 @@ export default class Game {
     resize() {
         this.camera.resize()
         this.renderer.resize();
+        this.renderer2.resize();
     }
 
     update() {
         this.player.update();
         this.camera.update(this.player);
+        this.camera2.update(this.player);
         this.world.update();
         this.renderer.update();
+        this.renderer2.update();
     }
 
     destroy() {  // I'm not sure if this is right, but it's interesting anyway.

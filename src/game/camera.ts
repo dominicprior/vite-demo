@@ -12,15 +12,15 @@ export default class Camera {
     // @ts-ignore: no initializer
     instance: Wide;
 
-    constructor(sizes: Sizes, scene: Scene) {
+    constructor(sizes: Sizes, scene: Scene, bend: number, fov: number) {
         this.sizes = sizes;
         this.scene = scene;
-        this.setInstance();
+        this.setInstance(bend, fov);
     }
 
-    setInstance() {
+    setInstance(bend: number, fov: number) {
         this.instance = new Wide(
-                75, this.sizes.width / this.sizes.height, 0.05, 100, 1.0);
+                fov, this.sizes.width / this.sizes.height, 0.05, 100, bend);
     }
             
     update(player: Player) {

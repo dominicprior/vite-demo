@@ -28,12 +28,14 @@ export default class Player {
     keyboard: Keyboard;
     time: Time;
     camera: Camera;
+    camera2: Camera;
     world: World;
 
-    constructor(keyboard: Keyboard, time: Time, camera: Camera, world: World) {
+    constructor(keyboard: Keyboard, time: Time, camera: Camera, camera2: Camera, world: World) {
         this.keyboard = keyboard;
         this.time = time;
         this.camera = camera;
+        this.camera2 = camera2;
         this.world = world;
     }
 
@@ -90,6 +92,7 @@ export default class Player {
 
         if (turning || moving || strafing || bouncing) {
             this.camera.update(this);
+            this.camera2.update(this);
         }
     }
 
