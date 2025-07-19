@@ -12,6 +12,7 @@ import Test from './utils/test.js';
 import sources from './sources.js';
 import Keyboard from './utils/keyboard.js';
 import Player from './player.js';
+import Stats from './utils/stats.js';
 
 export default class Game {
     debug: Debug;
@@ -26,6 +27,7 @@ export default class Game {
     camera2: Camera;
     renderer: Renderer;
     renderer2: Renderer;
+    stats: any;
     world: World;
     constructor(canvas: HTMLCanvasElement, fullScreen: boolean) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
@@ -43,9 +45,15 @@ export default class Game {
         this.renderer2 = new Renderer(canvas2, this.sizes, this.scene, this.camera2);
         this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
         this.player = new Player(this.keyboard, this.time, this.camera, this.camera2, this.world);
+        this.stats = Stats();
+        this.stats.showPanel(0);
+        document.body.appendChild(this.stats.dom);
+
         this.sizes.on('resize', this.resize.bind(this));  // See note 1.
         this.time.on('tick', () => {
+            this.stats.begin();
             this.update();
+            this.stats.end();
         })
     }
 
