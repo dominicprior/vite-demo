@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head>
+<title>Objects</title>
+<script type="module">
+const pr = console.log;
+
+// Changes to the Object.prototype object are seen by all objects through prototype chaining.
+
+// The value of this in JavaScript depends on how a function is invoked (runtime binding), not how it is defined.
+
+// The Object.getOwnPropertyNames() static method returns an array of all properties (including non-enumerable properties except for those which use Symbol) found directly in a given object.
+
+// __proto__ is an accessor property on all objects that points to their prototype object
+
+// prototype, on the other hand, is a property of constructor functions that defines the methods and properties shared by instances created using that constructor
+
+function C( namez ) {
+    this.namez = namez;
+    this.h = true;
+    this.i = false;
+}
+pr('C:', C);  // f C( namez )...
+pr('C.prototype:', C.prototype);  // {}
+pr('C.name:', C.name);  // C
+
+const x = new C('fido');
+C.prototype.u = 8;
+x.constructor.prototype.v = 9;
+pr('x:', x);  // C {namez: 'fido', h: true, i: false}
+pr('x.u:', x.u);  // 8
+pr('x.__proto__:', x.__proto__);  // {u: 8, v: 9 }
+// x.constructor.prototype === x.__proto__
+
+function sq(x) { return x*x }
+pr('sq:', sq);  // ƒ sq(x) { return x*x }
+pr('sq.prototype:', sq.prototype);  // {}
+pr('sq(2):', sq(2));  // 4
+pr('new sq(2):', new sq(2));  // sq {}
+pr('(new sq).constructor.name:', (new sq).constructor.name);  // sq
+
+class B { constructor() { this.bb = 1 } }
+const b = new B
+B.prototype.w = 7
+
+class A extends B {}
+const a = new A
+
+// A.__proto__ === B   // printed as class B {}
+// a.__proto__ === A.prototype    // printed as B {}
+// a is printed as A {}
+// b is printed as B {}
+
+
+class X {
+    constructor() {
+        this.a = 'b'
+    }
+    x() { }
+}
+
+X.prototype.y = function () { console.log('yyyy') }
+X.prototype.k = 5
+var xx = new X()
+X.prototype.kk = 55
+
+xx.y()
+
+
+
+function Rabbit() {
+    this.jumps = true;
+}
+let rabbit = new Rabbit;
+Rabbit = function() { this.sniffs = true }
+let animal = {
+  eats: true
+};
+rabbit.__proto__ = animal;
+animal.breathes = true;
+
+class Person {
+    talk() {
+       pr('talking')
+    }
+}
+
+class Student extends Person {
+  constructor(name, age) {
+    super();
+    this.name = name;
+    this.age = age;  
+  }
+}
+
+Student.prototype.talk = function(data) {
+    pr('shouting')
+}
+
+
+// 2. Class methods are defined on the constructor's prototype property
+// Object.assign( C.prototype, {
+//     walk: function() {
+//         this.i = true;
+//         return this;
+//     }
+// } );
+// C.prototype.w = function() {
+//         this.i = true;
+//         return this;
+//     };
+
+// pr(C);
+// const y = new C('rover');
+// pr(y);
+debugger;
+
+</script>
+</head>
