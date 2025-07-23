@@ -18,19 +18,18 @@ export default class Debug {
 }
 
 
+// const pr: (...args: any[]) => void = console.log
 
-const pr: (...args: any[]) => void = console.log
+// function fwd<T extends any[], R>(
+//     fn: (...args: T) => R
+// ): (...args: T) => R {
+//     return (...args: T) => fn(...args);
+// }
 
-function fwd<T extends any[], R>(
-    fn: (...args: T) => R
-): (...args: T) => R {
-    return (...args: T) => fn(...args);
-}
+// const pr2 = fwd(pr);
+// pr2('hi from pr2')
 
-const pr2 = fwd(pr);
-pr2('hi from pr2')
-
-function pr3(...args: any[]) {
-    pr(...args)
-}
-pr3('hi from pr3')
+// function pr3(...args: any[]) {
+//     pr(...args)
+// }
+// pr3('hi from pr3')
