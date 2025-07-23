@@ -29,8 +29,13 @@ export default class Game {
     renderer2: Renderer;
     stats: any;
     world: World;
+    ready: boolean = false;
+    doneARender: boolean = false;
+    stopAfterOneRender: boolean = true;
+
     constructor(canvas: HTMLCanvasElement, fullScreen: boolean) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
+        Object.defineProperty(window, 'pr', { value: console.log,  writable: true, });
         const canvas2 = document.querySelector('canvas.webgl2') as HTMLCanvasElement;
         this.debug = new Debug();
         this.test = new Test();
@@ -41,20 +46,31 @@ export default class Game {
         this.resources = new Resources(sources);
         this.camera = new Camera(this.sizes, this.scene, 1.0, 75);
         this.camera2 = new Camera(this.sizes, this.scene, 0.0, 120);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
-        this.renderer2 = new Renderer(canvas2, this.sizes, this.scene, this.camera2);
         this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
         this.player = new Player(this.keyboard, this.time, this.camera, this.camera2, this.world);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
+        this.renderer2 = new Renderer(canvas2, this.sizes, this.scene, this.camera2);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
 
         this.sizes.on('resize', this.resize.bind(this));  // See note 1.
         this.time.on('tick', () => {
-            this.stats.begin();
-            this.update();
-            this.stats.end();
-        })
+            if (this.ready) {
+                if (this.doneARender && this.stopAfterOneRender) {
+                    // we're not animating any more
+                }
+                else {
+                    this.stats.begin();
+                    this.update();
+                    this.stats.end();
+                    this.doneARender = true;
+                }
+            }
+        });
+        this.resources.on('ready', () => {
+            this.ready = true;
+        });
     }
 
     resize() {
