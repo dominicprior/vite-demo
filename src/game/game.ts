@@ -45,7 +45,7 @@ export default class Game {
         this.renderer2 = new Renderer(canvas2, this.sizes, this.scene, this.camera2);
         this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
         this.player = new Player(this.keyboard, this.time, this.camera, this.camera2, this.world);
-        this.stats = Stats();
+        this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
 
