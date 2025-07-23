@@ -2,6 +2,11 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+interface PanelResult {
+	dom: HTMLElement,
+	update: (value: number, maxValue: number) => void,
+}
+
 export default class Stats {
 	constructor() {
 
@@ -16,15 +21,14 @@ export default class Stats {
 
 		}, false);
 
-		//
-		function addPanel(panel) {
+		function addPanel(panel: PanelResult) {
 			container.appendChild(panel.dom);
 			return panel;
 		}
 
-		function showPanel(id) {
+		function showPanel(id: number) {
 			for (var i = 0; i < container.children.length; i++) {
-				container.children[i].style.display = i === id ? 'block' : 'none';
+				(container.children[i] as HTMLElement).style.display = i === id ? 'block' : 'none';
 			}
 
 			mode = id;
@@ -36,7 +40,7 @@ export default class Stats {
 		var fpsPanel = addPanel(Stats.Panel('FPS', '#0ff', '#002'));
 		var msPanel = addPanel(Stats.Panel('MS', '#0f0', '#020'));
 
-		if (self.performance && self.performance.memory) {
+		if (self.performance && (self.performance as any).memory) {
 			var memPanel = addPanel(Stats.Panel('MB', '#f08', '#201'));
 		}
 
@@ -61,7 +65,7 @@ export default class Stats {
 					prevTime = time;
 					frames = 0;
 					if (memPanel) {
-						var memory = performance.memory;
+						var memory = (performance as any).memory;
 						memPanel.update(memory.usedJSHeapSize / 1048576, memory.jsHeapSizeLimit / 1048576);
 					}
 				}
@@ -69,7 +73,7 @@ export default class Stats {
 			},
 
 			update: function () {
-				beginTime = this.end();
+				beginTime = (this as any).end();
 			},
 
 			// Backwards Compatibility
@@ -78,7 +82,7 @@ export default class Stats {
 		};
 
 	}
-	static Panel(name, fg, bg) {
+	static Panel(name: string, fg: string, bg: string): PanelResult {
 
 		var min = Infinity, max = 0, round = Math.round;
 		var PR = round(window.devicePixelRatio || 1);
@@ -90,7 +94,7 @@ export default class Stats {
 		canvas.height = HEIGHT;
 		canvas.style.cssText = 'width:80px;height:48px';
 
-		var context = canvas.getContext('2d');
+		var context: CanvasRenderingContext2D = (canvas.getContext('2d') as CanvasRenderingContext2D);
 		context.font = 'bold ' + (9 * PR) + 'px Helvetica,Arial,sans-serif';
 		context.textBaseline = 'top';
 
@@ -108,7 +112,7 @@ export default class Stats {
 		return {
 			dom: canvas,
 
-			update: function (value, maxValue) {
+			update: function (value: number, maxValue: number) {
 
 				min = Math.min(min, value);
 				max = Math.max(max, value);
@@ -126,9 +130,7 @@ export default class Stats {
 				context.fillStyle = bg;
 				context.globalAlpha = 0.9;
 				context.fillRect(GRAPH_X + GRAPH_WIDTH - PR, GRAPH_Y, PR, round((1 - (value / maxValue)) * GRAPH_HEIGHT));
-
 			}
 		};
-
 	}
 }
