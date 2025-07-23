@@ -4,20 +4,30 @@
 <script type="module">
 const pr = console.log;
 
-// Changes to the Object.prototype object are seen by all objects through prototype chaining.
-
 // The value of this in JavaScript depends on how a function is invoked (runtime binding), not how it is defined.
-
-// The Object.getOwnPropertyNames() static method returns an array of all properties (including non-enumerable properties except for those which use Symbol) found directly in a given object.
 
 // __proto__ is an accessor property on all objects that points to their prototype object
 
 // prototype, on the other hand, is a property of constructor functions that defines the methods and properties shared by instances created using that constructor
 
+// Object.keys() - own enumerable keys
+// Object.getOwnPropertyNames() - own keys
+// for...in - own&inh enumerable keys
+
+// new Set(a) - convert list to set
+// [...s] - convert set to list
+
+// A neat description: https://javascript.info/constructor-new
+
+// The prototype is only used for reading properties.
+// Write/delete operations work directly with the object.
+
+
 function C( namez ) {
     this.namez = namez;
     this.h = true;
     this.i = false;
+    return 4;
 }
 pr('C:', C);  // f C( namez )...
 pr('C.prototype:', C.prototype);  // {}
@@ -38,9 +48,15 @@ pr('sq(2):', sq(2));  // 4
 pr('new sq(2):', new sq(2));  // sq {}
 pr('(new sq).constructor.name:', (new sq).constructor.name);  // sq
 
-class B { constructor() { this.bb = 1 } }
+class B {
+  a = 1;
+  #b = 2;
+  constructor() { this.bb = 1 }
+}
 const b = new B
 B.prototype.w = 7
+pr(b);
+// pr(b['#b']);  // not allowed
 
 class A extends B {}
 const a = new A
@@ -96,23 +112,7 @@ Student.prototype.talk = function(data) {
     pr('shouting')
 }
 
-
-// 2. Class methods are defined on the constructor's prototype property
-// Object.assign( C.prototype, {
-//     walk: function() {
-//         this.i = true;
-//         return this;
-//     }
-// } );
-// C.prototype.w = function() {
-//         this.i = true;
-//         return this;
-//     };
-
-// pr(C);
-// const y = new C('rover');
-// pr(y);
-debugger;
+// debugger;
 
 </script>
 </head>
