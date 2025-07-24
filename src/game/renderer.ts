@@ -25,6 +25,7 @@ export default class Renderer {
     setInstance() {
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
+            // alpha: true,  // https://threejs.org/manual/#en/tips#transparent-canvas - otherwise Three.js makes the whole canvas opaque
             antialias: true,
         });  // Note the non-null assertion operator '!'
         this.instance.setSize(this.sizes.width, this.sizes.height);
