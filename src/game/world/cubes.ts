@@ -9,6 +9,12 @@ import Debug from '../utils/debug.js';
 import HorizontalBox from '../collisions/horizontalbox.js';
 import Player from '../player.js';
 
+// import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+// See https://threejs-journey.com/lessons/performance-tips around 35:00.
+// Or use a THREE.InstancedMesh.
+// Also see the matrix maths in https://threejs.org/docs/?q=matr#api/en/math/Matrix4
+// And https://discoverthreejs.com/tips-and-tricks/
+
 export default class Cubes {
     numRows: number = 2;
     numBands: number = 5;
