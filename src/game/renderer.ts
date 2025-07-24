@@ -25,7 +25,7 @@ export default class Renderer {
     setInstance() {
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
-            // alpha: true,  // https://threejs.org/manual/#en/tips#transparent-canvas - otherwise Three.js makes the whole canvas opaque
+            // alpha: true,  // https://threejs.org/manual/#en/tips#transparent-canvas - stops Three.js making the whole canvas opaque
             antialias: true,
         });  // Note the non-null assertion operator '!'
         this.instance.setSize(this.sizes.width, this.sizes.height);
@@ -40,8 +40,21 @@ export default class Renderer {
     }
 
     update() {
-        ////debugger;
+        // this.instance.setScissorTest(true);           // crops the picture
+        // this.instance.setScissor(50, 50, 100, 300);   // crops the picture
+        // this.instance.render(this.scene, this.camera.instance);
+
+        // this.instance.setScissorTest(true);           // crops the picture
+        // this.instance.setScissor(250, 50, 100, 300);  // crops the picture
+        // this.instance.render(this.scene, this.camera.instance);
+
+        // this.instance.setScissorTest(true);            // crops the picture
+        // this.instance.setScissor( 550, 150, 100, 100); // crops the picture
+        // this.instance.setViewport(550, 150, 100, 100); // shrinks the picture (and squashes it)
+        // this.instance.render(this.scene, this.camera.instance);
+
         this.instance.render(this.scene, this.camera.instance);
-        ////debugger;
     }
 }
+
+// currentViewport is Viewport multiplied by window.devicePixelRatio - https://discourse.threejs.org/t/using-viewport-with-rendertarget/42081/1
