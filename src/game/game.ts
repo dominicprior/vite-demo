@@ -31,12 +31,12 @@ export default class Game {
     doneARender: boolean = false;
     stopAfterOneRender: boolean = false;
 
-    constructor(canvas: HTMLCanvasElement, fullScreen: boolean) {
+    constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         Object.defineProperty(window, 'pr', { value: console.log,  writable: true, });
         this.debug = new Debug();
         this.test = new Test();
-        this.sizes = new Sizes(fullScreen, canvas);
+        this.sizes = new Sizes();
         this.time = new Time();
         this.keyboard = new Keyboard();
         this.scene = new Scene();
