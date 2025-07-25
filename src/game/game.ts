@@ -3,7 +3,6 @@ import {
 } from '../../three/threebuild/three_module.js';
 import Sizes from "./utils/sizes.js";
 import Time from "./utils/time.js";
-import Camera from './camera.js';
 import Renderer from './renderer.js';
 import World from './world/world.js';
 import Resources from './utils/resources.js';
@@ -23,7 +22,6 @@ export default class Game {
     scene: Scene;
     resources: Resources;
     player: Player;
-    camera: Camera;
     renderer: Renderer;
     stats: any;
     world: World;
@@ -41,10 +39,9 @@ export default class Game {
         this.keyboard = new Keyboard();
         this.scene = new Scene();
         this.resources = new Resources(sources);
-        this.camera = new Camera(this.sizes, 1.0, 75);
         this.world = new World(this.scene, this.resources, this.debug);
-        this.player = new Player(this.keyboard, this.time, this.camera, this.world);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
+        this.player = new Player(this.keyboard, this.time, this.world);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
@@ -69,13 +66,12 @@ export default class Game {
     }
 
     resize() {
-        this.camera.resize()
         this.renderer.resize();
     }
 
     update() {
         this.player.update();
-        this.camera.update(this.player);
+        this.renderer.camera.update(this.player);
         this.world.update(this.player);
         this.renderer.update();
     }

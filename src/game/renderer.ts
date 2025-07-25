@@ -3,7 +3,7 @@ import {
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
 import type Sizes from './utils/sizes.js';
-import type Camera from './camera.js';
+import Camera from './camera.js';
 
 export default class Renderer {
     canvas: HTMLCanvasElement | null;
@@ -14,11 +14,11 @@ export default class Renderer {
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
-                sizes: Sizes, scene: Scene, camera: Camera) {
+                sizes: Sizes, scene: Scene) {
         this.canvas = canvas;
         this.sizes = sizes;
         this.scene = scene;
-        this.camera = camera;
+        this.camera = new Camera(this.sizes, 1.0, 75);
         this.setInstance();
     }
 
@@ -37,7 +37,8 @@ export default class Renderer {
     resize() {
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-    }
+        this.camera.resize();
+}
 
     update() {
         // this.instance.setScissorTest(true);           // crops the picture

@@ -5,7 +5,6 @@ import {
 
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
-import Camera from './camera.js';
 import World from './world/world.js';
 
 // var _dummy = new Vector3();
@@ -27,13 +26,11 @@ export default class Player {
 
     keyboard: Keyboard;
     time: Time;
-    camera: Camera;
     world: World;
 
-    constructor(keyboard: Keyboard, time: Time, camera: Camera, world: World) {
+    constructor(keyboard: Keyboard, time: Time, world: World) {
         this.keyboard = keyboard;
         this.time = time;
-        this.camera = camera;
         this.world = world;
     }
 
