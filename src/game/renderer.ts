@@ -2,6 +2,7 @@ import {
     // PCFSoftShadowMap,
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
+import Player from './player.js';
 import type Sizes from './utils/sizes.js';
 import View from './view.js';
 
@@ -9,16 +10,18 @@ export default class Renderer {
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     scene: Scene;
-    view: View;
+    player: Player;
+    views: Array<View> = [];
     // @ts-ignore: no initializer
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
-                sizes: Sizes, scene: Scene) {
+                sizes: Sizes, scene: Scene, player: Player) {
         this.canvas = canvas;
         this.sizes = sizes;
         this.scene = scene;
-        this.view = new View(this.sizes, 1.0, 75);
+        this.player = player;
+        this.views.push(new View(this.sizes, 1.0, 75));
         this.setInstance();
     }
 
@@ -37,7 +40,9 @@ export default class Renderer {
     resize() {
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-        this.view.resize();
+        for (const view of this.views) {
+            view.resize();
+        }
 }
 
     update() {
@@ -53,8 +58,10 @@ export default class Renderer {
         // this.instance.setScissor( 550, 150, 100, 100); // crops the picture
         // this.instance.setViewport(550, 150, 100, 100); // shrinks the picture (and squashes it)
         // this.instance.render(this.scene, this.view.instance);
-
-        this.instance.render(this.scene, this.view.instance);
+        for (const view of this.views) {
+            view.update(this.player);
+            this.instance.render(this.scene, view.instance);
+        }
     }
 }
 

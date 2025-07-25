@@ -41,7 +41,7 @@ export default class Game {
         this.resources = new Resources(sources);
         this.world = new World(this.scene, this.resources, this.debug);
         this.player = new Player(this.keyboard, this.time, this.world);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.player);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
@@ -71,7 +71,6 @@ export default class Game {
 
     update() {
         this.player.update();
-        this.renderer.view.update(this.player);
         this.world.update(this.player);
         this.renderer.update();
     }
