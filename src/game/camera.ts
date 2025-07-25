@@ -8,17 +8,10 @@ import Wide from './utils/wide.js';
 
 export default class Camera {
     sizes: Sizes;
-    scene: Scene;
-    // @ts-ignore: no initializer
     instance: Wide;
 
-    constructor(sizes: Sizes, scene: Scene, bend: number, fov: number) {
+    constructor(sizes: Sizes, bend: number, fov: number) {
         this.sizes = sizes;
-        this.scene = scene;
-        this.setInstance(bend, fov);
-    }
-
-    setInstance(bend: number, fov: number) {
         this.instance = new Wide(
                 fov, this.sizes.width / this.sizes.height, 0.05, 100, bend);
     }

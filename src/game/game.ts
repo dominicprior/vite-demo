@@ -41,8 +41,8 @@ export default class Game {
         this.keyboard = new Keyboard();
         this.scene = new Scene();
         this.resources = new Resources(sources);
-        this.camera = new Camera(this.sizes, this.scene, 1.0, 75);
-        this.world = new World(this.scene, this.resources, this.debug);  // Initialize the world after the camera and renderer.
+        this.camera = new Camera(this.sizes, 1.0, 75);
+        this.world = new World(this.scene, this.resources, this.debug);
         this.player = new Player(this.keyboard, this.time, this.camera, this.world);
         this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera);
         this.stats = new Stats();

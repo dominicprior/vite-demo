@@ -90,10 +90,6 @@ export default class Player {
                 this.pos.z -= distance * Math.sin(this.bearing);
             }
         }
-
-        if (turning || moving || strafing || bouncing) {
-            this.camera.update(this);
-        }
     }
 
 }
