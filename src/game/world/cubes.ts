@@ -44,6 +44,7 @@ export default class Cubes {
         mesh.position.x = this.stride * (i - (this.numRows - 1) / 2);
         mesh.position.y = 0.5;
         mesh.position.z = 0;
+        mesh.layers.enableAll();
         // this.mesh.receiveShadow = true
         this.meshes.push(mesh);
         this.scene.add(mesh);
