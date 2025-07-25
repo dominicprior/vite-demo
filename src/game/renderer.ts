@@ -3,7 +3,7 @@ import {
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
 import type Sizes from './utils/sizes.js';
-import View from './camera.js';
+import View from './view.js';
 
 export default class Renderer {
     canvas: HTMLCanvasElement | null;
