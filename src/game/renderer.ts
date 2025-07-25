@@ -3,13 +3,13 @@ import {
     Scene, WebGLRenderer,
 } from '../../three/threebuild/three_module.js';
 import type Sizes from './utils/sizes.js';
-import Camera from './camera.js';
+import View from './camera.js';
 
 export default class Renderer {
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     scene: Scene;
-    camera: Camera;
+    view: View;
     // @ts-ignore: no initializer
     instance: WebGLRenderer;
 
@@ -18,7 +18,7 @@ export default class Renderer {
         this.canvas = canvas;
         this.sizes = sizes;
         this.scene = scene;
-        this.camera = new Camera(this.sizes, 1.0, 75);
+        this.view = new View(this.sizes, 1.0, 75);
         this.setInstance();
     }
 
@@ -37,24 +37,24 @@ export default class Renderer {
     resize() {
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-        this.camera.resize();
+        this.view.resize();
 }
 
     update() {
         // this.instance.setScissorTest(true);           // crops the picture
         // this.instance.setScissor(50, 50, 100, 300);   // crops the picture
-        // this.instance.render(this.scene, this.camera.instance);
+        // this.instance.render(this.scene, this.view.instance);
 
         // this.instance.setScissorTest(true);           // crops the picture
         // this.instance.setScissor(250, 50, 100, 300);  // crops the picture
-        // this.instance.render(this.scene, this.camera.instance);
+        // this.instance.render(this.scene, this.view.instance);
 
         // this.instance.setScissorTest(true);            // crops the picture
         // this.instance.setScissor( 550, 150, 100, 100); // crops the picture
         // this.instance.setViewport(550, 150, 100, 100); // shrinks the picture (and squashes it)
-        // this.instance.render(this.scene, this.camera.instance);
+        // this.instance.render(this.scene, this.view.instance);
 
-        this.instance.render(this.scene, this.camera.instance);
+        this.instance.render(this.scene, this.view.instance);
     }
 }
 

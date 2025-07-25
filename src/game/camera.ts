@@ -1,12 +1,11 @@
 import {
-    Scene,
     Vector3,
 } from '../../three/threebuild/three_module.js';
 import Sizes from './utils/sizes.js';
 import Player from './player.js';
 import Wide from './utils/wide.js';
 
-export default class Camera {
+export default class View {
     sizes: Sizes;
     instance: Wide;
 

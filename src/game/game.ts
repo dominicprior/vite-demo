@@ -71,7 +71,7 @@ export default class Game {
 
     update() {
         this.player.update();
-        this.renderer.camera.update(this.player);
+        this.renderer.view.update(this.player);
         this.world.update(this.player);
         this.renderer.update();
     }
