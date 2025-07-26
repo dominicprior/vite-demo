@@ -7,23 +7,23 @@ import Wide from './utils/wide.js';
 
 export default class View {
     sizes: Sizes;
-    instance: Wide;
+    camera: Wide;
 
     constructor(sizes: Sizes, bend: number, fov: number) {
         this.sizes = sizes;
-        this.instance = new Wide(
+        this.camera = new Wide(
                 fov, this.sizes.width / this.sizes.height, 0.05, 100, bend);
     }
             
     update(player: Player) {
         const pos = player.pos;
-        this.instance.position.set(pos.x, pos.y, pos.z);
-        this.instance.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing);
-        // this.scene.add(this.instance);
+        this.camera.position.set(pos.x, pos.y, pos.z);
+        this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing);
+        // this.scene.add(this.camera);
     }
 
     resize() {
-        this.instance.aspect = this.sizes.width / this.sizes.height;
-        this.instance.updateProjectionMatrix();
+        this.camera.aspect = this.sizes.width / this.sizes.height;
+        this.camera.updateProjectionMatrix();
     }
 }

@@ -60,7 +60,7 @@ export default class Renderer {
         // this.instance.render(this.scene, this.view.instance);
         for (const view of this.views) {
             view.update(this.player);
-            this.instance.render(this.scene, view.instance);
+            this.instance.render(this.scene, view.camera);
         }
     }
 }
