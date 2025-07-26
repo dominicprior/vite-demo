@@ -21,6 +21,7 @@ export default class Renderer {
         this.sizes = sizes;
         this.scene = scene;
         this.player = player;
+        this.views.push(new View(this.sizes, 1.0, 75,  0,   0,  1, 1));
         this.views.push(new View(this.sizes, 1.0, 75,  0,   0,  0.3, 0.3));
         this.views.push(new View(this.sizes, 1.0, 75,  0.7, 0,  0.3, 0.3));
         this.setInstance();
@@ -54,12 +55,13 @@ export default class Renderer {
                                   view.w * this.sizes.width,
                                   view.h * this.sizes.height);
             this.instance.setViewport(v);
-            this.instance.setScissorTest(true);
             this.instance.setScissor(v);
+            this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
 
             this.instance.render(this.scene, view.camera);
         }
     }
 }
 
-// currentViewport is Viewport multiplied by window.devicePixelRatio - https://discourse.threejs.org/t/using-viewport-with-rendertarget/42081/1
+// currentViewport is Viewport multiplied by window.devicePixelRatio
+// https://discourse.threejs.org/t/using-viewport-with-rendertarget/42081/1
