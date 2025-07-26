@@ -20,9 +20,7 @@ export default class View {
         this.y = y;
         this.w = w;
         this.h = h;
-        this.camera = new Wide(fov,
-                            (this.sizes.width * this.w) / (this.sizes.height * this.h),
-                            0.05, 100, bend);
+        this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend);
     }
 
     update(player: Player) {
@@ -33,7 +31,11 @@ export default class View {
     }
 
     resize() {
-        this.camera.aspect = (this.sizes.width * this.w) / (this.sizes.height * this.h);
+        this.camera.aspect = this.aspect();
         this.camera.updateProjectionMatrix();
+    }
+
+    aspect() {
+        return (this.sizes.width * this.w) / (this.sizes.height * this.h);
     }
 }

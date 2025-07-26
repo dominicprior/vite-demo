@@ -1,6 +1,6 @@
 import {
     // PCFSoftShadowMap,
-    Scene, WebGLRenderer,
+    Scene, WebGLRenderer, Vector4,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
 import type Sizes from './utils/sizes.js';
@@ -49,17 +49,13 @@ export default class Renderer {
     update() {
         for (const view of this.views) {
             view.update(this.player);
-            this.instance.setViewport(
-                    view.x * this.sizes.width,
-                    view.y * this.sizes.height,
-                    view.w * this.sizes.width,
-                    view.h * this.sizes.height);
+            const v = new Vector4(view.x * this.sizes.width,
+                                  view.y * this.sizes.height,
+                                  view.w * this.sizes.width,
+                                  view.h * this.sizes.height);
+            this.instance.setViewport(v);
             this.instance.setScissorTest(true);
-            this.instance.setScissor(
-                    view.x * this.sizes.width,
-                    view.y * this.sizes.height,
-                    view.w * this.sizes.width,
-                    view.h * this.sizes.height);
+            this.instance.setScissor(v);
 
             this.instance.render(this.scene, view.camera);
         }
