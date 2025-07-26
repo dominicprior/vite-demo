@@ -2177,7 +2177,10 @@ vec4 q = modelViewMatrix * mvPosition;
 float d = length( q.xyz );
 q.z -= d * dominic;
 gl_Position = projectionMatrix * q;
-gl_Position.x *= xScale;
+// gl_Position.x *= xScale;  /// this causes all sorts of confusion!
+// e.g. it turns objects inside out!  And making the materials double-sided seems to lose the shiny appearance
+// (as well as doubling the costs!).  It seems like back-facing triangles are culled by three.js rather than
+// either of the shaders.
 `;
 
 var dithering_fragment = `
