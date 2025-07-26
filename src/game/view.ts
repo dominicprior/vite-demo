@@ -12,21 +12,23 @@ export default class View {
     y: number;
     w: number;
     h: number;
+    relativeBearing: number;
 
     constructor(sizes: Sizes, bend: number, fov: number,
-                x: number, y: number, w: number, h: number, ) {
+                x: number, y: number, w: number, h: number, relativeBearing: number) {
         this.sizes = sizes;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
+        this.relativeBearing = relativeBearing;
         this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend);
     }
 
     update(player: Player) {
         const pos = player.pos;
         this.camera.position.set(pos.x, pos.y, pos.z);
-        this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing);
+        this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing + this.relativeBearing);
         // this.scene.add(this.camera);
     }
 
