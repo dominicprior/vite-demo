@@ -21,7 +21,8 @@ export default class Renderer {
         this.sizes = sizes;
         this.scene = scene;
         this.player = player;
-        this.views.push(new View(this.sizes, 1.0, 75));
+        this.views.push(new View(this.sizes, 1.0, 75,  0,   0,  0.3, 0.3));
+        this.views.push(new View(this.sizes, 1.0, 75,  0.7, 0,  0.3, 0.3));
         this.setInstance();
     }
 
@@ -46,20 +47,20 @@ export default class Renderer {
 }
 
     update() {
-        // this.instance.setScissorTest(true);           // crops the picture
-        // this.instance.setScissor(50, 50, 100, 300);   // crops the picture
-        // this.instance.render(this.scene, this.view.instance);
-
-        // this.instance.setScissorTest(true);           // crops the picture
-        // this.instance.setScissor(250, 50, 100, 300);  // crops the picture
-        // this.instance.render(this.scene, this.view.instance);
-
-        // this.instance.setScissorTest(true);            // crops the picture
-        // this.instance.setScissor( 550, 150, 100, 100); // crops the picture
-        // this.instance.setViewport(550, 150, 100, 100); // shrinks the picture (and squashes it)
-        // this.instance.render(this.scene, this.view.instance);
         for (const view of this.views) {
             view.update(this.player);
+            this.instance.setViewport(
+                    view.x * this.sizes.width,
+                    view.y * this.sizes.height,
+                    view.w * this.sizes.width,
+                    view.h * this.sizes.height);
+            this.instance.setScissorTest(true);
+            this.instance.setScissor(
+                    view.x * this.sizes.width,
+                    view.y * this.sizes.height,
+                    view.w * this.sizes.width,
+                    view.h * this.sizes.height);
+
             this.instance.render(this.scene, view.camera);
         }
     }

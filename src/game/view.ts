@@ -8,13 +8,23 @@ import Wide from './utils/wide.js';
 export default class View {
     sizes: Sizes;
     camera: Wide;
+    x: number;  // as proportions of the whole screen
+    y: number;
+    w: number;
+    h: number;
 
-    constructor(sizes: Sizes, bend: number, fov: number) {
+    constructor(sizes: Sizes, bend: number, fov: number,
+                x: number, y: number, w: number, h: number, ) {
         this.sizes = sizes;
-        this.camera = new Wide(
-                fov, this.sizes.width / this.sizes.height, 0.05, 100, bend);
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.camera = new Wide(fov,
+                            (this.sizes.width * this.w) / (this.sizes.height * this.h),
+                            0.05, 100, bend);
     }
-            
+
     update(player: Player) {
         const pos = player.pos;
         this.camera.position.set(pos.x, pos.y, pos.z);
@@ -23,7 +33,7 @@ export default class View {
     }
 
     resize() {
-        this.camera.aspect = this.sizes.width / this.sizes.height;
+        this.camera.aspect = (this.sizes.width * this.w) / (this.sizes.height * this.h);
         this.camera.updateProjectionMatrix();
     }
 }
