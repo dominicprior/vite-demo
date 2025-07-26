@@ -14,7 +14,7 @@ export default class View {
     h: number;
     relativeBearing: number;
 
-    constructor(sizes: Sizes, bend: number, fov: number,
+    constructor(sizes: Sizes, bend: number, xScale: number, fov: number,
                 x: number, y: number, w: number, h: number, relativeBearing: number) {
         this.sizes = sizes;
         this.x = x;
@@ -22,7 +22,7 @@ export default class View {
         this.w = w;
         this.h = h;
         this.relativeBearing = relativeBearing;
-        this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend);
+        this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend, xScale);
     }
 
     update(player: Player) {

@@ -21,11 +21,11 @@ export default class Renderer {
         this.sizes = sizes;
         this.scene = scene;
         this.player = player;
-        this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  1,   1,   0));
+        this.views.push(new View(this.sizes, 1.0, -1.0, 55,  0,   0,  1,   1,   0));
         // Unintuitive views
         // this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  0.1, 0.2,   Math.PI * 0.75));
         // this.views.push(new View(this.sizes, 1.0, 55,  0.9, 0,  0.1, 0.2, - Math.PI * 0.75));
-        this.views.push(new View(this.sizes, 1.0, 55,  0.45, 0,  0.1, 0.1, Math.PI));
+        this.views.push(new View(this.sizes, 1.0, 1.0, 55,  0.45, 0,  0.1, 0.1, Math.PI));
         this.setInstance();
     }
 

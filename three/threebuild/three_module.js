@@ -2177,7 +2177,7 @@ vec4 q = modelViewMatrix * mvPosition;
 float d = length( q.xyz );
 q.z -= d * dominic;
 gl_Position = projectionMatrix * q;
-// gl_Position.x *= 0.5;
+gl_Position.x *= xScale;
 `;
 
 var dithering_fragment = `
@@ -9898,6 +9898,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			'uniform mat4 modelViewMatrix;',
 			'uniform mat4 projectionMatrix;',
 			'uniform float dominic;',  /////
+			'uniform float xScale;',
 			'uniform mat4 viewMatrix;',
 			'uniform mat3 normalMatrix;',
 			'uniform vec3 cameraPosition;',
@@ -20813,6 +20814,7 @@ class WebGLRenderer {
 if (camera.isWide) {
 	////debugger;
 	p_uniforms.setValue( _gl, 'dominic', camera.bend);
+	p_uniforms.setValue( _gl, 'xScale', camera.xScale);
 	////debugger;
 }
 			if ( refreshProgram || _currentCamera !== camera ) {
