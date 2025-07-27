@@ -1,7 +1,7 @@
 import {
     // PCFSoftShadowMap,
-    Scene, WebGLRenderer, Vector4, WebGLRenderTarget, OrthographicCamera,
-    Vector3, MeshBasicMaterial, PlaneGeometry, BackSide, Mesh,
+    Scene, WebGLRenderer, Vector4, WebGLRenderTarget, OrthographicCamera, DoubleSide,
+    Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BoxGeometry,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
 import type Sizes from './utils/sizes.js';
@@ -80,7 +80,7 @@ export default class Renderer {
         this.instance.setRenderTarget(null);
 
         // Set up an ortho camera (mirroring by looking backwards).
-        const orthoCamera = new OrthographicCamera(-1, 1,  -1, 1,  0.1, 10 );
+        const orthoCamera = new OrthographicCamera(-1, 1,  1, -1,  0.1, 10 );
         orthoCamera.position.set(0, 0, 2);
         orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
         orthoCamera.lookAt(new Vector3);
@@ -88,7 +88,6 @@ export default class Renderer {
         // Create a scene containing a plane textured from the buffer.
         const orthoScene = new Scene();
         const material = new MeshBasicMaterial({
-                side: BackSide,
                 map: renderTarget.texture,
         });
         const plane = new Mesh(new PlaneGeometry(2, 2), material);
