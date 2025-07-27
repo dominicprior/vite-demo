@@ -12,10 +12,6 @@ const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({ canvas: container!, antialias: true });
 renderer.setSize(w, h);
 
-const renderer2 = new WebGLRenderer({ antialias: false });
-renderer2.setSize(w, h);
-document.body.appendChild( renderer2.domElement );
-
 // Set up the scene and the camera.
 const geometry = new BoxGeometry( 1, 1, 1 );
 const yellow = new MeshBasicMaterial( { color: 0xffffc0 } );
@@ -89,7 +85,7 @@ else {
 }
 
 // @ts-ignore
-window.r = renderer; window.r2 = renderer2;
+window.r = renderer;
 
 // renderer.getContext().getExtension('WEBGL_lose_context')!.loseContext();
 // renderer.forceContextLoss();
@@ -104,4 +100,3 @@ window.r = renderer; window.r2 = renderer2;
 //     antialias: true,   // doesn't work - need to dispose of the renderer (and hence the gl).
 //     context: glContext,
 // });
-
