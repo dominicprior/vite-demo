@@ -31,6 +31,7 @@ camera.position.set(0, 0, 2);
 if (1) {
     // Draw the yellow and red squares into the renderTarget.
     const renderTarget = new WebGLRenderTarget(w, h);
+    renderTarget.samples = 4;
     renderer.setRenderTarget(renderTarget);
     renderer.render(scene, camera);
     renderer.setRenderTarget(null);
