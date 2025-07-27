@@ -26,7 +26,8 @@ export default class Renderer {
         // Unintuitive views
         // this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  0.1, 0.2,   Math.PI * 0.75));
         // this.views.push(new View(this.sizes, 1.0, 55,  0.9, 0,  0.1, 0.2, - Math.PI * 0.75));
-        this.views.push(new View(this.sizes, 1.0, 1.0, 55,  0.45, 0,  0.1, 0.1, Math.PI, true));
+        const k = 0.16;
+        this.views.push(new View(this.sizes, 1.0, 1.0, 55,  0.5 - k/2, 0.99-k,  k, k, Math.PI, true));
         this.setInstance();
     }
 
