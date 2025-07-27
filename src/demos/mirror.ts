@@ -43,7 +43,7 @@ if (1) {
             varying vec2 vUv;
             void main() {
                 vUv = uv;
-                gl_Position.xy = position.xy;
+                gl_Position = vec4(position.xy, 0.0, 1.0);
             }
         `;
         material.fragmentShader = `
