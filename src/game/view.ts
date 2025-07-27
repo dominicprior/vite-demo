@@ -13,15 +13,18 @@ export default class View {
     w: number;
     h: number;
     relativeBearing: number;
+    mirrored: boolean;
 
     constructor(sizes: Sizes, bend: number, xScale: number, fov: number,
-                x: number, y: number, w: number, h: number, relativeBearing: number) {
+                x: number, y: number, w: number, h: number, relativeBearing: number,
+                mirrored: boolean) {
         this.sizes = sizes;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.relativeBearing = relativeBearing;
+        this.mirrored = mirrored;
         this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend, xScale);
     }
 
