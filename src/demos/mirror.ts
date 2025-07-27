@@ -1,12 +1,12 @@
 import {
     Scene, PerspectiveCamera, WebGLRenderer, OrthographicCamera,
     MeshBasicMaterial, Mesh, BoxGeometry, WebGLRenderTarget, PlaneGeometry,
-    Vector3, DoubleSide,
+    Vector3, BackSide,
 } from '../../three/threebuild/three_module.js';
 const scene = new Scene();
 const camera = new PerspectiveCamera( 75, 2, 0.1, 1000 );
 const container = document.querySelector('canvas.webgl');
-const renderer = new WebGLRenderer({ canvas: container!, antialias: true });
+const renderer = new WebGLRenderer({ canvas: container!, antialias: false });
 document.body.appendChild( renderer.domElement );
 const geometry = new BoxGeometry( 1, 1, 1 );
 const green = new MeshBasicMaterial( { color: 0x00ff00 } );
@@ -34,7 +34,7 @@ if (1) {
     const plane = new Mesh(
         new PlaneGeometry(2, 2),
         new MeshBasicMaterial({
-            side: DoubleSide,
+            side: BackSide,
             map: renderTarget.texture,
             // wireframe: true,
             // color: 0xff6f00
