@@ -72,8 +72,8 @@ export default class Renderer {
 
     drawMirrored(view: View) {
         // Render the scene into a buffer.
-        const renderTarget = new WebGLRenderTarget(view.x * this.sizes.width,
-                                                   view.y * this.sizes.height);
+        const renderTarget = new WebGLRenderTarget(view.w * this.sizes.width,
+                                                   view.h * this.sizes.height);
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
         this.instance.render(this.scene, view.camera);
