@@ -9,39 +9,41 @@ const w = 120;
 const h = 80;
 const camera = new PerspectiveCamera( 75, w/h, 0.1, 1000 );
 const container = document.querySelector('canvas.webgl');
-const renderer = new WebGLRenderer({ canvas: container!, antialias: false });
+const renderer = new WebGLRenderer({ canvas: container!, antialias: true });
 renderer.setSize(w, h);
 
 const renderer2 = new WebGLRenderer({ antialias: false });
 renderer2.setSize(w, h);
 document.body.appendChild( renderer2.domElement );
 
+// Set up the scene and the camera.
 const geometry = new BoxGeometry( 1, 1, 1 );
-const green = new MeshBasicMaterial( { color: 0xffffc0 } );
+const yellow = new MeshBasicMaterial( { color: 0xffffc0 } );
 const red = new MeshBasicMaterial( { color: 0xff0000 } );
-const greenCube = new Mesh( geometry, green );
-greenCube.rotateZ(0.2)
-scene.add(greenCube);
+const yellowCube = new Mesh( geometry, yellow );
+yellowCube.rotateZ(0.2)
+scene.add(yellowCube);
 const redCube = new Mesh( geometry, red );
 redCube.translateX(0.7);
 scene.add(redCube);
 camera.position.set(0, 0, 2);
 
-
 if (1) {
-    // Drawing stuff via the renderTarget so we can do a mirror flip.
-    // But, unfortunately, the antialiasing seems to get lost.
-    // Maybe a custom shader would be more precise.
-    const renderTarget = new WebGLRenderTarget(w, h);  // contains the green and red squares
+    // Draw the yellow and red squares into the renderTarget.
+    const renderTarget = new WebGLRenderTarget(w, h);
     renderer.setRenderTarget(renderTarget);
     renderer.render(scene, camera);
     renderer.setRenderTarget(null);
-    const orthoScene = new Scene();  // using an ortho so we can avoid the projectionMatrix etc.
+
+    // Carefully set up an ortho camera so we have to option of avoiding the projectionMatrix etc.
+    const orthoScene = new Scene();
     const orthoCamera = new OrthographicCamera(-1, 1,  -1, 1,  0.1, 10 );
     orthoCamera.position.set(0, 0, 2);
     orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
     orthoCamera.lookAt(new Vector3);
+
     if (1) {
+        // Use mirror flip shaders for drawing the texture onto the canvas.
         const material = new RawShaderMaterial();
         material.uniforms = {
         	blue: { value: 0.2 },
@@ -70,7 +72,7 @@ if (1) {
         orthoScene.add(plane);
     }
     else {
-        // using a simple material
+        // Use the higher level three.js
         const material: Material = new MeshBasicMaterial({
                 side: BackSide,
                 map: renderTarget.texture,
@@ -81,7 +83,7 @@ if (1) {
     renderer.render(orthoScene, orthoCamera);
 }
 else {
-    // drawing stuff directly
+    // Draw the squares directly without going via a render target.
     renderer.render(scene, camera);
 }
 
