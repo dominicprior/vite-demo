@@ -1,15 +1,23 @@
 import {
     Scene, PerspectiveCamera, WebGLRenderer, OrthographicCamera,
     MeshBasicMaterial, Mesh, BoxGeometry, WebGLRenderTarget, PlaneGeometry,
-    Vector3, BackSide, RawShaderMaterial, Material,
+    Vector3, BackSide, RawShaderMaterial, Material, Color,
 } from '../../three/threebuild/three_module.js';
 const scene = new Scene();
-const camera = new PerspectiveCamera( 75, 2, 0.1, 1000 );
+scene.background = new Color('black');
+const w = 120;
+const h = 80;
+const camera = new PerspectiveCamera( 75, w/h, 0.1, 1000 );
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({ canvas: container!, antialias: false });
-document.body.appendChild( renderer.domElement );
+renderer.setSize(w, h);
+
+const renderer2 = new WebGLRenderer({ antialias: false });
+renderer2.setSize(w, h);
+document.body.appendChild( renderer2.domElement );
+
 const geometry = new BoxGeometry( 1, 1, 1 );
-const green = new MeshBasicMaterial( { color: 0x00ff00 } );
+const green = new MeshBasicMaterial( { color: 0xffffc0 } );
 const red = new MeshBasicMaterial( { color: 0xff0000 } );
 const greenCube = new Mesh( geometry, green );
 greenCube.rotateZ(0.2)
@@ -18,11 +26,13 @@ const redCube = new Mesh( geometry, red );
 redCube.translateX(0.7);
 scene.add(redCube);
 camera.position.set(0, 0, 2);
-const renderTarget = new WebGLRenderTarget(300, 150);  // contains the green and red squares
+
+
 if (1) {
     // Drawing stuff via the renderTarget so we can do a mirror flip.
     // But, unfortunately, the antialiasing seems to get lost.
     // Maybe a custom shader would be more precise.
+    const renderTarget = new WebGLRenderTarget(w, h);  // contains the green and red squares
     renderer.setRenderTarget(renderTarget);
     renderer.render(scene, camera);
     renderer.setRenderTarget(null);
@@ -52,7 +62,8 @@ if (1) {
             uniform sampler2D uTexture;
             varying vec2 vUv;
             void main() {
-                gl_FragColor = vec4(1.0, vUv, 1.0);
+                // vec4 texture2D(sampler2D sampler, vec2 coord)  
+                gl_FragColor = texture2D(uTexture, vec2(1.0 - vUv.x, vUv.y));
             }
         `;
         const plane = new Mesh(new PlaneGeometry(2, 2), material);
@@ -73,3 +84,21 @@ else {
     // drawing stuff directly
     renderer.render(scene, camera);
 }
+
+// @ts-ignore
+window.r = renderer; window.r2 = renderer2;
+
+// renderer.getContext().getExtension('WEBGL_lose_context')!.loseContext();
+// renderer.forceContextLoss();
+// renderer.dispose();
+// const renderer2 = new WebGLRenderer({ canvas: container!, antialias: true });
+// Cannot read properties of null (reading 'precision')
+//           if ( gl.getShaderPrecisionFormat( gl.VERTEX_SHADER, gl.HIGH_FLOAT ).precision > 0 &&
+
+// const glContext = renderer.getContext();
+// const renderer2 = new WebGLRenderer({
+//     canvas: container!,
+//     antialias: true,   // doesn't work - need to dispose of the renderer (and hence the gl).
+//     context: glContext,
+// });
+
