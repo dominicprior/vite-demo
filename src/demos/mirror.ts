@@ -1,7 +1,7 @@
 import {
     Scene, PerspectiveCamera, WebGLRenderer, OrthographicCamera,
     MeshBasicMaterial, Mesh, BoxGeometry, WebGLRenderTarget, PlaneGeometry,
-    Vector3, BackSide,
+    Vector3, BackSide, RawShaderMaterial, Material,
 } from '../../three/threebuild/three_module.js';
 const scene = new Scene();
 const camera = new PerspectiveCamera( 75, 2, 0.1, 1000 );
@@ -31,15 +31,31 @@ if (1) {
     orthoCamera.position.set(0, 0, 2);
     orthoCamera.up = new Vector3(0, -1, 0);
     orthoCamera.lookAt(new Vector3);
-    const plane = new Mesh(
-        new PlaneGeometry(2, 2),
-        new MeshBasicMaterial({
-            side: BackSide,
-            map: renderTarget.texture,
-            // wireframe: true,
-            // color: 0xff6f00
-        }));
-    orthoScene.add(plane);
+    if (1) {
+        const material = new RawShaderMaterial();
+        material.vertexShader = `
+            attribute vec3 position;
+            void main() {
+                gl_Position.xy = position.xy;
+            }
+        `;
+        material.fragmentShader = `
+            precision mediump float;
+            void main() {
+                gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+            }
+        `;
+        const plane = new Mesh(new PlaneGeometry(2, 2), material);
+        orthoScene.add(plane);
+    }
+    else {
+        const material: Material = new MeshBasicMaterial({
+                side: BackSide,
+                map: renderTarget.texture,
+        });
+        const plane = new Mesh(new PlaneGeometry(2, 2), material);
+        orthoScene.add(plane);
+    }
     renderer.render(orthoScene, orthoCamera);
 }
 else {
