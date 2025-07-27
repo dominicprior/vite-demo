@@ -39,8 +39,9 @@ if (1) {
     orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
     orthoCamera.lookAt(new Vector3);
 
-    if (1) {
+    if (0) {
         // Use mirror flip shaders for drawing the texture onto the canvas.
+        // (It seems to get the gamma correction wrong!)
         const material = new RawShaderMaterial();
         material.uniforms = {
         	blue: { value: 0.2 },
