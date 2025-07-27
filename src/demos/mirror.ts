@@ -33,16 +33,26 @@ if (1) {
     orthoCamera.lookAt(new Vector3);
     if (1) {
         const material = new RawShaderMaterial();
+        material.uniforms = {
+        	blue: { value: 0.2 },
+            uTexture: { value: renderTarget.texture },
+        };
         material.vertexShader = `
             attribute vec3 position;
+            attribute vec2 uv;
+            varying vec2 vUv;
             void main() {
+                vUv = uv;
                 gl_Position.xy = position.xy;
             }
         `;
         material.fragmentShader = `
             precision mediump float;
+            uniform float blue;
+            uniform sampler2D uTexture;
+            varying vec2 vUv;
             void main() {
-                gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+                gl_FragColor = vec4(1.0, vUv, 1.0);
             }
         `;
         const plane = new Mesh(new PlaneGeometry(2, 2), material);
