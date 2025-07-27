@@ -1,7 +1,7 @@
 import {
     // PCFSoftShadowMap,
-    Scene, WebGLRenderer, Vector4, WebGLRenderTarget, OrthographicCamera, DoubleSide,
-    Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BoxGeometry,
+    Scene, WebGLRenderer, Vector4, WebGLRenderTarget, OrthographicCamera,
+    Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
 import type Sizes from './utils/sizes.js';
@@ -82,18 +82,30 @@ export default class Renderer {
 
         // Set up an ortho camera (mirroring by looking backwards).
         const orthoCamera = new OrthographicCamera(-1, 1,  1, -1,  0.1, 10 );
-        orthoCamera.position.set(0, 0, 2);
-        orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
+        orthoCamera.position.set(0, 0, -2);
+        // orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
         orthoCamera.lookAt(new Vector3);
 
         // Create a scene containing a plane textured from the buffer.
         const orthoScene = new Scene();
         const material = new MeshBasicMaterial({
                 map: renderTarget.texture,
+                side: BackSide,
         });
         const plane = new Mesh(new PlaneGeometry(2, 2), material);
         orthoScene.add(plane);
 
+        const rimMaterial = new MeshBasicMaterial({
+                color: 'white',
+                side: BackSide,
+        });
+        const wideGeom = new PlaneGeometry(1.99, .01);
+        orthoScene.add(new Mesh(wideGeom, rimMaterial).translateZ(-0.1).translateY(-1));
+        orthoScene.add(new Mesh(wideGeom, rimMaterial).translateZ(-0.1).translateY(1));
+        const tallGeom = new PlaneGeometry(.005, 1.99);
+        orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(-1));
+        orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(1));
+        
         const v = new Vector4(view.x * this.sizes.width,
                                 view.y * this.sizes.height,
                                 view.w * this.sizes.width,
