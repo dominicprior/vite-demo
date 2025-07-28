@@ -1,6 +1,6 @@
-import { Color, Scene, DirectionalLight, MeshStandardMaterial,
+import { Scene, DirectionalLight, MeshStandardMaterial,
     SRGBColorSpace, Texture, Mesh, Object3D, DataTexture,
-    UnsignedByteType, RGBAFormat, NearestFilter,
+    RGBAFormat, LinearFilter,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
@@ -52,8 +52,7 @@ export default class Environment {
         ]);
 
         const texture = new DataTexture(data, width, height, RGBAFormat);
-        texture.magFilter = NearestFilter;
-        texture.minFilter = NearestFilter;
+        texture.magFilter = LinearFilter;
         texture.needsUpdate = true;
 
         // Set the texture as the scene background
