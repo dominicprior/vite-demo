@@ -41,7 +41,7 @@ export default class Environment {
         const width = 2;
         const height = 2;
         const size = width * height;
-        const data = new Uint8Array( size * 4 ); // RGB format
+        const data = new Uint8Array( size * 4 ); // RGBA format
 
         // Fill with 4 colors (R, G, B, White)
         data.set([
