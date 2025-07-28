@@ -21,23 +21,21 @@ export default class Cubes {
     stride: number = 2;
     boxSize: number = 1;
     debug: Debug;
-    scene: Scene;
     meshes: Array<Mesh> = [];
 
     constructor(scene: Scene, debug: Debug) {
         this.debug = debug;
-        this.scene = scene;
         this.meshes = [];
 
         const geometry = new BoxGeometry(this.boxSize, this.boxSize, this.boxSize,
                 this.numBands, this.numBands, this.numBands);
         const material = new MeshStandardMaterial({ color: 'pink', });
         for (let i=0; i < this.numRows; i++) {
-            this.addMesh(i, geometry, material);
+            this.setMesh(i, geometry, material, scene);
         }
     }
 
-    addMesh(i: number, geometry: BoxGeometry, material: MeshStandardMaterial) {
+    setMesh(i: number, geometry: BoxGeometry, material: MeshStandardMaterial, scene: Scene) {
         let mesh = new Mesh(geometry, material);
         mesh.name = 'cube';
         mesh.frustumCulled = false;
@@ -47,7 +45,7 @@ export default class Cubes {
         mesh.layers.enableAll();
         // this.mesh.receiveShadow = true
         this.meshes.push(mesh);
-        this.scene.add(mesh);
+        scene.add(mesh);
     }
 
     firstCollision(player: Player): Collision {

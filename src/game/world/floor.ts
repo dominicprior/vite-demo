@@ -7,23 +7,19 @@ import Debug from '../utils/debug.js';
 export default class Floor {
     numRows: number = 45;
     debug: Debug;
-    scene: Scene;
-    // @ts-ignore: no initializer
-    // geometry: BufferGeometry;
-    // @ts-ignore: no initializer
-    // material: MeshStandardMaterial;
     // @ts-ignore: no initializer
     mesh: Mesh;
 
     constructor(scene: Scene, debug: Debug) {
         this.debug = debug;
-        this.scene = scene;
 
         const geometry = this.setGeometry();
         this.setColours(geometry);
         this.setDebug();
         const material = this.setMaterial();
         this.setMesh(geometry, material);
+        // @ts-ignore
+        scene.add(this.mesh);
     }
 
     setGeometry(): BufferGeometry {
@@ -98,7 +94,6 @@ export default class Floor {
         this.mesh.name = 'floor';
         this.mesh.rotation.x = - Math.PI * 0.5;
         // this.mesh.receiveShadow = true
-        this.scene.add(this.mesh);
     }
 
     setTextureMaterial() {  // not used

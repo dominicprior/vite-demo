@@ -8,12 +8,10 @@ import Player from '../player.js';
 export default class CrossHairs {
     boxSize: number = 0.004;
     debug: Debug;
-    scene: Scene;
     meshes: Array<Mesh> = [];
 
     constructor(scene: Scene, debug: Debug) {
         this.debug = debug;
-        this.scene = scene;
 
         const material = new MeshBasicMaterial({ color: 'red', });
         for (let i=0; i<2; i++) {
@@ -25,9 +23,9 @@ export default class CrossHairs {
             const mesh = new Mesh(geometry, material);
             mesh.name = 'crosshair' + i;
             mesh.layers.enableAll();
-            this.scene.add(mesh);
+            scene.add(mesh);
             this.meshes.push(mesh);
-        }   
+        }
     }
 
     update(player: Player) {
