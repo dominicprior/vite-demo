@@ -5,12 +5,6 @@ import {
 import Debug from '../utils/debug.js';
 import Player from '../player.js';
 
-// import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
-// See https://threejs-journey.com/lessons/performance-tips around 35:00.
-// Or use a THREE.InstancedMesh.
-// Also see the matrix maths in https://threejs.org/docs/?q=matr#api/en/math/Matrix4
-// And https://discoverthreejs.com/tips-and-tricks/
-
 export default class CrossHairs {
     boxSize: number = 0.004;
     debug: Debug;

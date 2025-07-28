@@ -2,7 +2,7 @@ import {
     Scene, Color, PerspectiveCamera, WebGLRenderer,
     MeshBasicMaterial,
     Mesh, DataTexture,
-    BoxGeometry, RGBAFormat, LinearFilter,
+    PlaneGeometry, RGBAFormat, LinearFilter,
 } from '../../three/threebuild/three_module.js';
 const container = document.querySelector('canvas.webgl');
 const renderer = new WebGLRenderer({
@@ -12,21 +12,19 @@ const renderer = new WebGLRenderer({
 const w = window.innerWidth;
 const h = window.innerHeight;
 renderer.setSize(w, h);
-const camera = new PerspectiveCamera(45, w / h, 0.1, 100);
-camera.position.set(0, 0, 2);
-const geom = new BoxGeometry();
+const camera = new PerspectiveCamera(90, w / h, 0.1, 100);
+camera.position.set(0, 0, .25);
+const geom = new PlaneGeometry();
 
-const width = 2;
+const width = 1;
 const height = 2;
 const size = width * height;
 const data = new Uint8Array( size * 4 );
 
-// Fill with 4 colors (R, G, B, White)
+// Fill with 4 colors (R, G, B, A)
 data.set([
-    255, 0, 0, 255,    // Red
-    0, 255, 0, 255,    // Green
+    55, 155, 255, 255, // pale sky blue
     0, 0, 255, 255,    // Blue
-    255, 255, 255, 255, // White
 ]);
 
 const texture = new DataTexture(data, width, height, RGBAFormat);
