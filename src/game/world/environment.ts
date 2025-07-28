@@ -1,5 +1,6 @@
 import { Color, Scene, DirectionalLight, MeshStandardMaterial,
-    SRGBColorSpace, Texture, Mesh, Object3D,
+    SRGBColorSpace, Texture, Mesh, Object3D, DataTexture,
+    UnsignedByteType, RGBAFormat, NearestFilter,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Debug from '../utils/debug.js';
@@ -33,8 +34,30 @@ export default class Environment {
         this.scene.add(this.sunlight);
     }
 
-    setBackgroundColor(color: string) {
-        this.scene.background = new Color(color);
+    setBackgroundColor() {
+        // this.scene.background = new Color('skyblue');
+
+        // Create a simple 2x2 DataTexture
+        const width = 2;
+        const height = 2;
+        const size = width * height;
+        const data = new Uint8Array( size * 4 ); // RGB format
+
+        // Fill with 4 colors (R, G, B, White)
+        data.set([
+            255, 0, 0, 255,    // Red
+            0, 255, 0, 255,    // Green
+            0, 0, 255, 255,    // Blue
+            255, 255, 255, 255, // White
+        ]);
+
+        const texture = new DataTexture(data, width, height, RGBAFormat);
+        texture.magFilter = NearestFilter;
+        texture.minFilter = NearestFilter;
+        texture.needsUpdate = true;
+
+        // Set the texture as the scene background
+        this.scene.background = texture;
     }
 
     setEnvironmentMap() {

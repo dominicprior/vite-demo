@@ -37,7 +37,7 @@ export default class World {
             this.floor = new Floor(this.scene, this.debug);
             this.cubes = new Cubes(this.scene, this.debug);
             this.crosshairs = new CrossHairs(this.scene, this.debug);
-            // this.environment.setBackgroundColor('skyblue');
+            this.environment.setBackgroundColor();
         });
     }
 
