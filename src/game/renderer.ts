@@ -83,7 +83,6 @@ export default class Renderer {
         // Set up an ortho camera (mirroring by looking backwards).
         const orthoCamera = new OrthographicCamera(-1, 1,  1, -1,  0.1, 10 );
         orthoCamera.position.set(0, 0, -2);
-        // orthoCamera.up = new Vector3(0, -1, 0);  // so the mirror flip is about the vertical axis.
         orthoCamera.lookAt(new Vector3);
 
         // Create a scene containing a plane textured from the buffer.
@@ -95,6 +94,7 @@ export default class Renderer {
         const plane = new Mesh(new PlaneGeometry(2, 2), material);
         orthoScene.add(plane);
 
+        // Add a rim.
         const rimMaterial = new MeshBasicMaterial({
                 color: 'white',
                 side: BackSide,
@@ -105,11 +105,12 @@ export default class Renderer {
         const tallGeom = new PlaneGeometry(.005, 1.99);
         orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(-1));
         orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(1));
-        
+
+        // Render the mirror.
         const v = new Vector4(view.x * this.sizes.width,
-                                view.y * this.sizes.height,
-                                view.w * this.sizes.width,
-                                view.h * this.sizes.height);
+                              view.y * this.sizes.height,
+                              view.w * this.sizes.width,
+                              view.h * this.sizes.height);
         this.instance.setViewport(v);
         this.instance.setScissor(v);
         this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
