@@ -21,7 +21,7 @@ const height = 2;
 const size = width * height;
 const data = new Uint8Array( size * 4 );
 
-// Fill with 4 colors (R, G, B, A)
+// Fill with 2 colors (R, G, B, A)
 data.set([
     55, 155, 255, 255, // pale sky blue
     0, 0, 255, 255,    // Blue
