@@ -25,7 +25,7 @@ export default class Sky {
         texture.magFilter = LinearFilter;
         texture.needsUpdate = true;
 
-        const material = new MeshBasicMaterial({ map: texture, });
+        const material = new MeshBasicMaterial({ map: texture, depthTest: false, });
 
         this.mesh = new Mesh(geometry, material);
         this.mesh.name = 'sky';

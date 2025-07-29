@@ -12,6 +12,7 @@ export default class Renderer {
     sizes: Sizes;
     scene: Scene;
     skyScene: Scene;
+    skyCamera: OrthographicCamera;
     player: Player;
     views: Array<View> = [];
     instance: WebGLRenderer;
@@ -33,6 +34,8 @@ export default class Renderer {
         });
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
+        this.skyCamera = new OrthographicCamera();
+        this.skyCamera.position.z = 2;
     }
 
     resize() {
@@ -44,7 +47,6 @@ export default class Renderer {
     }
 
     redraw() {
-        this.redrawSky();
         for (const view of this.views) {
             view.update(this.player);
             const v = new Vector4(view.x * this.sizes.width,
@@ -52,13 +54,16 @@ export default class Renderer {
                                   view.w * this.sizes.width,
                                   view.h * this.sizes.height);
 
+            this.instance.setViewport(v);
+            this.instance.setScissor(v);
+            this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
             if (view.mirrored) {
                 this.drawMirrored(view);
             }
             else {
-                this.instance.setViewport(v);
-                this.instance.setScissor(v);
-                this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
+                this.instance.autoClear = true;
+                this.redrawSky();
+                this.instance.autoClear = false;
                 this.instance.render(this.scene, view.camera);
             }
         }
@@ -70,6 +75,9 @@ export default class Renderer {
                                                    view.h * this.sizes.height);
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
+        this.instance.autoClear = true;
+        this.redrawSky();
+        this.instance.autoClear = false;
         this.instance.render(this.scene, view.camera);
         this.instance.setRenderTarget(null);
 
@@ -111,7 +119,7 @@ export default class Renderer {
     }
 
     redrawSky() {
-
+        this.instance.render(this.skyScene, this.skyCamera);
     }
 }
 

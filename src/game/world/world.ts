@@ -1,5 +1,5 @@
 import {
-    Scene,
+    Scene, Color,
 } from '../../../three/threebuild/three_module.js';
 
 import type { Collision, } from '../utils/types.js';
@@ -44,7 +44,7 @@ export default class World {
             this.floor = new Floor(this.scene, this.debug);
             this.cubes = new Cubes(this.scene, this.debug);
             this.crosshairs = new CrossHairs(this.scene, this.debug);
-            this.environment.setBackgroundColor();
+            // this.scene.background = new Color('green');
         });
     }
 

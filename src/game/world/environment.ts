@@ -34,7 +34,7 @@ export default class Environment {
         this.scene.add(this.sunlight);
     }
 
-    setBackgroundColor() {
+    setBackgroundColor() {  // not used
         // this.scene.background = new Color('skyblue');
 
         // Create a simple 2x2 DataTexture
