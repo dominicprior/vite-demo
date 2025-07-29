@@ -9,14 +9,12 @@ export function sum(a: number, b: number) {
 
 export default class Wide extends PerspectiveCamera {
     bend: number;
-    xScale: number;
     isWide: boolean;
 
     constructor( fov = 50, aspect = 1, near = 0.1, far = 2000,
-            bend = 1, xScale = 1 ) {
+            bend = 1, ) {
 		super(fov, aspect, near, far);
         this.bend = bend;
-        this.xScale = xScale;
         this.isWide = true;
     }
 }

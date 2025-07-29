@@ -24,9 +24,9 @@ export default class Renderer {
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
-        this.views.push(new View(this.sizes, 1.0, -1.0, 55,  0,   0,  1,   1,   0, false));
+        this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  1,   1,   0, false));
         const k = 0.16;
-        this.views.push(new View(this.sizes, 1.0, 1.0, 55,  0.5 - k/2, 0.99-k,  k, k, Math.PI, true));
+        this.views.push(new View(this.sizes, 1.0, 55,  0.5 - k/2, 0.99-k,  k, k, Math.PI, true));
 
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,

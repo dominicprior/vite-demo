@@ -9901,7 +9901,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			'uniform mat4 modelViewMatrix;',
 			'uniform mat4 projectionMatrix;',
 			'uniform float dominic;',  /////
-			'uniform float xScale;',
+			// 'uniform float xScale;',  /// loads of confusion
 			'uniform mat4 viewMatrix;',
 			'uniform mat3 normalMatrix;',
 			'uniform vec3 cameraPosition;',
@@ -20817,7 +20817,7 @@ class WebGLRenderer {
 if (camera.isWide) {
 	////debugger;
 	p_uniforms.setValue( _gl, 'dominic', camera.bend);
-	p_uniforms.setValue( _gl, 'xScale', camera.xScale);
+	// p_uniforms.setValue( _gl, 'xScale', camera.xScale);  /// loads of confusion
 	////debugger;
 }
 			if ( refreshProgram || _currentCamera !== camera ) {
