@@ -2,11 +2,6 @@ import {
     PerspectiveCamera,
 } from '../../../three/threebuild/three_module.js';
 
-
-export function sum(a: number, b: number) {
-    return a + b
-}
-
 export default class Wide extends PerspectiveCamera {
     bend: number;
     isWide: boolean;
