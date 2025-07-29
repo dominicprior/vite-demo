@@ -72,7 +72,7 @@ export default class Game {
     update() {
         this.player.update();
         this.world.update(this.player);
-        this.renderer.update();
+        this.renderer.redraw();
     }
 
     destroy() {  // I'm not sure if this is right, but it's interesting anyway.

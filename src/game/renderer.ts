@@ -13,7 +13,6 @@ export default class Renderer {
     scene: Scene;
     player: Player;
     views: Array<View> = [];
-    // @ts-ignore: no initializer
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
@@ -23,24 +22,15 @@ export default class Renderer {
         this.scene = scene;
         this.player = player;
         this.views.push(new View(this.sizes, 1.0, -1.0, 55,  0,   0,  1,   1,   0, false));
-        // Unintuitive views
-        // this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  0.1, 0.2,   Math.PI * 0.75));
-        // this.views.push(new View(this.sizes, 1.0, 55,  0.9, 0,  0.1, 0.2, - Math.PI * 0.75));
         const k = 0.16;
         this.views.push(new View(this.sizes, 1.0, 1.0, 55,  0.5 - k/2, 0.99-k,  k, k, Math.PI, true));
-        this.setInstance();
-    }
 
-    setInstance() {
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
-            // alpha: true,  // https://threejs.org/manual/#en/tips#transparent-canvas - stops Three.js making the whole canvas opaque
             antialias: true,
-        });  // Note the non-null assertion operator '!'
+        });
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-        // this.instance.shadowMap.enabled = true;
-        // this.instance.shadowMap.type = PCFSoftShadowMap;
     }
 
     resize() {
@@ -51,7 +41,7 @@ export default class Renderer {
         }
     }
 
-    update() {
+    redraw() {
         for (const view of this.views) {
             view.update(this.player);
             const v = new Vector4(view.x * this.sizes.width,
@@ -120,3 +110,13 @@ export default class Renderer {
 
 // currentViewport is Viewport multiplied by window.devicePixelRatio
 // https://discourse.threejs.org/t/using-viewport-with-rendertarget/42081/1
+
+// These views were surprisingly unintuitive:
+// this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  0.1, 0.2,   Math.PI * 0.75));
+// this.views.push(new View(this.sizes, 1.0, 55,  0.9, 0,  0.1, 0.2, - Math.PI * 0.75));
+
+// alpha: true,  stops Three.js making the whole canvas opaque:
+// https://threejs.org/manual/#en/tips#transparent-canvas
+
+// this.instance.shadowMap.enabled = true;
+// this.instance.shadowMap.type = PCFSoftShadowMap;
