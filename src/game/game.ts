@@ -20,6 +20,7 @@ export default class Game {
     time: Time;
     keyboard: Keyboard
     scene: Scene;
+    skyScene: Scene;
     resources: Resources;
     player: Player;
     renderer: Renderer;
@@ -38,10 +39,11 @@ export default class Game {
         this.time = new Time();
         this.keyboard = new Keyboard();
         this.scene = new Scene();
+        this.skyScene = new Scene();
         this.resources = new Resources(sources);
-        this.world = new World(this.scene, this.resources, this.debug);
+        this.world = new World(this.scene, this.skyScene, this.resources, this.debug);
         this.player = new Player(this.keyboard, this.time, this.world);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.player);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.skyScene, this.player);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);

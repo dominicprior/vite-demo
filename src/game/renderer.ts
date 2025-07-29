@@ -11,15 +11,17 @@ export default class Renderer {
     canvas: HTMLCanvasElement | null;
     sizes: Sizes;
     scene: Scene;
+    skyScene: Scene;
     player: Player;
     views: Array<View> = [];
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
-                sizes: Sizes, scene: Scene, player: Player) {
+                sizes: Sizes, scene: Scene, skyScene: Scene, player: Player) {
         this.canvas = canvas;
         this.sizes = sizes;
         this.scene = scene;
+        this.skyScene = skyScene;
         this.player = player;
         this.views.push(new View(this.sizes, 1.0, -1.0, 55,  0,   0,  1,   1,   0, false));
         const k = 0.16;
@@ -42,6 +44,7 @@ export default class Renderer {
     }
 
     redraw() {
+        this.redrawSky();
         for (const view of this.views) {
             view.update(this.player);
             const v = new Vector4(view.x * this.sizes.width,
@@ -105,6 +108,10 @@ export default class Renderer {
         this.instance.setScissor(v);
         this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
         this.instance.render(orthoScene, orthoCamera);
+    }
+
+    redrawSky() {
+
     }
 }
 

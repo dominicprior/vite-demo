@@ -5,6 +5,7 @@ import {
 import type { Collision, } from '../utils/types.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
+import Sky from './sky.js';
 import Floor from './floor.js';
 import Cubes from './cubes.js';
 import CrossHairs from './crosshairs.js';
@@ -14,7 +15,11 @@ import Player from '../player.js';
 export default class World {
     scene: Scene;
     // @ts-ignore: no initializer
+    skyScene: Scene;
+    // @ts-ignore: no initializer
     floor: Floor;
+    // @ts-ignore: no initializer
+    sky: Sky;
     // @ts-ignore: no initializer
     cubes: Cubes;
     // @ts-ignore: no initializer
@@ -24,8 +29,9 @@ export default class World {
     environment: Environment;
     resources: Resources;
 
-    constructor(scene: Scene, resources: Resources, debug: Debug) {
+    constructor(scene: Scene, skyScene: Scene, resources: Resources, debug: Debug) {
         this.scene = scene;
+        this.skyScene = skyScene;
         this.resources = resources;
         this.debug = debug;
 
@@ -34,6 +40,7 @@ export default class World {
         this.resources.on('ready', () => {
             console.log('Resources are ready');
             this.environment = new Environment(this.scene, this.resources, this.debug);
+            this.sky = new Sky(skyScene, debug);
             this.floor = new Floor(this.scene, this.debug);
             this.cubes = new Cubes(this.scene, this.debug);
             this.crosshairs = new CrossHairs(this.scene, this.debug);
