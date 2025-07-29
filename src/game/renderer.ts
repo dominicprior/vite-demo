@@ -61,12 +61,16 @@ export default class Renderer {
                 this.drawMirrored(view);
             }
             else {
+                this.drawSkyAndScene(view);
+            }
+        }
+    }
+
+    drawSkyAndScene(view: View) {
                 this.instance.autoClear = true;
                 this.redrawSky();
                 this.instance.autoClear = false;
                 this.instance.render(this.scene, view.camera);
-            }
-        }
     }
 
     drawMirrored(view: View) {
@@ -75,10 +79,7 @@ export default class Renderer {
                                                    view.h * this.sizes.height);
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
-        this.instance.autoClear = true;
-        this.redrawSky();
-        this.instance.autoClear = false;
-        this.instance.render(this.scene, view.camera);
+        this.drawSkyAndScene(view);
         this.instance.setRenderTarget(null);
 
         // Set up an ortho camera (mirroring by looking backwards).

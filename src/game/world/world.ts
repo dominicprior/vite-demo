@@ -1,5 +1,5 @@
 import {
-    Scene, Color,
+    Scene,
 } from '../../../three/threebuild/three_module.js';
 
 import type { Collision, } from '../utils/types.js';
