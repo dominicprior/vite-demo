@@ -48,6 +48,10 @@ export default class Game {
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
 
+        const camera = this.renderer.views[0].camera;
+        this.debug.gui.add(camera, 'fov', 10, 120, 1).name('fov')
+                .onChange(() => { camera.updateProjectionMatrix() })
+
         this.sizes.on('resize', this.resize.bind(this));  // See note 1.
         this.time.on('tick', () => {
             if (this.ready) {
