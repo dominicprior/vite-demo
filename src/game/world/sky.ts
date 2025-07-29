@@ -6,11 +6,13 @@ import Debug from '../utils/debug.js';
 
 export default class Sky {
     debug: Debug;
-    mesh: Mesh;
+    skyMesh: Mesh;
+    seaMesh: Mesh;
 
     constructor(skyScene: Scene, debug: Debug) {
         this.debug = debug;
-        const geometry = new PlaneGeometry(4, 4);
+        const skyGeometry = new PlaneGeometry(4, 2);
+        const seaGeometry = new PlaneGeometry(2, 1);
 
         const width = 1;
         const height = 2;
@@ -25,10 +27,14 @@ export default class Sky {
         texture.magFilter = LinearFilter;
         texture.needsUpdate = true;
 
-        const material = new MeshBasicMaterial({ map: texture, depthTest: false, });
+        const skyMaterial = new MeshBasicMaterial({ map: texture, depthTest: false, });
+        const seaMaterial = new MeshBasicMaterial({ color: 'darkblue', depthTest: false, });
 
-        this.mesh = new Mesh(geometry, material);
-        this.mesh.name = 'sky';
-        skyScene.add(this.mesh);
+        this.skyMesh = new Mesh(skyGeometry, skyMaterial).translateY(0.5);
+        this.seaMesh = new Mesh(seaGeometry, seaMaterial).translateY(-0.5);
+        this.skyMesh.name = 'sky';
+        this.seaMesh.name = 'sea';
+        skyScene.add(this.skyMesh);
+        skyScene.add(this.seaMesh);
     }
 }
