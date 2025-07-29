@@ -7,12 +7,13 @@ import Debug from '../utils/debug.js';
 export default class Sky {
     debug: Debug;
     skyMesh: Mesh;
+    // @ts-ignore
     seaMesh: Mesh;
 
     constructor(skyScene: Scene, debug: Debug) {
         this.debug = debug;
-        const skyGeometry = new PlaneGeometry(4, 2);
-        const seaGeometry = new PlaneGeometry(2, 1);
+        const drawingTheSea = false;
+        const skyGeometry = new PlaneGeometry(4, drawingTheSea ? 2: 4);
 
         const width = 1;
         const height = 2;
@@ -28,13 +29,16 @@ export default class Sky {
         texture.needsUpdate = true;
 
         const skyMaterial = new MeshBasicMaterial({ map: texture, depthTest: false, });
-        const seaMaterial = new MeshBasicMaterial({ color: 'darkblue', depthTest: false, });
-
-        this.skyMesh = new Mesh(skyGeometry, skyMaterial).translateY(0.5);
-        this.seaMesh = new Mesh(seaGeometry, seaMaterial).translateY(-0.5);
+        
+        this.skyMesh = new Mesh(skyGeometry, skyMaterial).translateY(drawingTheSea ? 0.5: 0);
         this.skyMesh.name = 'sky';
-        this.seaMesh.name = 'sea';
         skyScene.add(this.skyMesh);
-        skyScene.add(this.seaMesh);
+        if (drawingTheSea) {
+            const seaGeometry = new PlaneGeometry(2, 1);
+            const seaMaterial = new MeshBasicMaterial({ color: 'darkblue', depthTest: false, });
+            this.seaMesh = new Mesh(seaGeometry, seaMaterial).translateY(-0.5);
+            this.seaMesh.name = 'sea';
+            skyScene.add(this.seaMesh);
+        }
     }
 }
