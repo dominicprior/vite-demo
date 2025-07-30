@@ -22,11 +22,12 @@ interface Cube {
 
 export default class Cubes {
     locations: string = `
-..00
-0..0
-0...
-0..0
-0..0
+....
+1..1
+3623
+1...
+1..1
+..11
 `;
     numBands: number = 5;
     stride: number = 1;
@@ -44,21 +45,26 @@ export default class Cubes {
         for (let row = 0; row < lines.length; row++) {
             const line = lines[row];
             for (let col = 0; col < line.length; col++) {
-                if (line[col] === '0') {
-                    this.addCube(row, col, scene, lines.length, line.length);
+                const char = line[col];
+                if (char !== '.') {
+                    for (let level=0, pow=1; level <= 3; level++, pow *= 2) {
+                        if ((+char & pow) !== 0) {
+                            this.addCube(row, col, level, scene, lines.length, line.length);
+                        }
+                    }
                 }
             }
         }
     }
 
-    addCube(row: number, col: number, scene: Scene, numRows: number, numCols: number) {
+    addCube(row: number, col: number, level: number, scene: Scene, numRows: number, numCols: number) {
         let mesh = new Mesh(this.geom, this.material);
         const centre = new Vector2(this.stride * (col - (numCols - 1) / 2),
                                    this.stride * (row - (numRows - 1) / 2));
         mesh.name = 'cube';
         mesh.frustumCulled = false;
         mesh.position.x = centre.x;
-        mesh.position.y = 0.5;
+        mesh.position.y = 0.5 + level;
         mesh.position.z = centre.y;
         mesh.layers.enableAll();
         // mesh.receiveShadow = true
