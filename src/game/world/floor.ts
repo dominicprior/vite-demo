@@ -92,6 +92,7 @@ export default class Floor {
     setMesh(geometry: BufferGeometry, material: MeshStandardMaterial) {
         this.mesh = new Mesh(geometry, material);
         this.mesh.name = 'floor';
+        this.mesh.frustumCulled = false;
         this.mesh.rotation.x = - Math.PI * 0.5;
         // this.mesh.receiveShadow = true
     }
