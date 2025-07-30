@@ -21,7 +21,7 @@ export default class Sky {
         const colours = new Uint8Array( size * 4 );
         colours.set([
             55, 155, 255, 255, // pale sky blue
-            0, 0, 255, 255,    // Blue
+            0, 0, 120, 255,    // Blue
         ]);
 
         const texture = new DataTexture(colours, width, height, RGBAFormat);
