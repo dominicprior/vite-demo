@@ -44,12 +44,17 @@ export default class Player {
     }
 
     update() {
-        // console.log(this.keyboard.pressed);
         const delta = this.time.delta;
         const turning = this.keyboard.turning();
         const moving = this.keyboard.moving();
         const strafing = this.keyboard.strafing();
         const bouncing = this.time.elapsed < this.collisionTime + this.collisionDuration;
+        if (this.keyboard.pressed['KeyJ']) {
+            this.pos.y += 0.02;
+        }
+        if (this.keyboard.pressed['KeyK']) {
+            this.pos.y -= 0.02;
+        }
 
         if (turning) {
             this.bearing += this.rotationSpeed * delta * turning;
