@@ -1,6 +1,6 @@
 import {
     // PCFSoftShadowMap,
-    Scene, WebGLRenderer, Vector4, WebGLRenderTarget, OrthographicCamera,
+    Scene, WebGLRenderer, WebGLRenderTarget, OrthographicCamera,
     Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
@@ -53,13 +53,9 @@ export default class Renderer {
     redraw() {
         for (const view of this.views) {
             view.update(this.player);
-            const v = new Vector4(view.port.x * this.sizes.width,
-                                  view.port.y * this.sizes.height,
-                                  view.port.w * this.sizes.width,
-                                  view.port.h * this.sizes.height);
-
-            this.instance.setViewport(v);
-            this.instance.setScissor(v);
+            const viewport = view.viewport();
+            this.instance.setViewport(viewport);
+            this.instance.setScissor(viewport);
             this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
             if (view.mirrored) {
                 this.drawMirrored(view);
@@ -79,8 +75,8 @@ export default class Renderer {
 
     drawMirrored(view: View) {
         // Render the scene into a buffer.
-        const renderTarget = new WebGLRenderTarget(view.port.w * this.sizes.width,
-                                                   view.port.h * this.sizes.height);
+        const renderTarget = new WebGLRenderTarget(view.widthInPixels(),
+                                                   view.heightInPixels());
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
         this.drawSkyAndScene(view);
@@ -113,12 +109,9 @@ export default class Renderer {
         orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(1));
 
         // Render the mirror.
-        const v = new Vector4(view.port.x * this.sizes.width,
-                              view.port.y * this.sizes.height,
-                              view.port.w * this.sizes.width,
-                              view.port.h * this.sizes.height);
-        this.instance.setViewport(v);
-        this.instance.setScissor(v);
+        const viewport = view.viewport();
+        this.instance.setViewport(viewport);
+        this.instance.setScissor(viewport);
         this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
         this.instance.render(orthoScene, orthoCamera);
     }

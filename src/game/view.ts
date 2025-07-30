@@ -1,5 +1,5 @@
 import {
-    Vector3,
+    Vector3, Vector4,
 } from '../../three/threebuild/three_module.js';
 import Sizes from './utils/sizes.js';
 import Player from './player.js';
@@ -41,7 +41,24 @@ export default class View {
         this.camera.updateProjectionMatrix();
     }
 
+    widthInPixels() {
+        return this.sizes.width * this.port.w;
+    }
+
+    heightInPixels() {
+        return this.sizes.height * this.port.h;
+    }
+
+    viewport() {
+        return new Vector4(
+            this.port.x * this.sizes.width,
+            this.port.y * this.sizes.height,
+            this.widthInPixels(),
+            this.heightInPixels()
+        )
+    }
+
     aspect() {
-        return (this.sizes.width * this.port.w) / (this.sizes.height * this.port.h);
+        return this.widthInPixels() / this.heightInPixels();
     }
 }
