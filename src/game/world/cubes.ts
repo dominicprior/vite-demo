@@ -24,6 +24,9 @@ export default class Cubes {
     locations: string = `
 ..00
 0..0
+0...
+0..0
+0..0
 `;
     numBands: number = 5;
     stride: number = 1;
