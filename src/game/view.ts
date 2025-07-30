@@ -14,19 +14,23 @@ interface Port {  // as proportions of the whole screen
 
 export default class View {
     sizes: Sizes;
+    bend: number;
+    horizFov: number;
     camera: Wide;
     port: Port;
     relativeBearing: number;
     mirrored: boolean;
 
-    constructor(sizes: Sizes, bend: number, fov: number,
+    constructor(sizes: Sizes, bend: number, horizFov: number,
                 port: Port, relativeBearing: number,
                 mirrored: boolean) {
         this.sizes = sizes;
+        this.bend = bend;
+        this.horizFov = horizFov;
         this.port = port;
         this.relativeBearing = relativeBearing;
         this.mirrored = mirrored;
-        this.camera = new Wide(fov, this.aspect(), 0.05, 100, bend);
+        this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 100, bend);
     }
 
     update(player: Player) {
@@ -38,7 +42,14 @@ export default class View {
 
     resize() {
         this.camera.aspect = this.aspect();
+        this.camera.fov = this.vertFov();
         this.camera.updateProjectionMatrix();
+    }
+
+    vertFov() {
+        const halfHorizFov = this.horizFov * Math.PI / 360;
+        const t = Math.tan(halfHorizFov) / this.aspect();
+        return Math.atan(t) * 360 / Math.PI;
     }
 
     widthInPixels() {
