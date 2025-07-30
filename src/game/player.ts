@@ -16,7 +16,8 @@ export default class Player {
     radius: number = 0.25;
     rotationSpeed: number = 3;  // in radians per second
     movementSpeed: number = 2.4;
-    collisionDuration: number = 0.25;
+    collisionDuration: number = 0.3;
+    bounceFactor: number = 0.7;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
@@ -64,9 +65,11 @@ export default class Player {
             if (moving) {
                 const collision = this.world.firstCollision(this);
                 if (collision.t < delta) {
-                    this.bounceVelocity = collision.skiddingAlongVelocity.clone()
-                            .multiplyScalar(2)
-                            .sub(this.velocity());
+                    const skid = collision.skiddingAlongVelocity;
+                    this.bounceVelocity = skid.clone()  // (skid - v) * bounceFactor  +  skid
+                            .sub(this.velocity())
+                            .multiplyScalar(this.bounceFactor)
+                            .add(skid);
                     const newPos = this.bounceVelocity.clone()
                             .multiplyScalar(delta - collision.t)
                             .add(collision.pos);
