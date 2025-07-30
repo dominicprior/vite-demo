@@ -64,7 +64,7 @@ export default class Player {
             if (moving) {
                 const collision = this.world.firstCollision(this);
                 if (collision.t < delta) {
-                    this.bounceVelocity = collision.newVelocity.clone()
+                    this.bounceVelocity = collision.skiddingAlongVelocity.clone()
                             .multiplyScalar(2)
                             .sub(this.velocity());
                     const newPos = this.bounceVelocity.clone()

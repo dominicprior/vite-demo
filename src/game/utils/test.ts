@@ -26,8 +26,8 @@ export default class Test {
         if (collision.t !== 10) debugger;
         if (collision.pos.x !== 11) debugger;
         if (collision.pos.y !== 10) debugger;
-        if (collision.newVelocity.x !== 0.2) debugger;
-        if (collision.newVelocity.y !== 0) debugger;
+        if (collision.skiddingAlongVelocity.x !== 0.2) debugger;
+        if (collision.skiddingAlongVelocity.y !== 0) debugger;
         console.log(collision);
         return true;
     }
@@ -43,8 +43,8 @@ export default class Test {
         if (collision.t !== 10) debugger;
         if (collision.pos.x !== 11) debugger;
         if (collision.pos.y !== 10) debugger;
-        if (collision.newVelocity.x !== 0.2) debugger;
-        if (collision.newVelocity.y !== 0) debugger;
+        if (collision.skiddingAlongVelocity.x !== 0.2) debugger;
+        if (collision.skiddingAlongVelocity.y !== 0) debugger;
         console.log(collision);
         return true;
     }

@@ -41,6 +41,6 @@ export default class VerticalEdge {
         const normal = relCollisionPos.clone().normalize();
         const tangent = rot90(normal);
         const newVelocity = tangent.clone().multiplyScalar(v.dot(tangent));
-        return { t: t, pos: collisionPos, newVelocity: newVelocity };
+        return { t: t, pos: collisionPos, skiddingAlongVelocity: newVelocity };
     }
 }
