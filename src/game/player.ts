@@ -21,7 +21,7 @@ export default class Player {
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
-    pos: Vector3 = new Vector3(0, 0.5, 2);
+    pos: Vector3 = new Vector3(0, 3.5, 4);
     collisionTime: number = -100;  // when the last collision occurred.
     bounceVelocity: Vector2 = new Vector2();
 
