@@ -24,9 +24,13 @@ export default class Renderer {
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
-        this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  1,   1,   0, false));
+        this.views.push(new View(this.sizes, 1.0, 55,
+                                 {x: 0, y: 0, w: 1, h: 1},
+                                 0, false));
         const k = 0.16;
-        this.views.push(new View(this.sizes, 1.0, 55,  0.5 - k/2, 0.99-k,  k, k, Math.PI, true));
+        this.views.push(new View(this.sizes, 1.0, 55,
+                                 {x: 0.5 - k/2, y: 0.99-k, w: k, h: k},
+                                 Math.PI, true));
 
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
@@ -49,14 +53,14 @@ export default class Renderer {
     redraw() {
         for (const view of this.views) {
             view.update(this.player);
-            const v = new Vector4(view.x * this.sizes.width,
-                                  view.y * this.sizes.height,
-                                  view.w * this.sizes.width,
-                                  view.h * this.sizes.height);
+            const v = new Vector4(view.port.x * this.sizes.width,
+                                  view.port.y * this.sizes.height,
+                                  view.port.w * this.sizes.width,
+                                  view.port.h * this.sizes.height);
 
             this.instance.setViewport(v);
             this.instance.setScissor(v);
-            this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
+            this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
             if (view.mirrored) {
                 this.drawMirrored(view);
             }
@@ -75,8 +79,8 @@ export default class Renderer {
 
     drawMirrored(view: View) {
         // Render the scene into a buffer.
-        const renderTarget = new WebGLRenderTarget(view.w * this.sizes.width,
-                                                   view.h * this.sizes.height);
+        const renderTarget = new WebGLRenderTarget(view.port.w * this.sizes.width,
+                                                   view.port.h * this.sizes.height);
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
         this.drawSkyAndScene(view);
@@ -109,13 +113,13 @@ export default class Renderer {
         orthoScene.add(new Mesh(tallGeom, rimMaterial).translateZ(-0.1).translateX(1));
 
         // Render the mirror.
-        const v = new Vector4(view.x * this.sizes.width,
-                              view.y * this.sizes.height,
-                              view.w * this.sizes.width,
-                              view.h * this.sizes.height);
+        const v = new Vector4(view.port.x * this.sizes.width,
+                              view.port.y * this.sizes.height,
+                              view.port.w * this.sizes.width,
+                              view.port.h * this.sizes.height);
         this.instance.setViewport(v);
         this.instance.setScissor(v);
-        this.instance.setScissorTest(view.w !== 1 || view.h !== 1);
+        this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
         this.instance.render(orthoScene, orthoCamera);
     }
 
