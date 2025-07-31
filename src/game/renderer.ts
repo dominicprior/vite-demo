@@ -33,7 +33,7 @@ export default class Renderer {
                                  0, false, keyboard));
         const k = 0.16;
         this.views.push(new View(this.sizes, 1.0, 95,
-                                {x: 0.5 - k / 2, y: 0.99 - k, w: k, h: k},
+                                {x: 0.99 - k, y: 0.99 - k, w: k, h: k},
                                 Math.PI, true, keyboard));
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
