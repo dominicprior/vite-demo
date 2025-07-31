@@ -6,7 +6,7 @@ import Debug from '../utils/debug.js';
 import Player from '../player.js';
 
 export default class CrossHairs {
-    boxSize: number = 0.004;
+    boxSize: number = 0.008;
     debug: Debug;
     meshes: Array<Mesh> = [];
 
