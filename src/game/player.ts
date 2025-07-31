@@ -19,13 +19,17 @@ export default class Player {
     movementSpeed: number = 2.4;
     collisionDuration: number = 0.3;
     bounceFactor: number = 0.7;
-    verticalSpeed: number = 1.2;
+    verticalSpeed: number = 1.2;  // for J and K
+    gravity: number = 2;
+    initialJumpSpeed = 2;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
-    pos: Vector3 = new Vector3(0, 3.5, 4.5);
+    pos: Vector3 = new Vector3(0, 0.5, 4.5);
     collisionTime: number = -100;  // when the last collision occurred.
+    jumpTime: number = -100;       // when the last jump occurred.
     bounceVelocity: Vector2 = new Vector2();
+    verticalVelocity = 0;
 
     keyboard: Keyboard;
     time: Time;
@@ -35,6 +39,12 @@ export default class Player {
         this.keyboard = keyboard;
         this.time = time;
         this.world = world;
+        window.addEventListener('keydown', (event) => { 
+            if (event.key === 'y') {
+                this.verticalVelocity = this.initialJumpSpeed;
+                this.jumpTime = this.time.elapsed;
+            }
+        });
     }
 
     velocity(): Vector2 {
@@ -60,6 +70,7 @@ export default class Player {
             this.updateMoving();
             this.updateStrafing();
         }
+        this.updateJumping();
     }
 
     updateMoving() {
@@ -115,5 +126,20 @@ export default class Player {
             this.pos.x += distance * Math.cos(this.bearing);
             this.pos.z -= distance * Math.sin(this.bearing);
         }
+    }
+
+    updateJumping() {
+        const totalJumpDuration = 2 * this.initialJumpSpeed / this.gravity;
+        const jumpTimeSoFar = this.time.elapsed - this.jumpTime;
+        if (jumpTimeSoFar < totalJumpDuration) {
+            const delta = this.time.delta;
+            const newVerticalVelocity = this.verticalVelocity - delta * this.gravity;
+            this.pos.y += delta * (this.verticalVelocity + newVerticalVelocity) / 2;
+            this.verticalVelocity = newVerticalVelocity;
+        }
+    }
+
+    jumpAltitude(t: number) {  // not used
+        return this.initialJumpSpeed * t - this.gravity * t * t / 2;
     }
 }
