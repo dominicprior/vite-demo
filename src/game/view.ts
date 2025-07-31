@@ -15,18 +15,18 @@ interface Port {  // as proportions of the whole screen
 export default class View {
     sizes: Sizes;
     bend: number;
-    horizFov: number;
+    minFov: number;
     camera: Wide;
     port: Port;
     relativeBearing: number;
     mirrored: boolean;
 
-    constructor(sizes: Sizes, bend: number, horizFov: number,
+    constructor(sizes: Sizes, bend: number, minFov: number,
                 port: Port, relativeBearing: number,
                 mirrored: boolean) {
         this.sizes = sizes;
         this.bend = bend;
-        this.horizFov = horizFov;
+        this.minFov = minFov;
         this.port = port;
         this.relativeBearing = relativeBearing;
         this.mirrored = mirrored;
@@ -47,9 +47,14 @@ export default class View {
     }
 
     vertFov() {
-        const halfHorizFov = this.horizFov * Math.PI / 360;
-        const t = Math.tan(halfHorizFov) / this.aspect();
-        return Math.atan(t) * 360 / Math.PI;
+        if (this.aspect() < 1) {  // portrait - make the fov bigger so the horiz fov is minFov
+            const halfHorizFov = this.minFov * Math.PI / 360;
+            const t = Math.tan(halfHorizFov) / this.aspect();
+            return Math.atan(t) * 360 / Math.PI;
+        }
+        else {  // landscape
+            return this.minFov;
+        }
     }
 
     widthInPixels() {
