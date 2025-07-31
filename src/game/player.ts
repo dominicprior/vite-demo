@@ -20,8 +20,8 @@ export default class Player {
     collisionDuration: number = 0.3;
     bounceFactor: number = 0.7;
     verticalSpeed: number = 1.2;  // for J and K
-    gravity: number = 2;
-    initialJumpSpeed = 2;
+    gravity: number = 3;
+    initialJumpSpeed = 2.5;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
@@ -40,7 +40,7 @@ export default class Player {
         this.time = time;
         this.world = world;
         window.addEventListener('keydown', (event) => { 
-            if (event.key === 'y') {
+            if (event.key === ' ') {
                 this.verticalVelocity = this.initialJumpSpeed;
                 this.jumpTime = this.time.elapsed;
             }
