@@ -18,6 +18,7 @@ export default class Player {
     movementSpeed: number = 2.4;
     collisionDuration: number = 0.3;
     bounceFactor: number = 0.7;
+    verticalSpeed: number = 1.2;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
@@ -45,56 +46,69 @@ export default class Player {
 
     update() {
         const delta = this.time.delta;
-        const turning = this.keyboard.turning();
-        const moving = this.keyboard.moving();
-        const strafing = this.keyboard.strafing();
         const bouncing = this.time.elapsed < this.collisionTime + this.collisionDuration;
-        if (this.keyboard.pressed['KeyJ']) {
-            this.pos.y += 0.02;
-        }
-        if (this.keyboard.pressed['KeyK']) {
-            this.pos.y -= 0.02;
-        }
 
-        if (turning) {
-            this.bearing += this.rotationSpeed * delta * turning;
-        }
-
+        this.updateTurning();
+        this.updateUpDown();
         if (bouncing) {
             // bouncing, ignore movement keys
             this.pos.x += this.bounceVelocity.x * delta;
             this.pos.z += this.bounceVelocity.y * delta;
         }
         else {
+            this.updateMoving();
+            this.updateStrafing();
+        }
+    }
 
-            if (moving) {
-                const collision = this.world.firstCollision(this);
-                if (collision.t < delta) {
-                    const skid = collision.skiddingAlongVelocity;
-                    this.bounceVelocity = skid.clone()  // (skid - v) * bounceFactor  +  skid
-                            .sub(this.velocity())
-                            .multiplyScalar(this.bounceFactor)
-                            .add(skid);
-                    const newPos = this.bounceVelocity.clone()
-                            .multiplyScalar(delta - collision.t)
-                            .add(collision.pos);
-                    this.pos.x = newPos.x;
-                    this.pos.z = newPos.y;
-                    this.collisionTime = this.time.elapsed;  // ? plus spare time?
-                }
-                else {
-                    const velocity = this.velocity();
-                    this.pos.x += delta * moving * velocity.x;
-                    this.pos.z += delta * moving * velocity.y;
-                }
+    updateMoving() {
+        const delta = this.time.delta;
+        const moving = this.keyboard.moving();
+        if (moving) {
+            const collision = this.world.firstCollision(this);
+            if (collision.t < delta) {
+                const skid = collision.skiddingAlongVelocity;
+                this.bounceVelocity = skid.clone()  // (skid - v) * bounceFactor  +  skid
+                        .sub(this.velocity())
+                        .multiplyScalar(this.bounceFactor)
+                        .add(skid);
+                const newPos = this.bounceVelocity.clone()
+                        .multiplyScalar(delta - collision.t)
+                        .add(collision.pos);
+                this.pos.x = newPos.x;
+                this.pos.z = newPos.y;
+                this.collisionTime = this.time.elapsed;  // ? plus spare time?
             }
-
-            if (strafing) {
-                const distance = this.movementSpeed * delta * strafing;
-                this.pos.x += distance * Math.cos(this.bearing);
-                this.pos.z -= distance * Math.sin(this.bearing);
+            else {
+                const velocity = this.velocity();
+                this.pos.x += delta * moving * velocity.x;
+                this.pos.z += delta * moving * velocity.y;
             }
         }
     }
 
+    updateTurning() {
+        const turning = this.keyboard.turning();
+        if (turning) {
+            this.bearing += this.rotationSpeed * this.time.delta * turning;
+        }
+    }
+
+    updateUpDown() {
+        if (this.keyboard.pressed['KeyJ']) {
+            this.pos.y += this.verticalSpeed * this.time.delta;
+        }
+        if (this.keyboard.pressed['KeyK']) {
+            this.pos.y -= this.verticalSpeed * this.time.delta;
+        }
+    }
+
+    updateStrafing() {
+        const strafing = this.keyboard.strafing();
+        if (strafing) {
+            const distance = this.movementSpeed * this.time.delta * strafing;
+            this.pos.x += distance * Math.cos(this.bearing);
+            this.pos.z -= distance * Math.sin(this.bearing);
+        }
+    }
 }
