@@ -6,6 +6,7 @@ import {
 import Player from './player.js';
 import type Sizes from './utils/sizes.js';
 import View from './view.js';
+import Keyboard from './utils/keyboard.js';
 
 export default class Renderer {
     canvas: HTMLCanvasElement | null;
@@ -14,24 +15,26 @@ export default class Renderer {
     skyScene: Scene;
     skyCamera: OrthographicCamera;
     player: Player;
+    keyboard: Keyboard;
     views: Array<View> = [];
     rearViewVisible: boolean = true;
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
-                sizes: Sizes, scene: Scene, skyScene: Scene, player: Player) {
+                sizes: Sizes, scene: Scene, skyScene: Scene, player: Player, keyboard: Keyboard) {
         this.canvas = canvas;
         this.sizes = sizes;
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
+        this.keyboard = keyboard;
         this.views.push(new View(this.sizes, 1.0, 95,
                                  {x: 0, y: 0, w: 1, h: 1},
-                                 0, false));
+                                 0, false, keyboard));
         const k = 0.16;
         this.views.push(new View(this.sizes, 1.0, 95,
                                 {x: 0.5 - k / 2, y: 0.99 - k, w: k, h: k},
-                                Math.PI, true));
+                                Math.PI, true, keyboard));
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
             antialias: true,

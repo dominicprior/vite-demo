@@ -43,7 +43,7 @@ export default class Game {
         this.resources = new Resources(sources);
         this.world = new World(this.scene, this.skyScene, this.resources, this.debug);
         this.player = new Player(this.keyboard, this.time, this.world);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.skyScene, this.player);
+        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.skyScene, this.player, this.keyboard);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);

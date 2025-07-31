@@ -4,6 +4,7 @@ import {
 import Sizes from './utils/sizes.js';
 import Player from './player.js';
 import Wide from './utils/wide.js';
+import Keyboard from './utils/keyboard.js';
 
 interface Port {  // as proportions of the whole screen
     x: number;
@@ -19,17 +20,20 @@ export default class View {
     camera: Wide;
     port: Port;
     relativeBearing: number;
+    pitch: number = 0;
     mirrored: boolean;
+    keyboard: Keyboard;
 
     constructor(sizes: Sizes, bend: number, minFov: number,
                 port: Port, relativeBearing: number,
-                mirrored: boolean) {
+                mirrored: boolean, keyboard: Keyboard) {
         this.sizes = sizes;
         this.bend = bend;
         this.minFov = minFov;
         this.port = port;
         this.relativeBearing = relativeBearing;
         this.mirrored = mirrored;
+        this.keyboard = keyboard;
         this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 100, bend);
     }
 
@@ -37,7 +41,13 @@ export default class View {
         const pos = player.pos;
         this.camera.position.set(pos.x, pos.y, pos.z);
         this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing + this.relativeBearing);
-        // this.scene.add(this.camera);
+        if (this.keyboard.pressed['KeyG']) {
+            this.pitch += 0.02;
+        }
+        if (this.keyboard.pressed['KeyB']) {
+            this.pitch -= 0.02;
+        }
+        this.camera.rotateX(this.pitch);
     }
 
     resize() {
