@@ -6,6 +6,7 @@ import {
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
 import World from './world/world.js';
+import type { Collision } from './utils/types.js';
 
 // var _dummy = new Vector3();
 // const upVec = new Vector3(0, 1, 0);
@@ -67,17 +68,7 @@ export default class Player {
         if (moving) {
             const collision = this.world.firstCollision(this);
             if (collision.t < delta) {
-                const skid = collision.skidVelocity;
-                this.bounceVelocity = skid.clone()  // (skid - v) * bounceFactor  +  skid
-                        .sub(this.velocity())
-                        .multiplyScalar(this.bounceFactor)
-                        .add(skid);
-                const newPos = this.bounceVelocity.clone()  // bounceVelocity * "the remaining time" + collision.pos
-                        .multiplyScalar(delta - collision.t)
-                        .add(collision.pos);
-                this.pos.x = newPos.x;
-                this.pos.z = newPos.y;
-                this.collisionTime = this.time.elapsed;  // ? plus spare time?
+                this.collide(collision);
             }
             else {
                 const velocity = this.velocity();
@@ -85,6 +76,20 @@ export default class Player {
                 this.pos.z += delta * moving * velocity.y;
             }
         }
+    }
+
+    collide(collision: Collision) {
+        const skid = collision.skidVelocity;
+        this.bounceVelocity = skid.clone()  // (skid - v) * bounceFactor  +  skid
+                .sub(this.velocity())
+                .multiplyScalar(this.bounceFactor)
+                .add(skid);
+        const newPos = this.bounceVelocity.clone()  // bounceVelocity * "the remaining time" + collision.pos
+                .multiplyScalar(this.time.delta - collision.t)
+                .add(collision.pos);
+        this.pos.x = newPos.x;
+        this.pos.z = newPos.y;
+        this.collisionTime = this.time.elapsed;  // ? plus spare time?
     }
 
     updateTurning() {
