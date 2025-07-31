@@ -15,6 +15,7 @@ export default class Renderer {
     skyCamera: OrthographicCamera;
     player: Player;
     views: Array<View> = [];
+    rearViewVisible: boolean = true;
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
@@ -29,9 +30,8 @@ export default class Renderer {
                                  0, false));
         const k = 0.16;
         this.views.push(new View(this.sizes, 1.0, 95,
-                                 {x: 0.5 - k / 2, y: 0.99 - k, w: k, h: k},
-                                 Math.PI, true));
-
+                                {x: 0.5 - k / 2, y: 0.99 - k, w: k, h: k},
+                                Math.PI, true));
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
             antialias: true,
@@ -40,6 +40,10 @@ export default class Renderer {
         this.instance.setPixelRatio(this.sizes.pixelRatio);
         this.skyCamera = new OrthographicCamera();
         this.skyCamera.position.z = 2;
+        window.addEventListener('keydown', (event) => { 
+            if (event.key === 'r')
+                this.rearViewVisible = !this.rearViewVisible;
+        });
     }
 
     resize() {
@@ -58,7 +62,9 @@ export default class Renderer {
             this.instance.setScissor(viewport);
             this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
             if (view.mirrored) {
-                this.drawMirrored(view);
+                if (this.rearViewVisible) {
+                    this.drawMirrored(view);
+                }
             }
             else {
                 this.drawSkyAndScene(view);
