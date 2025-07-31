@@ -24,11 +24,11 @@ export default class Renderer {
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
-        this.views.push(new View(this.sizes, 1.0, 90,
+        this.views.push(new View(this.sizes, 1.0, 95,
                                  {x: 0, y: 0, w: 1, h: 1},
                                  0, false));
         const k = 0.16;
-        this.views.push(new View(this.sizes, 1.0, 90,
+        this.views.push(new View(this.sizes, 1.0, 95,
                                  {x: 0.5 - k / 2, y: 0.99 - k, w: k, h: k},
                                  Math.PI, true));
 
