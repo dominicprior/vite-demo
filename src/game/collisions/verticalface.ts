@@ -55,6 +55,6 @@ export default class VerticalFace {
         const collisionT = - playerMinusAdotN / vDotNormal;  // - ((pos - a) . normal) / (v . normal)
         const skiddingAlongVelocity = bMinusA.clone().multiplyScalar(  // (b - a) * (v . (b - a)) / ((b - a) . (b - a))
                 v.dot(bMinusA) / bMinusA.lengthSq())
-        return { t: collisionT, pos: collisionPos, skiddingAlongVelocity: skiddingAlongVelocity };
+        return { t: collisionT, pos: collisionPos, skidVelocity: skiddingAlongVelocity };
     }
 }
