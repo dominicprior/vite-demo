@@ -14,7 +14,7 @@ export default class Player {
 
     // constants
     radius: number = 0.25;
-    rotationSpeed: number = 3;  // in radians per second
+    rotationSpeed: number = 1;  // in radians per second
     movementSpeed: number = 2.4;
     collisionDuration: number = 0.3;
     bounceFactor: number = 0.7;
