@@ -1,7 +1,7 @@
 import {
     Scene, Mesh, MeshStandardMaterial,
     BoxGeometry,
-    Vector2,
+    Vector3,
 } from '../../../three/threebuild/three_module.js';
 import type { Collision, } from '../utils/types.js';
 import { noCollision, } from '../utils/types.js';
@@ -16,7 +16,7 @@ import Player from '../player.js';
 // And https://discoverthreejs.com/tips-and-tricks/
 
 interface Cube {
-    centre: Vector2,
+    centre: Vector3,
     mesh: Mesh,
 }
 
@@ -59,13 +59,14 @@ export default class Cubes {
 
     addCube(row: number, col: number, level: number, scene: Scene, numRows: number, numCols: number) {
         let mesh = new Mesh(this.geom, this.material);
-        const centre = new Vector2(this.stride * (col - (numCols - 1) / 2),
+        const centre = new Vector3(this.stride * (col - (numCols - 1) / 2),
+                                   level + 0.5,
                                    this.stride * (row - (numRows - 1) / 2));
         mesh.name = 'cube';
         mesh.frustumCulled = false;
         mesh.position.x = centre.x;
-        mesh.position.y = 0.5 + level;
-        mesh.position.z = centre.y;
+        mesh.position.y = centre.y;
+        mesh.position.z = centre.z;
         mesh.layers.enableAll();
         // mesh.receiveShadow = true
         this.cubes.push({centre: centre, mesh: mesh});
