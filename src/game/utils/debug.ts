@@ -6,9 +6,7 @@ export default class Debug {
         // this.active = window.location.hash === '#debug';
         // this.active = true;
         // if (this.active) {
-            this.gui = new GUI({
-                width: 400,
-            });
+            this.gui = new GUI({ width: 400, }).show(false);
         // }
         window.addEventListener('keydown', (event) => { 
             if (event.key === 'h')
