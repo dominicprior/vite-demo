@@ -76,10 +76,12 @@ export default class Cubes {
     firstCollision(player: Player): Collision {
         let result = noCollision;
         for (let cube of this.cubes) {
-            const box = new HorizontalBox(cube.centre, this.boxSize, this.boxSize, 0);
-            let collision = box.firstCollision(player);
-            if (collision.t < result.t) {
-                result = collision;
+            if (Math.abs(cube.centre.y - player.pos.y) <= 0.5) {
+                const box = new HorizontalBox(cube.centre, this.boxSize, this.boxSize, 0);
+                let collision = box.firstCollision(player);
+                if (collision.t < result.t) {
+                    result = collision;
+                }
             }
         }
         return result;
