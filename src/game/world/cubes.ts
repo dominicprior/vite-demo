@@ -22,12 +22,17 @@ interface Cube {
 
 export default class Cubes {
     locations: string = `
-....
-1..1
-3623
-1...
-1..1
-..11
+73736263737
+3.........3
+7.........7
+3.........3
+6.........6
+2.........2
+6.........6
+3.........3
+7.........7
+3.........3
+73736263737
 `;
     numBands: number = 5;
     stride: number = 1;
@@ -42,7 +47,7 @@ export default class Cubes {
         this.debug = debug;
 
         const lines = this.locations.trim().split('\n');
-        for (let row = 0; row < lines.length; row++) {
+        for (let row = lines.length - 1; row >= 0; row--) {
             const line = lines[row];
             for (let col = 0; col < line.length; col++) {
                 const char = line[col];
