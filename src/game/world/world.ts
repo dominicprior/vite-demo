@@ -8,6 +8,7 @@ import Resources from '../utils/resources.js';
 import Sky from './sky.js';
 import Floor from './floor.js';
 import Cubes from './cubes.js';
+import Moon from './moon.js';
 import CrossHairs from './crosshairs.js';
 import Debug from '../utils/debug.js';
 import Player from '../player.js';
@@ -22,6 +23,8 @@ export default class World {
     sky: Sky;
     // @ts-ignore: no initializer
     cubes: Cubes;
+    // @ts-ignore: no initializer
+    moon: Moon;
     // @ts-ignore: no initializer
     crosshairs: CrossHairs;
     debug: Debug;
@@ -43,6 +46,7 @@ export default class World {
             this.sky = new Sky(skyScene, debug);
             this.floor = new Floor(this.scene, this.debug);
             this.cubes = new Cubes(this.scene, this.debug);
+            this.moon = new Moon(this.scene, this.debug);
             this.crosshairs = new CrossHairs(this.scene, this.debug);
             // this.scene.background = new Color('green');
         });
