@@ -34,7 +34,7 @@ export default class View {
         this.relativeBearing = relativeBearing;
         this.mirrored = mirrored;
         this.keyboard = keyboard;
-        this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 100, bend);
+        this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 1000, bend);
     }
 
     update(player: Player) {
