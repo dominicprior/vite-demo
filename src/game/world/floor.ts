@@ -24,7 +24,7 @@ export default class Floor {
 
     setGeometry(): BufferGeometry {
         const geometry = new BufferGeometry();
-        const size = 9;
+        const size = 15;
         const stride = size / this.numRows;
         let vertices: Array<number> = [];
         for (let i=0; i < this.numRows; i++) {
