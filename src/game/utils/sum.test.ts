@@ -2,7 +2,7 @@ import {
     Vector3, Euler,
 } from '../../../three/threebuild/three_module.js';
 import { expect, test } from 'vitest';
-import { VertexDist, EdgeDist, ConvexPolygonDist } from './distance.js';
+import { VertexDist, EdgeDist, ConvexPolygonDist, BoxDist } from './distance.js';
 
 function vecDist(u: Vector3, x: number, y: number, z: number) {
     return new Vector3(x, y, z).distanceTo(u)
@@ -51,5 +51,42 @@ test('dist3', () => {
 test('dist4', () => {
     const e = new Euler(Math.PI/2);
     const v = new Vector3(1,2,3).applyEuler(e);
-    expect(vecDist(v, 1, -3, 2)).toBeCloseTo(0);
+    expect(vecDist(v, 1, -3, 2)).toBeCloseTo(0, 9);
+});
+
+test('dist5', () => {
+    const box = new BoxDist(new Vector3, 2, 3, 4, new Euler(0, 0, Math.PI / 2));
+    expect(box.vertexDist[0].pos.x).toBeCloseTo(1.5);
+    // console.log('hello')
+    // console.log(box.edgeDist)
+});
+
+test('dist6', () => {
+    const w = 2.6, d = 3.1, h = 4.7;
+    const box = new BoxDist(new Vector3, w, d, h, new Euler(.5, .6, .7));
+    let sumOfLenSq = 0;
+    let sumOfVertDists = 0;
+    for (let e of box.edgeDist) {
+        sumOfLenSq += e.a.distanceTo(e.b) ** 2;
+        sumOfVertDists += e.b.length();
+    }
+    expect(sumOfLenSq).toBeCloseTo(4 * (w**2 + d**2 + h**2), 9);
+    expect(sumOfVertDists).toBeCloseTo(
+        12 * new Vector3(w, d, h).length() / 2, 9);
+});
+
+test('dist7', () => {
+    const w = 2.6, d = 3.1, h = 4.7;
+    const box = new BoxDist(new Vector3, w, d, h, new Euler(.5, .6, .7));
+    let sumOfSemiPerimeter = 0;
+    // let sumOfVertDists = 0;
+    for (let f of box.faceDist) {
+        const v = f.vertex;
+        sumOfSemiPerimeter += v[0].distanceTo(v[1]) +
+                              v[1].distanceTo(v[2]);
+        // sumOfVertDists += e.b.length();
+    }
+    expect(sumOfSemiPerimeter).toBeCloseTo(4 * (w + d + h), 9);
+    // expect(sumOfVertDists).toBeCloseTo(
+    //     12 * new Vector3(w, d, h).length() / 2, 9);
 });

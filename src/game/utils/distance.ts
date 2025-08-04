@@ -99,6 +99,8 @@ class BoxDist {
         this.height = height;
         this.euler = euler;
         this.addVertices();
+        this.addEdges();
+        this.addFaces();
     }
 
     addVertices() {
