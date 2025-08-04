@@ -46,4 +46,39 @@ class EdgeDist {
     }
 }
 
-export { VertexDist, EdgeDist };
+// We assume the polgon is flat and non-degenerate and has at
+// least 3 vertices.
+
+// We also assume the vertices walk anti-clockwise around
+// the face when viewed from outside the body.
+
+class ConvexPolygonDist {
+    vertex: Array<Vector3>;
+    constructor(vertex: Array<Vector3>) {
+        this.vertex = vertex;
+    }
+    dist(pos: Vector3): NearestPoint {
+        const normal = new Vector3().crossVectors(  // outwards
+            this.vertex[1].clone().sub(this.vertex[0]),
+            this.vertex[2].clone().sub(this.vertex[1]),  // (0,0,16)
+        );
+        for (let i=0; i < this.vertex.length; i++) {
+            const a = this.vertex[i];
+            const b = this.vertex[(i+1) % this.vertex.length];
+            const bMinusA = b.clone().sub(a);  // 400
+            const inwards = new Vector3().crossVectors(normal, bMinusA);  // inwards in the plane of the polygon.
+            if (pos.clone().sub(a).dot(inwards) < 0) {
+                return NOTHING;
+            }
+        }
+        const posMinusV0 = pos.clone().sub(this.vertex[0]);  // 349 - 234 = 115
+        const posDotNormal = posMinusV0.dot(normal);
+        const dist = posDotNormal / normal.length();  // signed dist.  5
+        // v is the pos relative to its projection onto the plane of the polygon.
+        const v = normal.clone().multiplyScalar(posDotNormal / normal.lengthSq());  // 005
+        const base = pos.clone().sub(v);  // 349 - 005 = 344
+        return new NearestPoint(dist, base);
+    }
+}
+
+export { VertexDist, EdgeDist, ConvexPolygonDist };
