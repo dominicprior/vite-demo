@@ -1,9 +1,12 @@
 import {
-    Vector2, Vector3,
+    Vector3,
 } from '../../../three/threebuild/three_module.js';
 import { expect, test } from 'vitest';
-import Player from '../player.js';
+import { VertexDist } from './distance.js';
 
-test('simple sum', () => {
-    expect(1 + 2).toBe(3);
+test('dist1', () => {
+    const vert = new VertexDist(new Vector3(3,4,5));
+    const nearest = vert.distTo(new Vector3(4,6,7));
+    expect(nearest.dist).toBe(3);
+    expect(nearest.base.distanceTo(vert.pos)).toBe(0);
 });
