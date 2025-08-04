@@ -11,16 +11,39 @@ class NearestPoint {
     }
 }
 
-// const NOTHING = new NearestPoint(1e9, new Vector3);
+const NOTHING = new NearestPoint(1e9, new Vector3);
 
 class VertexDist {
     pos: Vector3;
     constructor(pos: Vector3) {
         this.pos = pos;
     }
-    distTo(pos: Vector3): NearestPoint {
+    dist(pos: Vector3): NearestPoint {
         return new NearestPoint(this.pos.distanceTo(pos), this.pos);
     }
 }
 
-export { VertexDist };
+class EdgeDist {
+    a: Vector3;
+    b: Vector3;
+    constructor(a: Vector3, b: Vector3) {
+        this.a = a;
+        this.b = b;
+    }
+    dist(pos: Vector3): NearestPoint {
+        const posMinusA = pos.clone().sub(this.a);
+        const posMinusB = pos.clone().sub(this.b);
+        const bMinusA   = this.b.clone().sub(this.a);
+        const dotA = posMinusA.dot(bMinusA);
+        const dotB = posMinusB.dot(bMinusA);
+        if (dotA < 0 || dotB > 0) {
+            return NOTHING;
+        }
+        const base = bMinusA.clone()
+                        .multiplyScalar(dotA / bMinusA.lengthSq())
+                        .add(this.a);
+        return new NearestPoint(pos.distanceTo(base), base);
+    }
+}
+
+export { VertexDist, EdgeDist };
