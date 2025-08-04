@@ -1,5 +1,5 @@
 import {
-    Vector3,
+    Vector3, Euler,
 } from '../../../three/threebuild/three_module.js';
 import { expect, test } from 'vitest';
 import { VertexDist, EdgeDist, ConvexPolygonDist } from './distance.js';
@@ -46,4 +46,10 @@ test('dist3', () => {
     expect(poly.dist(new Vector3(4, 5.1, 5)).dist).toBe(1e9);
     expect(poly.dist(new Vector3(4, 4.9, 5)).dist).toBe(1);
     expect(vecDist(poly.dist(new Vector3(4, 4.9, 5)).base, 4, 4.9, 4)).toBe(0);
+});
+
+test('dist4', () => {
+    const e = new Euler(Math.PI/2);
+    const v = new Vector3(1,2,3).applyEuler(e);
+    expect(vecDist(v, 1, -3, 2)).toBeCloseTo(0);
 });

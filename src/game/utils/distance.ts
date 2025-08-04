@@ -1,5 +1,5 @@
 import {
-    Vector3,
+    Vector3, Euler,
 } from '../../../three/threebuild/three_module.js';
 
 class NearestPoint {
@@ -81,4 +81,60 @@ class ConvexPolygonDist {
     }
 }
 
-export { VertexDist, EdgeDist, ConvexPolygonDist };
+class BoxDist {
+    centre: Vector3;
+    width: number;
+    depth: number;
+    height: number;
+    euler: Euler;
+    faceDist: Array<ConvexPolygonDist> = [];
+    edgeDist: Array<EdgeDist> = [];
+    vertexDist: Array<VertexDist> = [];
+
+    constructor(centre: Vector3, width: number,
+                depth: number, height: number, euler: Euler) {
+        this.centre = centre;
+        this.width = width;
+        this.depth = depth;
+        this.height = height;
+        this.euler = euler;
+        this.addVertices();
+    }
+
+    addVertices() {
+        for (let i of [-0.5, 0.5]) {
+            for (let j of [-0.5, 0.5]) {
+                for (let k of [-0.5, 0.5]) {
+                    const offset = new Vector3(
+                            i * this.width, j * this.depth, k * this.height)
+                            .applyEuler(this.euler);
+                    const v = this.centre.clone().add(offset);
+                    this.vertexDist.push(new VertexDist(v));
+                }
+            }
+        }
+    }
+
+    addEdges() {
+        const v = this.vertexDist;
+        for (let [i, j] of [[0, 1], [1, 3], [3, 2], [2, 0]]) {
+            this.edgeDist.push(new EdgeDist(v[i].pos,     v[j].pos));
+            this.edgeDist.push(new EdgeDist(v[i].pos,     v[i + 4].pos));
+            this.edgeDist.push(new EdgeDist(v[i + 4].pos, v[j + 4].pos));
+        }
+    }
+
+    addFaces() {
+        const v = this.vertexDist;
+        const a = '0132,4576,1573,0264,0451,2376'.split(',');
+        for (let q of a) {  // e.g. '0132'
+            const p = new ConvexPolygonDist([]);
+            for (let i of q) {  // e.g. '0'
+                p.vertex.push(v[+i].pos);
+            }
+            this.faceDist.push(p);
+        }
+    }
+}
+
+export { VertexDist, EdgeDist, ConvexPolygonDist, BoxDist };
