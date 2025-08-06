@@ -3,11 +3,7 @@ import {
     BoxGeometry,
     Vector3,
 } from '../../../three/threebuild/three_module.js';
-import type { Collision, } from '../utils/types.js';
-import { noCollision, } from '../utils/types.js';
 import Debug from '../utils/debug.js';
-import HorizontalBox from '../collisions/horizontalbox.js';
-import Player from '../player.js';
 
 // import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 // See https://threejs-journey.com/lessons/performance-tips around 35:00.
@@ -76,19 +72,5 @@ export default class Cubes {
         // mesh.receiveShadow = true
         this.cubes.push({centre: centre, mesh: mesh});
         scene.add(mesh);
-    }
-
-    firstCollision(player: Player): Collision {
-        let result = noCollision;
-        for (let cube of this.cubes) {
-            if (Math.abs(cube.centre.y - player.pos.y) <= 0.5) {
-                const box = new HorizontalBox(cube.centre, this.boxSize, this.boxSize, 0);
-                let collision = box.firstCollision(player);
-                if (collision.t < result.t) {
-                    result = collision;
-                }
-            }
-        }
-        return result;
     }
 }
