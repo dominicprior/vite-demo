@@ -65,16 +65,19 @@ export default class Player {
         const accelerating = this.keyboard.moving();
         const speed = this.movementSpeed;
 
-        if (speed >= 0) {
-            if (accelerating === 1) {  // accelerating forwards
-                const energy = speed ** 2  +  this.power * delta;
-                this.movementSpeed = Math.sqrt(energy);  // ? minus drag
-            }
-            if (accelerating === 0) {  // coasting with decay
-                this.movementSpeed = speed * this.decayFactor ** delta;
-            }
-            if (accelerating === -1) {
-                this.movementSpeed = 0;
+        if (accelerating === 0) {  // coasting with decay
+            this.movementSpeed = speed * this.decayFactor ** delta;
+        }
+        for (let dir of [-1, 1]) {  // doesn't like both!  the second one is overwriting the first.
+            if (speed * dir >= 0) {
+                if (accelerating * dir === 1) {  // accelerating
+                    const energy = speed ** 2  +  this.power * delta;
+                    this.movementSpeed = dir * Math.sqrt(energy);  // ? minus drag
+                }
+                if (accelerating * dir === -1) {
+                    console.log({dir});
+                    this.movementSpeed = 0;
+                }
             }
         }
 
