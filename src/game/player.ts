@@ -15,14 +15,16 @@ export default class Player {
     // constants
     radius: number = 0.25;
     rotationSpeed: number = 1;  // in radians per second
-    movementSpeed: number = 2.4;
     verticalSpeed: number = 1.2;  // for J and K
     gravity: number = 3;
     initialJumpSpeed = 2.5;
+    power = 5;
+    decayFactor = 0.2;
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
     pos: Vector3 = new Vector3(0, 0.6, 0);
+    movementSpeed: number = 0;
     jumpTime: number = -100;       // when the last jump occurred.
     verticalVelocity = 0;
 
@@ -60,10 +62,25 @@ export default class Player {
 
     updateMoving() {
         const delta = this.time.delta;
-        const moving = this.keyboard.moving();
+        const accelerating = this.keyboard.moving();
+        const speed = this.movementSpeed;
+
+        if (speed >= 0) {
+            if (accelerating === 1) {  // accelerating forwards
+                const energy = speed ** 2  +  this.power * delta;
+                this.movementSpeed = Math.sqrt(energy);  // ? minus drag
+            }
+            if (accelerating === 0) {  // coasting with decay
+                this.movementSpeed = speed * this.decayFactor ** delta;
+            }
+            if (accelerating === -1) {
+                this.movementSpeed = 0;
+            }
+        }
+
         const velocity = this.velocity();
-        this.pos.x += delta * moving * velocity.x;
-        this.pos.z += delta * moving * velocity.y;
+        this.pos.x += delta * velocity.x;
+        this.pos.z += delta * velocity.y;
     }
 
     updateTurning() {
