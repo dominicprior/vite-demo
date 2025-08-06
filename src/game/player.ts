@@ -55,35 +55,27 @@ export default class Player {
     update() {
         this.updateTurning();
         this.updateUpDown();
-        this.updateMoving();
+        // this.updateMoving();
         this.updateStrafing();
         this.updateJumping();
     }
 
-    updateMoving() {
-        const delta = this.time.delta;
-        const accelerating = this.keyboard.moving();
-        const speed = this.movementSpeed;
+    // Pure(ish) function for calculating fwd/bk, strafing or turning.
+    calcNewVelocity(dt: number, kbd: number, velocity: number, decay: number, power: number): number {
 
-        if (accelerating === 0) {  // coasting with decay
-            this.movementSpeed = speed * this.decayFactor ** delta;
-        }
-        for (let dir of [-1, 1]) {  // doesn't like both!  the second one is overwriting the first.
-            if (speed * dir >= 0) {
-                if (accelerating * dir === 1) {  // accelerating
-                    const energy = speed ** 2  +  this.power * delta;
-                    this.movementSpeed = dir * Math.sqrt(energy);  // ? minus drag
-                }
-                if (accelerating * dir === -1) {
-                    console.log({dir});
-                    this.movementSpeed = 0;
-                }
-            }
+        if (kbd === 0) {  // coasting with decay
+            return velocity * decay ** dt;
         }
 
-        const velocity = this.velocity();
-        this.pos.x += delta * velocity.x;
-        this.pos.z += delta * velocity.y;
+        if (velocity === 0) {
+            return kbd * Math.sqrt(power * dt);
+        }
+
+        if (kbd * velocity < 0) {
+            return 0;
+        }
+
+        return kbd * Math.sqrt(velocity ** 2  +  power * dt);
     }
 
     updateTurning() {
