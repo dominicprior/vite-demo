@@ -1,5 +1,5 @@
 import {
-    Vector2,
+    Euler,
     Vector3,
 } from '../../three/threebuild/three_module.js';
 
@@ -9,6 +9,25 @@ import World from './world/world.js';
 
 // var _dummy = new Vector3();
 // const upVec = new Vector3(0, 1, 0);
+
+// Pure function for calculating fwd/bk, strafing or turning.
+function calcNewVelocity(dt: number, kbd: number, velocity: number, decay: number, power: number): number {
+
+    if (kbd === 0) {  // coasting with decay
+        return velocity * decay ** dt;
+    }
+
+    if (velocity === 0) {
+        return kbd * Math.sqrt(power * dt);
+    }
+
+    if (kbd * velocity < 0) {
+        return 0;
+    }
+
+    return kbd * Math.sqrt(velocity ** 2  +  power * dt);
+}
+
 
 export default class Player {
 
@@ -24,7 +43,7 @@ export default class Player {
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
     pos: Vector3 = new Vector3(0, 0.6, 0);
-    movementSpeed: number = 0;
+    fwdBkSpeed: number = 0;
     jumpTime: number = -100;       // when the last jump occurred.
     verticalVelocity = 0;
 
@@ -44,38 +63,30 @@ export default class Player {
         });
     }
 
-    velocity(): Vector2 {
-        return this.forwardsDirection().multiplyScalar(this.movementSpeed);
+    forwardsDirection() {
+        return new Vector3(0, 0, -1).
+            applyEuler(new Euler(0, this.bearing, 0));
     }
 
-    forwardsDirection() {
-        return new Vector2(-Math.sin(this.bearing), -Math.cos(this.bearing));
+    velocity(): Vector3 {
+        return new Vector3(0, 0, -this.fwdBkSpeed).
+            applyEuler(new Euler(0, this.bearing, 0));
     }
 
     update() {
         this.updateTurning();
+        this.updateForwardOrBack();
+        this.pos.add(this.velocity().clone()
+                .multiplyScalar(this.time.delta));
+        // this.updateStrafing();
         this.updateUpDown();
-        // this.updateMoving();
-        this.updateStrafing();
         this.updateJumping();
     }
 
-    // Pure(ish) function for calculating fwd/bk, strafing or turning.
-    calcNewVelocity(dt: number, kbd: number, velocity: number, decay: number, power: number): number {
-
-        if (kbd === 0) {  // coasting with decay
-            return velocity * decay ** dt;
-        }
-
-        if (velocity === 0) {
-            return kbd * Math.sqrt(power * dt);
-        }
-
-        if (kbd * velocity < 0) {
-            return 0;
-        }
-
-        return kbd * Math.sqrt(velocity ** 2  +  power * dt);
+    updateForwardOrBack() {
+        this.fwdBkSpeed = calcNewVelocity(
+                this.time.delta, this.keyboard.movingForwardOrBack(),
+                this.fwdBkSpeed, this.decayFactor, this.power);
     }
 
     updateTurning() {

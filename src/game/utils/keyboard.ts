@@ -26,7 +26,7 @@ export default class Keyboard {
         return this.pressed['KeyD'] || this.pressed['ArrowRight'];
     }
 
-    moving(): Sign {
+    movingForwardOrBack(): Sign {
         const fwd   = this.movingForward() ? 1 : 0;
         const back  = this.movingBack()    ? 1 : 0;
         return (fwd - back) as Sign;
