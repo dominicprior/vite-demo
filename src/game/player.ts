@@ -35,7 +35,7 @@ export default class Player {
     gravity: number = 3;
     initialJumpSpeed = 2.5;
     power = 5;
-    decayFactor = 0.2;
+    decayFactor = 1;   // 0.2;  // set this to zero for immediate stopping.
 
     // variables
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
@@ -57,6 +57,12 @@ export default class Player {
             if (event.key === ' ') {
                 this.verticalVelocity = this.initialJumpSpeed;
                 this.jumpTime = this.time.elapsed;
+            }
+        });
+        window.addEventListener('keydown', (event) => { 
+            if (event.key === 'z') {
+                this.fwdBkSpeed = 0;
+                this.strafeSpeed = 0;
             }
         });
     }
