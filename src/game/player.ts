@@ -16,15 +16,12 @@ function calcNewVelocity(dt: number, kbd: number, velocity: number, decay: numbe
     if (kbd === 0) {  // coasting with decay
         return velocity * decay ** dt;
     }
-
     if (velocity === 0) {
         return kbd * Math.sqrt(power * dt);
     }
-
     if (kbd * velocity < 0) {
         return 0;
     }
-
     return kbd * Math.sqrt(velocity ** 2  +  power * dt);
 }
 
@@ -44,6 +41,7 @@ export default class Player {
     bearing: number = 0;  // radians from North (negative Z) round towards negative X.
     pos: Vector3 = new Vector3(0, 0.6, 0);
     fwdBkSpeed: number = 0;
+    strafeSpeed = 0;
     jumpTime: number = -100;       // when the last jump occurred.
     verticalVelocity = 0;
 
@@ -68,17 +66,24 @@ export default class Player {
             applyEuler(new Euler(0, this.bearing, 0));
     }
 
-    velocity(): Vector3 {
-        return new Vector3(0, 0, -this.fwdBkSpeed).
+    strafeDirection() {
+        return new Vector3(1, 0, 0).
             applyEuler(new Euler(0, this.bearing, 0));
+    }
+
+    velocity(): Vector3 {
+        return this.forwardsDirection().clone()
+                        .multiplyScalar(this.fwdBkSpeed)
+           .add(this.strafeDirection()
+                        .multiplyScalar(this.strafeSpeed))
     }
 
     update() {
         this.updateTurning();
         this.updateForwardOrBack();
+        this.updateStrafing();
         this.pos.add(this.velocity().clone()
                 .multiplyScalar(this.time.delta));
-        // this.updateStrafing();
         this.updateUpDown();
         this.updateJumping();
     }
@@ -87,6 +92,12 @@ export default class Player {
         this.fwdBkSpeed = calcNewVelocity(
                 this.time.delta, this.keyboard.movingForwardOrBack(),
                 this.fwdBkSpeed, this.decayFactor, this.power);
+    }
+
+    updateStrafing() {
+        this.strafeSpeed = calcNewVelocity(
+                this.time.delta, this.keyboard.strafing(),
+                this.strafeSpeed, this.decayFactor, this.power);
     }
 
     updateTurning() {
@@ -102,15 +113,6 @@ export default class Player {
         }
         if (this.keyboard.pressed['KeyK']) {
             this.pos.y -= this.verticalSpeed * this.time.delta;
-        }
-    }
-
-    updateStrafing() {
-        const strafing = this.keyboard.strafing();
-        if (strafing) {
-            const distance = this.movementSpeed * this.time.delta * strafing;
-            this.pos.x += distance * Math.cos(this.bearing);
-            this.pos.z -= distance * Math.sin(this.bearing);
         }
     }
 
