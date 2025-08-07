@@ -20,10 +20,11 @@ export default class CrossHairs {
             for (let sign of [-1, 1]) {
                 const a: Array<Mesh> = [];
                 for (let i of [0, 1]) {
+                    const b = axis === 0 ? this.boxSize : this.boxSize / 2;
                     const geometry = new BoxGeometry(
-                        i ? this.boxSize / 10 : this.boxSize,
-                        i ? this.boxSize      : this.boxSize / 10,
-                        this.boxSize / 10
+                        i ? b / 10 : b,
+                        i ? b      : b / 10,
+                        b / 10
                     );
                     const mesh = new Mesh(geometry, material);
                     mesh.name = 'crosshair' + axis + sign + i;
@@ -39,10 +40,10 @@ export default class CrossHairs {
     }
 
     update(player: Player) {
-        for (let [axis, relPos] of [
-                                    [0, player.forwardsDirection()],
-                                    [1, player.strafeDirection()],
-                                    [2, new Vector3(0,1,0)]
+        for (let [axis, relPos, rotX, rotY] of [
+                                    [0, player.forwardsDirection(), 0, 0],
+                                    [1, player.strafeDirection(),   0, 1],
+                                    [2, new Vector3(0,1,0),         1, 0]
                                 ]) {
             const aa: Array<Array<Mesh>> = this.meshes[axis as number];
             for (let sign of [0, 1]) {
@@ -51,6 +52,8 @@ export default class CrossHairs {
                 for (let mesh of a) {
                     mesh.position.copy(player.pos.clone().add(signedRelPos));
                     mesh.rotation.y = player.bearing;
+                    mesh.rotateX((rotX as number) * Math.PI / 2);
+                    mesh.rotateY((rotY as number) * Math.PI / 2);
                 }
             }
         }
