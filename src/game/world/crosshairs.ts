@@ -30,11 +30,9 @@ export default class CrossHairs {
 
     update(player: Player) {
         const vec = player.forwardsDirection().clone().multiplyScalar(0.2);
-        for (let i=0; i<2; i++) {
-            this.meshes[i].position.x = player.pos.x + vec.x;
-            this.meshes[i].position.y = player.pos.y + vec.y;
-            this.meshes[i].position.z = player.pos.z + vec.z;
-            this.meshes[i].rotation.y = player.bearing;
+        for (let mesh of this.meshes) {
+            mesh.position.copy(player.pos.clone().add(vec));
+            mesh.rotation.y = player.bearing;
         }
     }
 }
