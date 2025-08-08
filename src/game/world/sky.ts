@@ -1,4 +1,11 @@
-// Add a blue gradient-filled PlaneGeometry to the given skyScene.
+// Adds a blue gradient-filled PlaneGeometry (the sky) to the given skyScene.
+
+// The PlaneGeometry is twice the size of the screen to crop it to the part
+// of the texture that has linear interpolation.
+
+// The sky has depthTest=false material, which also implicitly
+// disables the depth write, which means the main scene will appear in front
+// of the sky.
 
 import {
     Scene, Mesh, MeshBasicMaterial,

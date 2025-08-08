@@ -1,3 +1,5 @@
+// Simply invokes various constructors.
+
 import {
     Scene,
 } from '../../../three/threebuild/three_module.js';
@@ -14,7 +16,6 @@ import Player from '../player.js';
 
 export default class World {
     scene: Scene;
-    // @ts-ignore: no initializer
     skyScene: Scene;
     // @ts-ignore: no initializer
     floor: Floor;
