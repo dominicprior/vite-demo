@@ -61,7 +61,7 @@ export default class Renderer {
 
     redraw() {
         for (const view of this.views) {
-            view.update(this.player.pos, this.player.bearing);
+            view.update(this.player);
             const viewport = view.viewport();
             this.instance.setViewport(viewport);
             this.instance.setScissor(viewport);

@@ -2,6 +2,7 @@ import {
     Vector3, Vector4,
 } from '../../three/threebuild/three_module.js';
 import Sizes from './utils/sizes.js';
+import Player from './player.js';
 import Wide from './utils/wide.js';
 import Keyboard from './utils/keyboard.js';
 
@@ -36,9 +37,10 @@ export default class View {
         this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 1000, bend);
     }
 
-    update(pos: Vector3, bearing: number) {
+    update(player: Player) {
+        const pos = player.pos;
         this.camera.position.set(pos.x, pos.y, pos.z);
-        this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), bearing + this.relativeBearing);
+        this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), player.bearing + this.relativeBearing);
         if (this.keyboard.pressed['KeyG']) {
             this.pitch += 0.02;
         }
