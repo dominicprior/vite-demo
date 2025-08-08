@@ -7,22 +7,20 @@ import Debug from '../utils/debug.js';
 export default class Floor {
     numRows: number = 45;
     debug: Debug;
-    // @ts-ignore: no initializer
     mesh: Mesh;
 
     constructor(scene: Scene, debug: Debug) {
         this.debug = debug;
 
-        const geometry = this.setGeometry();
+        const geometry = this.geometry();
         this.setColours(geometry);
         this.setDebug();
-        const material = this.setMaterial();
-        this.setMesh(geometry, material);
-        // @ts-ignore
+        const material = this.material();
+        this.mesh = this.newMesh(geometry, material);
         scene.add(this.mesh);
     }
 
-    setGeometry(): BufferGeometry {
+    geometry(): BufferGeometry {
         const geometry = new BufferGeometry();
         const size = 15;
         const stride = size / this.numRows;
@@ -77,24 +75,25 @@ export default class Floor {
         this.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
             .onChange(() => {
                 this.mesh.geometry.dispose();
-                const geometry = this.setGeometry();
+                const geometry = this.geometry();
                 this.setColours(geometry);
                 this.mesh.geometry = geometry;
             });
     }
 
-    setMaterial() {
+    material() {
         return new MeshStandardMaterial({
             vertexColors: true,
         });
     }
 
-    setMesh(geometry: BufferGeometry, material: MeshStandardMaterial) {
-        this.mesh = new Mesh(geometry, material);
-        this.mesh.name = 'floor';
-        this.mesh.frustumCulled = false;
-        this.mesh.rotation.x = - Math.PI * 0.5;
-        // this.mesh.receiveShadow = true
+    newMesh(geometry: BufferGeometry, material: MeshStandardMaterial): Mesh {
+        const mesh = new Mesh(geometry, material);
+        mesh.name = 'floor';
+        mesh.frustumCulled = false;
+        mesh.rotation.x = - Math.PI * 0.5;
+        // mesh.receiveShadow = true
+        return mesh;
     }
 
     setTextureMaterial() {  // not used

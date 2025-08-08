@@ -1,3 +1,5 @@
+// Calculations of distances to edges and faces etc.
+
 import {
     Vector3, Euler,
 } from '../../../three/threebuild/three_module.js';

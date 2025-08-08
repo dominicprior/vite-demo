@@ -1,3 +1,5 @@
+// Lights and environment maps.
+
 import { Scene, DirectionalLight, MeshStandardMaterial,
     SRGBColorSpace, Texture, Mesh, Object3D, DataTexture,
     RGBAFormat, LinearFilter,
@@ -34,7 +36,7 @@ export default class Environment {
         this.scene.add(this.sunlight);
     }
 
-    setBackgroundColor() {  // not used
+    setBackgroundColor() {  // not used - the background is done by sky.ts.
         // this.scene.background = new Color('skyblue');
 
         // Create a simple 2x2 DataTexture

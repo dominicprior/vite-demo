@@ -1,3 +1,6 @@
+// Maintains the set of keys that are currently pressed.
+// Has convenience functions like movingForward().
+
 import type {
     Sign,
 } from '../utils/types.js';

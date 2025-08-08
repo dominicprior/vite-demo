@@ -1,3 +1,6 @@
+// Adds boxes to the scene and keeps a note of them in the
+// cubes member variable.
+
 import {
     Scene, Mesh, MeshStandardMaterial,
     BoxGeometry,

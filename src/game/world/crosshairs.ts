@@ -1,3 +1,6 @@
+// Draws tiny crosshairs in all six axis directions by always moving
+// them relative to the player.
+
 import {
     Scene, Mesh, MeshBasicMaterial,
     BoxGeometry,
