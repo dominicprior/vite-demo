@@ -1,3 +1,5 @@
+// Player position and movement
+
 import {
     Euler,
     Vector3,

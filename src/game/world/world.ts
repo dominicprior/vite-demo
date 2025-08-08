@@ -2,7 +2,6 @@ import {
     Scene,
 } from '../../../three/threebuild/three_module.js';
 
-import type { Collision, } from '../utils/types.js';
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Sky from './sky.js';
@@ -50,10 +49,6 @@ export default class World {
             this.crosshairs = new CrossHairs(this.scene, this.debug);
             // this.scene.background = new Color('green');
         });
-    }
-
-    firstCollision(player: Player): Collision {
-        return this.cubes.firstCollision(player);
     }
 
     update(player: Player) {

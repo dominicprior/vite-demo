@@ -1,3 +1,5 @@
+// Redrawing the screen
+
 import {
     // PCFSoftShadowMap,
     Scene, WebGLRenderer, WebGLRenderTarget, OrthographicCamera,
