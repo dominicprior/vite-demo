@@ -1,6 +1,8 @@
+// Add a white disk in the distance.  (It should be at infinity, but this will do for now).
+
 import {
     Scene, Mesh, MeshBasicMaterial,
-    BoxGeometry, IcosahedronGeometry, CircleGeometry,
+    CircleGeometry,
     Vector3,
 } from '../../../three/threebuild/three_module.js';
 import Debug from '../utils/debug.js';

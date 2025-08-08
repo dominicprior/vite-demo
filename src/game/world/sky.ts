@@ -1,3 +1,5 @@
+// Add a blue gradient-filled PlaneGeometry to the given skyScene.
+
 import {
     Scene, Mesh, MeshBasicMaterial,
     PlaneGeometry, DataTexture, RGBAFormat, LinearFilter,

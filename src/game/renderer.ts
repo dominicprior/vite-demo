@@ -72,16 +72,16 @@ export default class Renderer {
                 }
             }
             else {
-                this.drawSkyAndScene(view);
+                this.drawBothScenes(view);
             }
         }
     }
 
-    drawSkyAndScene(view: View) {
-                this.instance.autoClear = true;
-                this.redrawSky();
-                this.instance.autoClear = false;
-                this.instance.render(this.scene, view.camera);
+    drawBothScenes(view: View) {
+        this.instance.autoClear = true;
+        this.instance.render(this.skyScene, this.skyCamera);
+        this.instance.autoClear = false;
+        this.instance.render(this.scene, view.camera);
     }
 
     drawMirrored(view: View) {
@@ -90,7 +90,7 @@ export default class Renderer {
                                                    view.heightInPixels());
         renderTarget.samples = 4;
         this.instance.setRenderTarget(renderTarget);
-        this.drawSkyAndScene(view);
+        this.drawBothScenes(view);
         this.instance.setRenderTarget(null);
 
         // Set up an ortho camera (mirroring by looking backwards).
@@ -125,10 +125,6 @@ export default class Renderer {
         this.instance.setScissor(viewport);
         this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
         this.instance.render(orthoScene, orthoCamera);
-    }
-
-    redrawSky() {
-        this.instance.render(this.skyScene, this.skyCamera);
     }
 }
 
