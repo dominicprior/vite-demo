@@ -2,6 +2,7 @@ import {
     Scene, Mesh, MeshBasicMaterial,
     BoxGeometry,
     Vector3,
+    Euler,
 } from '../../../three/threebuild/three_module.js';
 import Debug from '../utils/debug.js';
 import Player from '../player.js';
@@ -51,7 +52,7 @@ export default class CrossHairs {
                 const signedRelPos = (relPos as Vector3).clone().multiplyScalar((sign * 2 - 1) * 0.2);
                 for (let mesh of a) {
                     mesh.position.copy(player.pos.clone().add(signedRelPos));
-                    mesh.rotation.y = player.bearing;
+                    mesh.setRotationFromEuler(new Euler(0, player.bearing));
                     mesh.rotateX((rotX as number) * Math.PI / 2);
                     mesh.rotateY((rotY as number) * Math.PI / 2);
                 }
