@@ -13,10 +13,12 @@ import Moon from './moon.js';
 import CrossHairs from './crosshairs.js';
 import Debug from '../utils/debug.js';
 import Player from '../player.js';
+import Brep from '../brep.js';
 
 export default class World {
     scene: Scene;
     skyScene: Scene;
+    brep: Brep;
     // @ts-ignore: no initializer
     floor: Floor;
     // @ts-ignore: no initializer
@@ -35,6 +37,7 @@ export default class World {
     constructor(scene: Scene, skyScene: Scene, resources: Resources, debug: Debug) {
         this.scene = scene;
         this.skyScene = skyScene;
+        this.brep = new Brep();
         this.resources = resources;
         this.debug = debug;
 
@@ -45,7 +48,7 @@ export default class World {
             this.environment = new Environment(this.scene, this.resources, this.debug);
             this.sky = new Sky(skyScene, debug);
             this.floor = new Floor(this.scene, this.debug);
-            this.cubes = new Cubes(this.scene, this.debug);
+            this.cubes = new Cubes(this.scene, this.brep, this.debug);
             this.moon = new Moon(this.scene, this.debug);
             this.crosshairs = new CrossHairs(this.scene, this.debug);
             // this.scene.background = new Color('green');

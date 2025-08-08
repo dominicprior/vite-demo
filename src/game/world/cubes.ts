@@ -5,8 +5,11 @@ import {
     Scene, Mesh, MeshStandardMaterial,
     BoxGeometry,
     Vector3,
+    Euler,
 } from '../../../three/threebuild/three_module.js';
+import Brep from '../brep.js';
 import Debug from '../utils/debug.js';
+import { BoxDist } from '../utils/distance.js';
 
 // import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 // See https://threejs-journey.com/lessons/performance-tips around 35:00.
@@ -42,7 +45,7 @@ export default class Cubes {
                 this.numBands, this.numBands, this.numBands);
     material: MeshStandardMaterial = new MeshStandardMaterial({ color: 'pink', });
 
-    constructor(scene: Scene, debug: Debug) {
+    constructor(scene: Scene, brep: Brep, debug: Debug) {
         this.debug = debug;
 
         const lines = this.locations.trim().split('\n');
@@ -53,7 +56,7 @@ export default class Cubes {
                 if (char !== '.') {
                     for (let level=0, pow=1; level <= 3; level++, pow *= 2) {
                         if ((+char & pow) !== 0) {
-                            this.addCube(row, col, level, scene, lines.length, line.length);
+                            this.addCube(row, col, level, scene, brep, lines.length, line.length);
                         }
                     }
                 }
@@ -61,7 +64,8 @@ export default class Cubes {
         }
     }
 
-    addCube(row: number, col: number, level: number, scene: Scene, numRows: number, numCols: number) {
+    addCube(row: number, col: number, level: number, scene: Scene, brep: Brep,
+                            numRows: number, numCols: number) {
         let mesh = new Mesh(this.geom, this.material);
         const centre = new Vector3(this.stride * (col - (numCols - 1) / 2),
                                    level + 0.5,
@@ -75,5 +79,9 @@ export default class Cubes {
         // mesh.receiveShadow = true
         this.cubes.push({centre: centre, mesh: mesh});
         scene.add(mesh);
+        const box = new BoxDist(centre, this.boxSize, this.boxSize, this.boxSize, new Euler);
+        for (let face of box.faceDist) {
+            brep.faces.push(face);
+        }
     }
 }

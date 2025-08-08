@@ -141,4 +141,4 @@ class BoxDist {
     }
 }
 
-export { VertexDist, EdgeDist, ConvexPolygonDist, BoxDist };
+export { DistInfo, VertexDist, EdgeDist, ConvexPolygonDist, BoxDist };
