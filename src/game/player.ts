@@ -8,43 +8,45 @@ import {
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
 import World from './world/world.js';
+import Brep from './brep.js';
 
 // var _dummy = new Vector3();
 // const upVec = new Vector3(0, 1, 0);
 
-// Pure function for calculating fwd/bk, strafing or turning.
-function calcNewVelocity(dt: number, kbd: number, velocity: number, decay: number, power: number): number {
+// Pure function for calculating the signed speed for fwd/bk, strafing or turning.
+function calcNewSpeed(dt: number, kbd: number, speed: number, decay: number, power: number): number {
 
-    if (kbd === 0) {  // coasting with decay
-        return velocity * decay ** dt;
+    if (kbd === 0) {  // coasting with decay.
+        return speed * decay ** dt;
     }
-    if (velocity === 0) {
+    if (speed === 0) {
         return kbd * Math.sqrt(power * dt);
     }
-    if (kbd * velocity < 0) {
+    if (kbd * speed < 0) {  // zap the speed when the player reverses direction.
         return 0;
     }
-    return kbd * Math.sqrt(velocity ** 2  +  power * dt);
+    return kbd * Math.sqrt(speed ** 2  +  power * dt);
 }
 
 
 export default class Player {
 
     // constants
-    radius: number = 0.25;
-    rotationSpeed: number = 1;  // in radians per second
-    verticalSpeed: number = 1.2;  // for J and K
-    gravity: number = 3;
+    radius = 0.25;
+    rotationSpeed = 1;  // in radians per second
+    verticalSpeed = 1.2;  // for J and K
+    gravity = 3;
     initialJumpSpeed = 2.5;
     power = 5;
     decayFactor = 1;   // 0.2;  // set this to zero for immediate stopping.
 
     // variables
-    bearing: number = 0;  // radians from North (negative Z) round towards negative X.
+    bearing = 0;  // radians from North (negative Z) round towards negative X.
     pos: Vector3 = new Vector3(0, 0.6, 0);
-    fwdBkSpeed: number = 0;
+    fwdBkSpeed  = 0;  // These two speeds give the user's intended velocity.
     strafeSpeed = 0;
-    jumpTime: number = -100;       // when the last jump occurred.
+    trueVelocity = new Vector3;  // This is the velocity accounting for walls.
+    jumpTime = -100;       // when the last jump occurred.
     verticalVelocity = 0;
 
     keyboard: Keyboard;
@@ -79,15 +81,16 @@ export default class Player {
             applyEuler(new Euler(0, this.bearing, 0));
     }
 
-    velocity(): Vector3 {
+    velocity(): Vector3 {  // intended velocity that might get thwarted by walls
         return this.forwardsDirection().clone()
                         .multiplyScalar(this.fwdBkSpeed)
            .add(this.strafeDirection()
                         .multiplyScalar(this.strafeSpeed))
     }
 
-    update() {
+    update(brep: Brep) {
         this.updateTurning();
+        this.updateFromBrep(brep);
         this.updateForwardOrBack();
         this.updateStrafing();
         this.pos.add(this.velocity().clone()
@@ -96,14 +99,22 @@ export default class Player {
         this.updateJumping();
     }
 
+    updateFromBrep(brep: Brep) {
+        // accelerations etc., for each relevant bit of brep geometry.
+        let acceleration = 0;
+        for (let dist of brep.distances(this.pos, this.radius)) {
+            // the maths...  dist.dist  dist.base
+        }
+    }
+
     updateForwardOrBack() {
-        this.fwdBkSpeed = calcNewVelocity(
+        this.fwdBkSpeed = calcNewSpeed(
                 this.time.delta, this.keyboard.movingForwardOrBack(),
                 this.fwdBkSpeed, this.decayFactor, this.power);
     }
 
     updateStrafing() {
-        this.strafeSpeed = calcNewVelocity(
+        this.strafeSpeed = calcNewSpeed(
                 this.time.delta, this.keyboard.strafing(),
                 this.strafeSpeed, this.decayFactor, this.power);
     }

@@ -73,7 +73,7 @@ export default class Game {
     }
 
     update() {
-        this.player.update();
+        this.player.update(this.world.brep);
         this.world.update(this.player);
         this.renderer.redraw();
     }
