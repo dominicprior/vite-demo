@@ -39,6 +39,7 @@ export default class Player {
     initialJumpSpeed = 2.5;
     power = 5;
     decayFactor = 1;   // 0.2;  // set this to zero for immediate stopping.
+    catchUpFactor = 2;  // for trueVelocity catching up with intendedVelocity.
 
     // variables
     bearing = 0;  // radians from North (negative Z) round towards negative X.
@@ -67,6 +68,7 @@ export default class Player {
             if (event.key === 'z') {
                 this.fwdBkSpeed = 0;
                 this.strafeSpeed = 0;
+                this.trueVelocity = new Vector3;
             }
         });
     }
@@ -81,22 +83,43 @@ export default class Player {
             applyEuler(new Euler(0, this.bearing, 0));
     }
 
-    velocity(): Vector3 {  // intended velocity that might get thwarted by walls
-        return this.forwardsDirection().clone()
+    intendedVelocity(): Vector3 {
+        return this.forwardsDirection()
                         .multiplyScalar(this.fwdBkSpeed)
            .add(this.strafeDirection()
                         .multiplyScalar(this.strafeSpeed))
     }
 
     update(brep: Brep) {
+
+        const prevIntendedVelocity = this.intendedVelocity();
+
+        // account for the user intentions by updating the intendedVelocity.
         this.updateTurning();
-        this.updateFromBrep(brep);
         this.updateForwardOrBack();
         this.updateStrafing();
-        this.pos.add(this.velocity().clone()
-                .multiplyScalar(this.time.delta));
+        const change = this.intendedVelocity().clone().sub(prevIntendedVelocity);
+
+        // account for collisions by updating the trueVelocity.
+        this.updateFromBrep(brep);
+
+        this.tendTowardsIntendedVelocity(change);
+
+        this.pos.add(this.trueVelocity.clone().multiplyScalar(this.time.delta));
         this.updateUpDown();
         this.updateJumping();
+    }
+
+    tendTowardsIntendedVelocity(change: Vector3) {
+        // We would like the trueVelocity to keep up with the user intentions,
+        // but to lag behind collision effects.
+        // trueVelocity +=
+        //          change + (intendedVelocity() - trueVelocity) * delta;
+        this.trueVelocity.add(change)
+                .add(
+                    this.intendedVelocity().clone().sub(this.trueVelocity)
+                            .multiplyScalar(this.time.delta)
+                );
     }
 
     updateFromBrep(brep: Brep) {
