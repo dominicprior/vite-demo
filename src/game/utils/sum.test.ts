@@ -3,6 +3,8 @@ import {
 } from '../../../three/threebuild/three_module.js';
 import { expect, test } from 'vitest';
 import { VertexDist, EdgeDist, ConvexPolygonDist, BoxDist } from './distance.js';
+import Player from '../player.js';
+import Brep from '../brep.js';
 
 function vecDist(u: Vector3, x: number, y: number, z: number) {
     return new Vector3(x, y, z).distanceTo(u)
@@ -89,4 +91,32 @@ test('dist7', () => {
     expect(sumOfSemiPerimeter).toBeCloseTo(4 * (w + d + h), 9);
     // expect(sumOfVertDists).toBeCloseTo(
     //     12 * new Vector3(w, d, h).length() / 2, 9);
+});
+
+test('collision1', () => {
+    // @ts-ignore
+    let player = new Player();
+
+    player.bearing = 0;
+    player.bounceStiffness = 1;
+    player.catchUpFactor = 2;
+    player.collisionDrag = 0;
+    player.decayFactor = 1;
+    player.fwdBkSpeed = 0.6480744965905567;
+    player.gravity = 3;
+    player.initialJumpSpeed = 2.5;
+    player.jumpTime = -100;
+
+    player.minDist = 0.1;
+    player.pos = new Vector3(2, 0.6, -4.2);
+    player.power = 5;
+    player.radius = 0.25;
+    player.rotationSpeed = 1;
+    player.strafeSpeed = 0;
+    // @ts-ignore
+    player.time = {delta: 0.018};
+    player.trueVelocity = new Vector3(0, 0, -0.6);
+
+    let brep = new Brep;
+    player.updateTrueVelocityFromBrep(brep);
 });
