@@ -70,15 +70,18 @@ class ConvexPolygonDist {
             const bMinusA = b.clone().sub(a);  // 400
             const inwards = new Vector3().crossVectors(normal, bMinusA);  // inwards in the plane of the polygon.
             if (pos.clone().sub(a).dot(inwards) < 0) {
-                return NOTHING;
+                return NOTHING;  // outside the prism
             }
         }
-        const posMinusV0 = pos.clone().sub(this.vertex[0]);  // 349 - 234 = 115
+        const posMinusV0 = pos.clone().sub(this.vertex[0]);
         const posDotNormal = posMinusV0.dot(normal);
-        const dist = posDotNormal / normal.length();  // signed dist.  5
+        const dist = posDotNormal / normal.length();  // signed dist.
+        if (dist < 0) {
+            return NOTHING;
+        }
         // v is the pos relative to its projection onto the plane of the polygon.
-        const v = normal.clone().multiplyScalar(posDotNormal / normal.lengthSq());  // 005
-        const base = pos.clone().sub(v);  // 349 - 005 = 344
+        const v = normal.clone().multiplyScalar(posDotNormal / normal.lengthSq());
+        const base = pos.clone().sub(v);
         return new DistInfo(dist, base);
     }
 }
