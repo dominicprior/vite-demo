@@ -33,6 +33,10 @@ export default class Player {
 
     // constants
     radius = 0.25;
+    minDist = 0.1;
+    bounceStiffness = 1;
+    collisionDrag = 0;
+
     rotationSpeed = 1;  // in radians per second
     verticalSpeed = 1.2;  // for J and K
     gravity = 3;
@@ -100,8 +104,7 @@ export default class Player {
         this.updateStrafing();
         const change = this.intendedVelocity().clone().sub(prevIntendedVelocity);
 
-        // account for collisions by updating the trueVelocity.
-        this.updateFromBrep(brep);
+        this.updateTrueVelocityFromBrep(brep);
 
         this.tendTowardsIntendedVelocity(change);
 
@@ -112,22 +115,29 @@ export default class Player {
 
     tendTowardsIntendedVelocity(change: Vector3) {
         // We would like the trueVelocity to keep up with the user intentions,
-        // but to lag behind collision effects.
+        // but to lag behind collision effects:
         // trueVelocity +=
-        //          change + (intendedVelocity() - trueVelocity) * delta;
+        //          change + (intendedVelocity() - trueVelocity) * delta * catchUpFactor
         this.trueVelocity.add(change)
                 .add(
                     this.intendedVelocity().clone().sub(this.trueVelocity)
-                            .multiplyScalar(this.time.delta)
+                            .multiplyScalar(this.time.delta * this.catchUpFactor)
                 );
     }
 
-    updateFromBrep(brep: Brep) {
-        // accelerations etc., for each relevant bit of brep geometry.
-        let acceleration = 0;
+    updateTrueVelocityFromBrep(brep: Brep) {
+        let acceleration = new Vector3;
         for (let dist of brep.distances(this.pos, this.radius)) {
-            // the maths...  dist.dist  dist.base
+            const k = this.radius - this.minDist;
+            const x = this.radius - dist.dist;
+            const accelerationScalar = (k / (k - x) ** 2 - 1 / k) * this.bounceStiffness;
+            acceleration.add(
+                this.pos.clone().sub(dist.base).normalize().multiplyScalar(accelerationScalar)
+            );
         }
+        this.trueVelocity.add(
+            acceleration.multiplyScalar(this.time.delta * this.bounceStiffness)
+        );
     }
 
     updateForwardOrBack() {
