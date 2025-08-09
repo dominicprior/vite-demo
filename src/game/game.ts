@@ -68,6 +68,12 @@ export default class Game {
         });
     }
 
+    stop() {  // We can call this from anywhere with `a.stop()` because
+              // we've defined `window.a` to be this `Game` object.
+        this.doneARender = true;
+        this.stopAfterOneRender = true;
+    }
+
     resize() {
         this.renderer.resize();
     }
