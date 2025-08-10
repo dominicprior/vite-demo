@@ -133,7 +133,7 @@ class BoxDist {
 
     addFaces() {
         const v = this.vertexDist;
-        const a = '0132,4576,1573,0264,0451,2376'.split(',');
+        const a = '0132,4675,1573,0264,0451,2376'.split(',');
         for (let q of a) {  // e.g. '0132'
             const p = new ConvexPolygonDist([]);
             for (let i of q) {  // e.g. '0'
