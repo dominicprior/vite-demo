@@ -159,13 +159,13 @@ export default class Player {
         }
         if (strings.length > 0) {
             // @ts-ignore
-            pr(
+            console.log(
                 [this.pos.x.toFixed(2), this.pos.z.toFixed(2), ...strings].join(' : ')
             );
         }
         if (strings.length === 0 && prevStringsLen !== 0) {
             // @ts-ignore
-            pr('---');
+            console.log('---');
         }
         prevStringsLen = strings.length;
         this.trueVelocity.add(
