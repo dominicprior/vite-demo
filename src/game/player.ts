@@ -79,6 +79,19 @@ export default class Player {
                     this.trueVelocity = new Vector3;
                 }
             });
+            window.addEventListener('keydown', (event) => { 
+                if (event.key === 'c') {
+                    this.fwdBkSpeed = 0;
+                    this.strafeSpeed = 0;
+                    this.trueVelocity = new Vector3;
+                    this.pos = new Vector3(0, 0.6, 0);
+                }
+            });
+            window.addEventListener('keydown', (event) => { 
+                if (event.key === 's') {
+                    a.stop();
+                }
+            });
         }
     }
 
