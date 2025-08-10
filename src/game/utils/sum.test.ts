@@ -126,7 +126,7 @@ test('collision1', () => {
     const acc = 0.15 / 0.1**2 - 1 / 0.15;
     expect(dist.base.distanceTo(new Vector3(0,0,0.5))).toBeCloseTo(0);
 
-    player.updateTrueVelocityFromBrep(brep);
+    player.updateTrueVelocityFromBrep(brep, 0.02);
 
     expect(player.trueVelocity.z).toBeCloseTo(acc * player.time.delta - 0.5)
 });

@@ -37,6 +37,7 @@ export default class Player {
     minDist = 0.1;
     bounceStiffness = 1;
     collisionDrag = 0;
+    numSteps = 4;
 
     rotationSpeed = 1;  // in radians per second
     verticalSpeed = 1.2;  // for J and K
@@ -115,25 +116,31 @@ export default class Player {
     }
 
     update(brep: Brep) {
+        for (let _step=0; _step < this.numSteps; _step++) {
+            this.updateOneStep(brep, this.time.delta / this.numSteps);
+        }
+    }
+
+    updateOneStep(brep: Brep, delta: number) {
 
         const prevIntendedVelocity = this.intendedVelocity();
 
         // account for the user intentions by updating the intendedVelocity.
-        this.updateTurning();
-        this.updateForwardOrBack();
-        this.updateStrafing();
+        this.updateTurning(delta);
+        this.updateForwardOrBack(delta);
+        this.updateStrafing(delta);
         const change = this.intendedVelocity().clone().sub(prevIntendedVelocity);
 
-        this.updateTrueVelocityFromBrep(brep);
+        this.updateTrueVelocityFromBrep(brep, delta);
 
-        this.tendTowardsIntendedVelocity(change);
+        this.tendTowardsIntendedVelocity(change, delta);
 
-        this.pos.add(this.trueVelocity.clone().multiplyScalar(this.time.delta));
-        this.updateUpDown();
-        this.updateJumping();
+        this.pos.add(this.trueVelocity.clone().multiplyScalar(delta));
+        this.updateUpDown(delta);
+        this.updateJumping(delta);
     }
 
-    tendTowardsIntendedVelocity(change: Vector3) {
+    tendTowardsIntendedVelocity(change: Vector3, delta: number) {
         // We would like the trueVelocity to keep up with the user intentions,
         // but to lag behind collision effects:
         // trueVelocity +=
@@ -141,17 +148,17 @@ export default class Player {
         this.trueVelocity.add(change)
                 .add(
                     this.intendedVelocity().clone().sub(this.trueVelocity)
-                            .multiplyScalar(this.time.delta * this.catchUpFactor)
+                            .multiplyScalar(delta * this.catchUpFactor)
                 );
     }
 
-    updateTrueVelocityFromBrep(brep: Brep) {
+    updateTrueVelocityFromBrep(brep: Brep, delta: number) {
         let acceleration = new Vector3;
         let strings = [];
         for (let dist of brep.distances(this.pos, this.radius)) {
             const k = this.radius - this.minDist;
             const x = this.radius - dist.dist;
-            strings.push((k - x).toFixed(2));
+            strings.push((k - x).toFixed(3));
             const accelerationScalar = (k / (k - x) ** 2 - 1 / k) * this.bounceStiffness;
             acceleration.add(
                 this.pos.clone().sub(dist.base).normalize().multiplyScalar(accelerationScalar)
@@ -160,7 +167,7 @@ export default class Player {
         if (strings.length > 0) {
             // @ts-ignore
             console.log(
-                [this.pos.x.toFixed(2), this.pos.z.toFixed(2), ...strings].join(' : ')
+                [this.pos.x.toFixed(3), this.pos.z.toFixed(3), ...strings].join(' : ')
             );
         }
         if (strings.length === 0 && prevStringsLen !== 0) {
@@ -169,43 +176,42 @@ export default class Player {
         }
         prevStringsLen = strings.length;
         this.trueVelocity.add(
-            acceleration.multiplyScalar(this.time.delta * this.bounceStiffness)
+            acceleration.multiplyScalar(delta * this.bounceStiffness)
         );
     }
 
-    updateForwardOrBack() {
+    updateForwardOrBack(delta: number) {
         this.fwdBkSpeed = calcNewSpeed(
-                this.time.delta, this.keyboard.movingForwardOrBack(),
+                delta, this.keyboard.movingForwardOrBack(),
                 this.fwdBkSpeed, this.decayFactor, this.power);
     }
 
-    updateStrafing() {
+    updateStrafing(delta: number) {
         this.strafeSpeed = calcNewSpeed(
-                this.time.delta, this.keyboard.strafing(),
+                delta, this.keyboard.strafing(),
                 this.strafeSpeed, this.decayFactor, this.power);
     }
 
-    updateTurning() {
+    updateTurning(delta: number) {
         const turning = this.keyboard.turning();
         if (turning) {
-            this.bearing += this.rotationSpeed * this.time.delta * turning;
+            this.bearing += this.rotationSpeed * delta * turning;
         }
     }
 
-    updateUpDown() {
+    updateUpDown(delta: number) {
         if (this.keyboard.pressed['KeyJ']) {
-            this.pos.y += this.verticalSpeed * this.time.delta;
+            this.pos.y += this.verticalSpeed * delta;
         }
         if (this.keyboard.pressed['KeyK']) {
-            this.pos.y -= this.verticalSpeed * this.time.delta;
+            this.pos.y -= this.verticalSpeed * delta;
         }
     }
 
-    updateJumping() {
+    updateJumping(delta: number) {
         const totalJumpDuration = 2 * this.initialJumpSpeed / this.gravity;
         const jumpTimeSoFar = this.time.elapsed - this.jumpTime;
         if (jumpTimeSoFar < totalJumpDuration) {
-            const delta = this.time.delta;
             const newVerticalVelocity = this.verticalVelocity - delta * this.gravity;
             this.pos.y += delta * (this.verticalVelocity + newVerticalVelocity) / 2;
             this.verticalVelocity = newVerticalVelocity;
