@@ -28,6 +28,7 @@ function calcNewSpeed(dt: number, kbd: number, speed: number, decay: number, pow
     return kbd * Math.sqrt(speed ** 2  +  power * dt);
 }
 
+let prevStringsLen = 0;
 
 export default class Player {
 
@@ -89,6 +90,7 @@ export default class Player {
             });
             window.addEventListener('keydown', (event) => { 
                 if (event.key === 's') {
+                    // @ts-ignore
                     a.stop();
                 }
             });
@@ -145,16 +147,27 @@ export default class Player {
 
     updateTrueVelocityFromBrep(brep: Brep) {
         let acceleration = new Vector3;
+        let strings = [];
         for (let dist of brep.distances(this.pos, this.radius)) {
-            const k = this.radius - this.minDist;  // 0.15
-            const x = this.radius - dist.dist;     // 0.25 - 0.2 = 0.05;  k - x = 0.1
-            pr(this.trueVelocity.z, k - x);
-            // 0.15 / 0.1**2 - 1 / 0.15
+            const k = this.radius - this.minDist;
+            const x = this.radius - dist.dist;
+            strings.push((k - x).toFixed(2));
             const accelerationScalar = (k / (k - x) ** 2 - 1 / k) * this.bounceStiffness;
             acceleration.add(
                 this.pos.clone().sub(dist.base).normalize().multiplyScalar(accelerationScalar)
             );
         }
+        if (strings.length > 0) {
+            // @ts-ignore
+            pr(
+                [this.pos.x.toFixed(2), this.pos.z.toFixed(2), ...strings].join(' : ')
+            );
+        }
+        if (strings.length === 0 && prevStringsLen !== 0) {
+            // @ts-ignore
+            pr('---');
+        }
+        prevStringsLen = strings.length;
         this.trueVelocity.add(
             acceleration.multiplyScalar(this.time.delta * this.bounceStiffness)
         );
