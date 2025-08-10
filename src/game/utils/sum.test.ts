@@ -97,26 +97,36 @@ test('collision1', () => {
     // @ts-ignore
     let player = new Player();
 
-    player.bearing = 0;
+    player.bearing = 0;  // going North
     player.bounceStiffness = 1;
     player.catchUpFactor = 2;
     player.collisionDrag = 0;
     player.decayFactor = 1;
-    player.fwdBkSpeed = 0.6480744965905567;
-    player.gravity = 3;
-    player.initialJumpSpeed = 2.5;
-    player.jumpTime = -100;
+    player.fwdBkSpeed = 0.8;  // travelling North
+    player.strafeSpeed = 0;
+    player.pos = new Vector3(0, 0, 0.7);  // 0.5 south of the origin
 
     player.minDist = 0.1;
-    player.pos = new Vector3(2, 0.6, -4.2);
-    player.power = 5;
+    // player.power = 5;  // i.e. from an engine
     player.radius = 0.25;
-    player.rotationSpeed = 1;
-    player.strafeSpeed = 0;
     // @ts-ignore
-    player.time = {delta: 0.018};
-    player.trueVelocity = new Vector3(0, 0, -0.6);
+    player.time = { delta: 0.02 };
+    player.trueVelocity = new Vector3(0, 0, -0.5);  // going north
 
-    let brep = new Brep;
+    const brep = new Brep;
+    const box = new BoxDist(new Vector3, 1,1,1, new Euler);  // a unit box at the origin.
+    for (let face of box.faceDist) {
+        brep.faces.push(face);
+    }
+
+    const dists = brep.distances(player.pos, player.radius);
+    expect(dists.length).toBe(1);
+    const dist = dists[0];
+    expect(dist.dist).toBeCloseTo(0.2);
+    const acc = 0.15 / 0.1**2 - 1 / 0.15;
+    expect(dist.base.distanceTo(new Vector3(0,0,0.5))).toBeCloseTo(0);
+
     player.updateTrueVelocityFromBrep(brep);
+
+    expect(player.trueVelocity.z).toBeCloseTo(acc * player.time.delta - 0.5)
 });

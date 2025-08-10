@@ -43,7 +43,7 @@ export default class Player {
     initialJumpSpeed = 2.5;
     power = 5;
     decayFactor = 1;   // 0.2;  // set this to zero for immediate stopping.
-    catchUpFactor = 2;  // for trueVelocity catching up with intendedVelocity.
+    catchUpFactor = 0;  // for trueVelocity catching up with intendedVelocity.
 
     // variables
     bearing = 0;  // radians from North (negative Z) round towards negative X.
@@ -133,8 +133,9 @@ export default class Player {
     updateTrueVelocityFromBrep(brep: Brep) {
         let acceleration = new Vector3;
         for (let dist of brep.distances(this.pos, this.radius)) {
-            const k = this.radius - this.minDist;
-            const x = this.radius - dist.dist;
+            const k = this.radius - this.minDist;  // 0.15
+            const x = this.radius - dist.dist;     // 0.25 - 0.2 = 0.05;  k - x = 0.1
+            // 0.15 / 0.1**2 - 1 / 0.15
             const accelerationScalar = (k / (k - x) ** 2 - 1 / k) * this.bounceStiffness;
             acceleration.add(
                 this.pos.clone().sub(dist.base).normalize().multiplyScalar(accelerationScalar)

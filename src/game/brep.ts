@@ -28,6 +28,8 @@ export default class Brep {
         for (let face of this.faces) {
             const dist = face.dist(pos);
             if (dist.dist < rad) {
+                // console.log(face, dist);
+                // a.stop();
                 ans.push(dist);
             }
         }
