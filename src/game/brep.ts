@@ -33,6 +33,14 @@ export default class Brep {
                 ans.push(dist);
             }
         }
+        if (ans.length === 0) {
+            for (let edge of this.edges) {
+                const dist = edge.dist(pos);
+                if (dist.dist < rad) {
+                    ans.push(dist);
+                }
+            }
+        }
         return ans;
     }
 }

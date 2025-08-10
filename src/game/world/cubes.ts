@@ -83,5 +83,8 @@ export default class Cubes {
         for (let face of box.faceDist) {
             brep.faces.push(face);
         }
+        for (let edge of box.edgeDist) {
+            brep.edges.push(edge);
+        }
     }
 }
