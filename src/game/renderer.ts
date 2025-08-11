@@ -19,7 +19,7 @@ export default class Renderer {
     player: Player;
     keyboard: Keyboard;
     views: Array<View> = [];
-    rearViewVisible: boolean = false;
+    rearViewVisible: boolean = true;
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
