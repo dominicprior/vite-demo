@@ -1,19 +1,20 @@
-import EventEmitter from "./eventemitter.js";
+import Game from '../game.js';
 
-export default class Sizes extends EventEmitter {
+export default class Sizes {
     width: number;
     height: number;
     pixelRatio: number;
+    game: Game;
 
-    constructor() {
-        super();
+    constructor(game: Game) {
+        this.game = game;
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         window.addEventListener('resize', () => {
             this.width = window.innerWidth;
             this.height = window.innerHeight;
             this.pixelRatio = Math.min(window.devicePixelRatio, 2);
-            this.trigger('resize');
+            this.game.respondToResize();
         });
         this.pixelRatio = Math.min(window.devicePixelRatio, 2);
     }

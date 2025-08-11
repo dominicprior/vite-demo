@@ -29,7 +29,8 @@ export default class Game {
     constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         Object.defineProperty(window, 'pr', { value: console.log,  writable: true, });
-        this.utils = new Utils(new Debug, this, new Keyboard, new Sizes, new Time(this));
+        this.utils = new Utils(new Debug, this, new Keyboard,
+                new Sizes(this), new Time(this));
         this.scene = new Scene();
         this.skyScene = new Scene();
         this.resources = new Resources(sources);
@@ -44,8 +45,6 @@ export default class Game {
         const camera = this.renderer.views[0].camera;
         this.utils.debug.gui.add(camera, 'fov', 10, 120, 1).name('fov')
                 .onChange(() => { camera.updateProjectionMatrix() })
-
-        this.utils.sizes.on('resize', this.resize.bind(this));  // See note 1.
 
         this.resources.on('ready', () => {
             this.ready = true;
@@ -72,7 +71,7 @@ export default class Game {
         this.stopAfterOneRender = true;
     }
 
-    resize() {
+    respondToResize() {
         this.renderer.resize();
     }
 
@@ -83,7 +82,6 @@ export default class Game {
     }
 
     destroy() {  // I'm not sure if this is right, but it's interesting anyway.
-        this.utils.sizes.off('resize');
         this.scene.traverse((child) => {
             if (child instanceof Mesh) {
                 child.geometry.dispose();
