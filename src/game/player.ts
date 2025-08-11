@@ -5,8 +5,7 @@ import {
     Vector3,
 } from '../../three/threebuild/three_module.js';
 
-import Keyboard from './utils/keyboard.js';
-import Time from './utils/time.js';
+import Utils from './utils/utils.js';
 import Brep from './brep.js';
 
 // var _dummy = new Vector3();
@@ -55,12 +54,10 @@ export default class Player {
     jumpTime = -100;       // when the last jump occurred.
     verticalVelocity = 0;
 
-    keyboard: Keyboard;
-    time: Time;
+    utils: Utils;
 
-    constructor(keyboard: Keyboard, time: Time) {
-        this.keyboard = keyboard;
-        this.time = time;
+    constructor(utils: Utils) {
+        this.utils = utils;
         if (typeof(window) === 'undefined') {
             // Running inside Vitest, not inside a browser.
         }
@@ -68,7 +65,7 @@ export default class Player {
             window.addEventListener('keydown', (event) => { 
                 if (event.key === ' ') {
                     this.verticalVelocity = this.initialJumpSpeed;
-                    this.jumpTime = this.time.elapsed;
+                    this.jumpTime = this.utils.time.elapsed;
                 }
             });
             window.addEventListener('keydown', (event) => { 
@@ -114,7 +111,7 @@ export default class Player {
 
     update(brep: Brep) {
         for (let _step=0; _step < this.numSteps; _step++) {
-            this.updateOneStep(brep, this.time.delta / this.numSteps);
+            this.updateOneStep(brep, this.utils.time.delta / this.numSteps);
         }
     }
 
@@ -179,35 +176,35 @@ export default class Player {
 
     updateForwardOrBack(delta: number) {
         this.fwdBkSpeed = calcNewSpeed(
-                delta, this.keyboard.movingForwardOrBack(),
+                delta, this.utils.keyboard.movingForwardOrBack(),
                 this.fwdBkSpeed, this.decayFactor, this.power);
     }
 
     updateStrafing(delta: number) {
         this.strafeSpeed = calcNewSpeed(
-                delta, this.keyboard.strafing(),
+                delta, this.utils.keyboard.strafing(),
                 this.strafeSpeed, this.decayFactor, this.power);
     }
 
     updateTurning(delta: number) {
-        const turning = this.keyboard.turning();
+        const turning = this.utils.keyboard.turning();
         if (turning) {
             this.bearing += this.rotationSpeed * delta * turning;
         }
     }
 
     updateUpDown(delta: number) {
-        if (this.keyboard.pressed['KeyJ']) {
+        if (this.utils.keyboard.pressed['KeyJ']) {
             this.pos.y += this.verticalSpeed * delta;
         }
-        if (this.keyboard.pressed['KeyK']) {
+        if (this.utils.keyboard.pressed['KeyK']) {
             this.pos.y -= this.verticalSpeed * delta;
         }
     }
 
     updateJumping(delta: number) {
         const totalJumpDuration = 2 * this.initialJumpSpeed / this.gravity;
-        const jumpTimeSoFar = this.time.elapsed - this.jumpTime;
+        const jumpTimeSoFar = this.utils.time.elapsed - this.jumpTime;
         if (jumpTimeSoFar < totalJumpDuration) {
             const newVerticalVelocity = this.verticalVelocity - delta * this.gravity;
             this.pos.y += delta * (this.verticalVelocity + newVerticalVelocity) / 2;

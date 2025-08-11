@@ -11,16 +11,16 @@ import {
     Scene, Mesh, MeshBasicMaterial,
     PlaneGeometry, DataTexture, RGBAFormat, LinearFilter,
 } from '../../../three/threebuild/three_module.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 
 export default class Sky {
-    debug: Debug;
+    utils: Utils;
     skyMesh: Mesh;
     // @ts-ignore
     seaMesh: Mesh;
 
-    constructor(skyScene: Scene, debug: Debug) {
-        this.debug = debug;
+    constructor(skyScene: Scene, utils: Utils) {
+        this.utils = utils;
         const drawingTheSea = false;
         const skyGeometry = new PlaneGeometry(4, drawingTheSea ? 2: 4);
 

@@ -7,16 +7,16 @@ import {
     Vector3,
     Euler,
 } from '../../../three/threebuild/three_module.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 import Player from '../player.js';
 
 export default class CrossHairs {
     boxSize: number = 0.008;
-    debug: Debug;
+    utils: Utils;
     meshes: Array<Array<Array<Mesh>>> = [];
 
-    constructor(scene: Scene, debug: Debug) {
-        this.debug = debug;
+    constructor(scene: Scene, utils: Utils) {
+        this.utils = utils;
 
         const material = new MeshBasicMaterial({ color: 'red', });
         for (let axis of [0, 1, 2]) {

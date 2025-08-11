@@ -2,15 +2,15 @@ import {
     Scene, Mesh, BufferGeometry, MeshStandardMaterial, DataTexture, RepeatWrapping,
     BufferAttribute, Float32BufferAttribute,
 } from '../../../three/threebuild/three_module.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 
 export default class Floor {
     numRows: number = 45;
-    debug: Debug;
+    utils: Utils;
     mesh: Mesh;
 
-    constructor(scene: Scene, debug: Debug) {
-        this.debug = debug;
+    constructor(scene: Scene, utils: Utils) {
+        this.utils = utils;
 
         const geometry = this.geometry();
         this.setColours(geometry);
@@ -72,7 +72,7 @@ export default class Floor {
     }
 
     setDebug() {
-        this.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
+        this.utils.debug.gui.add(this, 'numRows', 1, 10, 1).name('Num floor rows')
             .onChange(() => {
                 this.mesh.geometry.dispose();
                 const geometry = this.geometry();

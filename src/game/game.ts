@@ -11,12 +11,10 @@ import sources from './sources.js';
 import Keyboard from './utils/keyboard.js';
 import Player from './player.js';
 import Stats from './utils/stats.js';
+import Utils from './utils/utils.js';
 
 export default class Game {
-    debug: Debug;
-    sizes: Sizes;
-    time: Time;
-    keyboard: Keyboard
+    utils: Utils;
     scene: Scene;
     skyScene: Scene;
     resources: Resources;
@@ -31,27 +29,24 @@ export default class Game {
     constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         Object.defineProperty(window, 'pr', { value: console.log,  writable: true, });
-        this.debug = new Debug();
-        this.sizes = new Sizes();
-        this.time = new Time();
-        this.keyboard = new Keyboard();
+        this.utils = new Utils(new Debug, new Keyboard, new Sizes, new Time);
         this.scene = new Scene();
         this.skyScene = new Scene();
         this.resources = new Resources(sources);
-        this.world = new World(this.scene, this.skyScene, this.resources, this.debug);
-        this.player = new Player(this.keyboard, this.time);
-        this.renderer = new Renderer(canvas, this.sizes, this.scene, this.skyScene,
-            this.player, this.keyboard, this.world.mirror);
+        this.world = new World(this.scene, this.skyScene, this.resources, this.utils);
+        this.player = new Player(this.utils);
+        this.renderer = new Renderer(canvas, this.scene, this.skyScene,
+            this.player, this.world.mirror, this.utils);
         this.stats = new Stats();
         this.stats.showPanel(0);
         document.body.appendChild(this.stats.dom);
 
         const camera = this.renderer.views[0].camera;
-        this.debug.gui.add(camera, 'fov', 10, 120, 1).name('fov')
+        this.utils.debug.gui.add(camera, 'fov', 10, 120, 1).name('fov')
                 .onChange(() => { camera.updateProjectionMatrix() })
 
-        this.sizes.on('resize', this.resize.bind(this));  // See note 1.
-        this.time.on('tick', () => {
+        this.utils.sizes.on('resize', this.resize.bind(this));  // See note 1.
+        this.utils.time.on('tick', () => {
             if (this.ready) {
                 if (this.doneARender && this.stopAfterOneRender) {
                     // we're not animating any more
@@ -86,8 +81,8 @@ export default class Game {
     }
 
     destroy() {  // I'm not sure if this is right, but it's interesting anyway.
-        this.sizes.off('resize');
-        this.time.off('tick');
+        this.utils.sizes.off('resize');
+        this.utils.time.off('tick');
         this.scene.traverse((child) => {
             if (child instanceof Mesh) {
                 child.geometry.dispose();
@@ -100,7 +95,7 @@ export default class Game {
             }
         });
         this.renderer.instance.dispose();
-        this.debug.gui.destroy();
+        this.utils.debug.gui.destroy();
     }
 }
 

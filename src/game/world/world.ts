@@ -12,7 +12,7 @@ import Mirror from './mirror.js';
 import Cubes from './cubes.js';
 import Moon from './moon.js';
 import CrossHairs from './crosshairs.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 import Player from '../player.js';
 import Brep from '../brep.js';
 
@@ -32,29 +32,29 @@ export default class World {
     moon: Moon;
     // @ts-ignore: no initializer
     crosshairs: CrossHairs;
-    debug: Debug;
+    utils: Utils;
     // @ts-ignore: no initializer
     environment: Environment;
     resources: Resources;
 
-    constructor(scene: Scene, skyScene: Scene, resources: Resources, debug: Debug) {
+    constructor(scene: Scene, skyScene: Scene, resources: Resources, utils: Utils) {
         this.scene = scene;
         this.skyScene = skyScene;
         this.brep = new Brep();
         this.resources = resources;
-        this.debug = debug;
+        this.utils = utils;
         this.mirror = new Mirror();
 
-        this.debug.gui.addFolder('World');
+        this.utils.debug.gui.addFolder('World');
 
         this.resources.on('ready', () => {
             console.log('Resources are ready');
-            this.environment = new Environment(this.scene, this.resources, this.debug);
-            this.sky = new Sky(skyScene, debug);
-            this.floor = new Floor(this.scene, this.debug);
-            this.cubes = new Cubes(this.scene, this.brep, this.debug);
-            this.moon = new Moon(this.scene, this.debug);
-            this.crosshairs = new CrossHairs(this.scene, this.debug);
+            this.environment = new Environment(this.scene, this.resources, this.utils);
+            this.sky = new Sky(skyScene, this.utils);
+            this.floor = new Floor(this.scene, this.utils);
+            this.cubes = new Cubes(this.scene, this.brep, this.utils);
+            this.moon = new Moon(this.scene, this.utils);
+            this.crosshairs = new CrossHairs(this.scene, this.utils);
             // this.scene.background = new Color('green');
         });
     }

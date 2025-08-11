@@ -5,12 +5,12 @@ import { Scene, DirectionalLight, MeshStandardMaterial,
     RGBAFormat, LinearFilter,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 
 export default class Environment {
     scene: Scene;
     resources: Resources;
-    debug: Debug;
+    utils: Utils;
     // @ts-ignore: no initializer
     sunlight: DirectionalLight;
     intensity: number = 0.4;
@@ -19,10 +19,10 @@ export default class Environment {
     // @ts-ignore: no initializer
     updateMaterial: () => void;
 
-    constructor(scene: Scene, resources: Resources, debug: Debug) {
+    constructor(scene: Scene, resources: Resources, utils: Utils) {
         this.scene = scene;
         this.resources = resources;
-        this.debug = debug;
+        this.utils = utils;
         this.setSunlight();
         this.setEnvironmentMap();
     }
@@ -79,7 +79,7 @@ export default class Environment {
         }
         this.updateMaterial();
 
-        this.debug.gui.add(this, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
+        this.utils.debug.gui.add(this, 'intensity', 0, 2, 0.01).name('Environment Map Intensity')
             .onChange(
                 // () => { this.environmentMap.updateMaterial(); }
                 this.updateMaterial  // not needed: .bind(this.environmentMap)  // bind the method to the environmentMap context

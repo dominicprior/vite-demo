@@ -8,7 +8,7 @@ import {
     Euler,
 } from '../../../three/threebuild/three_module.js';
 import Brep from '../brep.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 import { BoxDist } from '../utils/distance.js';
 
 // import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
@@ -39,14 +39,14 @@ export default class Cubes {
     numBands: number = 5;
     stride: number = 1;
     boxSize: number = 1;
-    debug: Debug;
+    utils: Utils;
     cubes: Array<Cube> = [];
     geom: BoxGeometry = new BoxGeometry(this.boxSize, this.boxSize, this.boxSize,
                 this.numBands, this.numBands, this.numBands);
     material: MeshStandardMaterial = new MeshStandardMaterial({ color: 'pink', });
 
-    constructor(scene: Scene, brep: Brep, debug: Debug) {
-        this.debug = debug;
+    constructor(scene: Scene, brep: Brep, utils: Utils) {
+        this.utils = utils;
 
         const lines = this.locations.trim().split('\n');
         for (let row = lines.length - 1; row >= 0; row--) {

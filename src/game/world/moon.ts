@@ -5,14 +5,14 @@ import {
     CircleGeometry,
     Vector3,
 } from '../../../three/threebuild/three_module.js';
-import Debug from '../utils/debug.js';
+import Utils from '../utils/utils.js';
 
 export default class Moon {
-    debug: Debug;
+    utils: Utils;
     mesh: Mesh;
 
-    constructor(scene: Scene, debug: Debug) {
-        this.debug = debug;
+    constructor(scene: Scene, utils: Utils) {
+        this.utils = utils;
 
         // const material = new MeshBasicMaterial({ color: 0xffeeaa, });
         const material = new MeshBasicMaterial({ color: 'white', });

@@ -3,50 +3,48 @@
 import {
     // PCFSoftShadowMap,
     Scene, WebGLRenderer, WebGLRenderTarget, OrthographicCamera,
-    Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
+    MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
-import type Sizes from './utils/sizes.js';
 import View from './view.js';
-import Keyboard from './utils/keyboard.js';
 import Mirror from './world/mirror.js'
+import type Utils from './utils/utils.js';
 
 export default class Renderer {
     canvas: HTMLCanvasElement | null;
-    sizes: Sizes;
     scene: Scene;
     skyScene: Scene;
     skyCamera: OrthographicCamera;
     player: Player;
-    keyboard: Keyboard;
+    utils: Utils;
     views: Array<View> = [];
     rearViewVisible: boolean = false;
     instance: WebGLRenderer;
     mirror: Mirror;
 
     constructor(canvas: HTMLCanvasElement,
-                sizes: Sizes, scene: Scene, skyScene: Scene, player: Player,
-                keyboard: Keyboard, mirror: Mirror) {
+                scene: Scene, skyScene: Scene, player: Player,
+                mirror: Mirror, utils: Utils) {
         this.canvas = canvas;
-        this.sizes = sizes;
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
-        this.keyboard = keyboard;
+        this.utils = utils;
+        const sizes = utils.sizes;
         this.mirror = mirror;
-        this.views.push(new View(this.sizes, 1.0, 95,
+        this.views.push(new View(sizes, 1.0, 95,
                                  {x: 0, y: 0, w: 1, h: 1},
-                                 0, false, keyboard));
+                                 0, false, utils));
         const k = 0.16;
-        this.views.push(new View(this.sizes, 1.0, 95,
+        this.views.push(new View(sizes, 1.0, 95,
                                 {x: 0.99 - k, y: 0.99 - k, w: k, h: k},
-                                Math.PI, true, keyboard));
+                                Math.PI, true, utils));
         this.instance = new WebGLRenderer({
             canvas: this.canvas!,
             antialias: true,
         });
-        this.instance.setSize(this.sizes.width, this.sizes.height);
-        this.instance.setPixelRatio(this.sizes.pixelRatio);
+        this.instance.setSize(sizes.width, sizes.height);
+        this.instance.setPixelRatio(sizes.pixelRatio);
         this.skyCamera = new OrthographicCamera();
         this.skyCamera.position.z = 2;
         window.addEventListener('keydown', (event) => { 
@@ -56,8 +54,8 @@ export default class Renderer {
     }
 
     resize() {
-        this.instance.setSize(this.sizes.width, this.sizes.height);
-        this.instance.setPixelRatio(this.sizes.pixelRatio);
+        this.instance.setSize(this.utils.sizes.width, this.utils.sizes.height);
+        this.instance.setPixelRatio(this.utils.sizes.pixelRatio);
         for (const view of this.views) {
             view.resize();
         }

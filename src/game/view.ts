@@ -3,7 +3,7 @@ import {
 } from '../../three/threebuild/three_module.js';
 import Sizes from './utils/sizes.js';
 import Wide from './utils/wide.js';
-import Keyboard from './utils/keyboard.js';
+import Utils from './utils/utils.js';
 
 interface Port {  // as proportions of the whole screen
     x: number;
@@ -21,28 +21,28 @@ export default class View {
     relativeBearing: number;
     pitch: number = 0;
     mirrored: boolean;
-    keyboard: Keyboard;
+    utils: Utils;
 
     constructor(sizes: Sizes, bend: number, minFov: number,
                 port: Port, relativeBearing: number,
-                mirrored: boolean, keyboard: Keyboard) {
+                mirrored: boolean, utils: Utils) {
         this.sizes = sizes;
         this.bend = bend;
         this.minFov = minFov;
         this.port = port;
         this.relativeBearing = relativeBearing;
         this.mirrored = mirrored;
-        this.keyboard = keyboard;
+        this.utils = utils;
         this.camera = new Wide(this.vertFov(), this.aspect(), 0.05, 1000, bend);
     }
 
     update(pos: Vector3, bearing: number) {
         this.camera.position.set(pos.x, pos.y, pos.z);
         this.camera.setRotationFromAxisAngle(new Vector3(0,1,0), bearing + this.relativeBearing);
-        if (this.keyboard.pressed['KeyG']) {
+        if (this.utils.keyboard.pressed['KeyG']) {
             this.pitch += 0.02;
         }
-        if (this.keyboard.pressed['KeyB']) {
+        if (this.utils.keyboard.pressed['KeyB']) {
             this.pitch -= 0.02;
         }
         this.camera.rotateX(this.pitch);
