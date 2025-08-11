@@ -7,7 +7,6 @@ import {
 
 import Keyboard from './utils/keyboard.js';
 import Time from './utils/time.js';
-import World from './world/world.js';
 import Brep from './brep.js';
 
 // var _dummy = new Vector3();
@@ -58,12 +57,10 @@ export default class Player {
 
     keyboard: Keyboard;
     time: Time;
-    world: World;
 
-    constructor(keyboard: Keyboard, time: Time, world: World) {
+    constructor(keyboard: Keyboard, time: Time) {
         this.keyboard = keyboard;
         this.time = time;
-        this.world = world;
         if (typeof(window) === 'undefined') {
             // Running inside Vitest, not inside a browser.
         }
@@ -154,7 +151,7 @@ export default class Player {
 
     updateTrueVelocityFromBrep(brep: Brep, delta: number) {
         let acceleration = new Vector3;
-        let strings = [];
+        let strings: Array<string> = [];
         for (let dist of brep.distances(this.pos, this.radius)) {
             const k = this.radius - this.minDist;
             const x = this.radius - dist.dist;
