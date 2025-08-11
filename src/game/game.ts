@@ -26,7 +26,7 @@ export default class Game {
     world: World;
     ready: boolean = false;
     doneARender: boolean = false;
-    stopAfterOneRender: boolean = false;
+    stopAfterOneRender: boolean = true;
 
     constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
