@@ -1,10 +1,9 @@
 import {
     TextureLoader, CubeTextureLoader,
 } from '../../../three/threebuild/three_module.js';
-import EventEmitter from "./eventemitter.js";
 import Utils from './utils.js';
 
-export default class Resources extends EventEmitter {
+export default class Resources {
     sources: Array<{ name: string, type: string, path: string | string[] }>;
     items: { [key: string]: any };
     toLoad: number;
@@ -17,7 +16,6 @@ export default class Resources extends EventEmitter {
                     name: string, type: string, path: string | string[]
                 }>,
                 utils: Utils) {
-        super();
         this.sources = sources;
         this.items = {};
         this.toLoad = this.sources.length;
@@ -60,7 +58,7 @@ export default class Resources extends EventEmitter {
         this.loaded++;
         if (this.loaded === this.toLoad) {
             this.utils.game.respondToReady();
-            this.trigger('ready');
+            this.utils.game.world.respondToResourcesReady();
         }
     }
 }

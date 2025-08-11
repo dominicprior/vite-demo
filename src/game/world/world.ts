@@ -46,17 +46,17 @@ export default class World {
         this.mirror = new Mirror();
 
         this.utils.debug.gui.addFolder('World');
+    }
 
-        this.resources.on('ready', () => {
-            console.log('Resources are ready');
-            this.environment = new Environment(this.scene, this.resources, this.utils);
-            this.sky = new Sky(skyScene, this.utils);
-            this.floor = new Floor(this.scene, this.utils);
-            this.cubes = new Cubes(this.scene, this.brep, this.utils);
-            this.moon = new Moon(this.scene, this.utils);
-            this.crosshairs = new CrossHairs(this.scene, this.utils);
-            // this.scene.background = new Color('green');
-        });
+    respondToResourcesReady() {
+        console.log('Resources are ready');
+        this.environment = new Environment(this.scene, this.resources, this.utils);
+        this.sky = new Sky(this.skyScene, this.utils);
+        this.floor = new Floor(this.scene, this.utils);
+        this.cubes = new Cubes(this.scene, this.brep, this.utils);
+        this.moon = new Moon(this.scene, this.utils);
+        this.crosshairs = new CrossHairs(this.scene, this.utils);
+        // this.scene.background = new Color('green');
     }
 
     update(player: Player) {
