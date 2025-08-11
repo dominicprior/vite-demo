@@ -29,7 +29,7 @@ export default class Game {
     constructor(canvas: HTMLCanvasElement) {
         Object.defineProperty(window, 'a', { value: this,  writable: true, });
         Object.defineProperty(window, 'pr', { value: console.log,  writable: true, });
-        this.utils = new Utils(new Debug, new Keyboard, new Sizes, new Time);
+        this.utils = new Utils(new Debug, this, new Keyboard, new Sizes, new Time(this));
         this.scene = new Scene();
         this.skyScene = new Scene();
         this.resources = new Resources(sources);
@@ -46,22 +46,24 @@ export default class Game {
                 .onChange(() => { camera.updateProjectionMatrix() })
 
         this.utils.sizes.on('resize', this.resize.bind(this));  // See note 1.
-        this.utils.time.on('tick', () => {
-            if (this.ready) {
-                if (this.doneARender && this.stopAfterOneRender) {
-                    // we're not animating any more
-                }
-                else {
-                    this.stats.begin();
-                    this.update();
-                    this.stats.end();
-                    this.doneARender = true;
-                }
-            }
-        });
+
         this.resources.on('ready', () => {
             this.ready = true;
         });
+    }
+
+    respondToTick() {
+        if (this.ready) {
+            if (this.doneARender && this.stopAfterOneRender) {
+                // we're not animating any more
+            }
+            else {
+                this.stats.begin();
+                this.update();
+                this.stats.end();
+                this.doneARender = true;
+            }
+        }
     }
 
     stop() {  // We can call this from anywhere with `a.stop()` because
@@ -82,7 +84,6 @@ export default class Game {
 
     destroy() {  // I'm not sure if this is right, but it's interesting anyway.
         this.utils.sizes.off('resize');
-        this.utils.time.off('tick');
         this.scene.traverse((child) => {
             if (child instanceof Mesh) {
                 child.geometry.dispose();
