@@ -33,7 +33,7 @@ export default class Game {
                 new Sizes(this), new Time(this));
         this.scene = new Scene();
         this.skyScene = new Scene();
-        this.resources = new Resources(sources);
+        this.resources = new Resources(sources, this.utils);
         this.world = new World(this.scene, this.skyScene, this.resources, this.utils);
         this.player = new Player(this.utils);
         this.renderer = new Renderer(canvas, this.scene, this.skyScene,
@@ -45,10 +45,6 @@ export default class Game {
         const camera = this.renderer.views[0].camera;
         this.utils.debug.gui.add(camera, 'fov', 10, 120, 1).name('fov')
                 .onChange(() => { camera.updateProjectionMatrix() })
-
-        this.resources.on('ready', () => {
-            this.ready = true;
-        });
     }
 
     respondToTick() {
@@ -63,6 +59,10 @@ export default class Game {
                 this.doneARender = true;
             }
         }
+    }
+
+    respondToReady() {
+        this.ready = true;
     }
 
     stop() {  // We can call this from anywhere with `a.stop()` because
