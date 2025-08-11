@@ -20,7 +20,7 @@ export default class Renderer {
     player: Player;
     keyboard: Keyboard;
     views: Array<View> = [];
-    rearViewVisible: boolean = true;
+    rearViewVisible: boolean = false;
     instance: WebGLRenderer;
     mirror: Mirror;
 
