@@ -5,7 +5,6 @@ import {
     Scene, WebGLRenderer, WebGLRenderTarget, OrthographicCamera,
     Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
 } from '../../three/threebuild/three_module.js';
-import Player from './player.js';
 import View from './view.js';
 import type Utils from './utils/utils.js';
 
@@ -14,19 +13,17 @@ export default class Renderer {
     scene: Scene;
     skyScene: Scene;
     skyCamera: OrthographicCamera;
-    player: Player;
     utils: Utils;
     views: Array<View> = [];
     rearViewVisible: boolean = false;
     instance: WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement,
-                scene: Scene, skyScene: Scene, player: Player,
+                scene: Scene, skyScene: Scene,
                 utils: Utils) {
         this.canvas = canvas;
         this.scene = scene;
         this.skyScene = skyScene;
-        this.player = player;
         this.utils = utils;
         const sizes = utils.sizes;
         this.views.push(new View(sizes, 1.0, 95,
@@ -60,7 +57,7 @@ export default class Renderer {
 
     redraw() {
         for (const view of this.views) {
-            view.update(this.player.pos, this.player.bearing);
+            view.update(this.utils.game.player.pos, this.utils.game.player.bearing);
             const viewport = view.viewport();
             this.instance.setViewport(viewport);
             this.instance.setScissor(viewport);
