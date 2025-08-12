@@ -17,8 +17,6 @@ import Player from '../player.js';
 import Brep from '../brep.js';
 
 export default class World {
-    scene: Scene;
-    skyScene: Scene;
     brep: Brep;
     // @ts-ignore: no initializer
     floor: Floor;
@@ -37,9 +35,7 @@ export default class World {
     environment: Environment;
     resources: Resources;
 
-    constructor(scene: Scene, skyScene: Scene, resources: Resources, utils: Utils) {
-        this.scene = scene;
-        this.skyScene = skyScene;
+    constructor(resources: Resources, utils: Utils) {
         this.brep = new Brep();
         this.resources = resources;
         this.utils = utils;
@@ -50,13 +46,14 @@ export default class World {
 
     respondToResourcesReady() {
         console.log('Resources are ready');
-        this.environment = new Environment(this.scene, this.resources, this.utils);
-        this.sky = new Sky(this.skyScene, this.utils);
-        this.floor = new Floor(this.scene, this.utils);
-        this.cubes = new Cubes(this.scene, this.brep, this.utils);
-        this.moon = new Moon(this.scene, this.utils);
-        this.crosshairs = new CrossHairs(this.scene, this.utils);
-        // this.scene.background = new Color('green');
+        const scene    = this.utils.game.scene;
+        const skyScene = this.utils.game.skyScene;
+        this.environment = new Environment(scene, this.resources, this.utils);
+        this.sky = new Sky(skyScene, this.utils);
+        this.floor = new Floor(scene, this.utils);
+        this.cubes = new Cubes(scene, this.brep, this.utils);
+        this.moon = new Moon(scene, this.utils);
+        this.crosshairs = new CrossHairs(scene, this.utils);
     }
 
     update(player: Player) {

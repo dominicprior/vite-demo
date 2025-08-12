@@ -36,31 +36,6 @@ export default class Environment {
         this.scene.add(this.sunlight);
     }
 
-    setBackgroundColor() {  // not used - the background is done by sky.ts.
-        // this.scene.background = new Color('skyblue');
-
-        // Create a simple 2x2 DataTexture
-        const width = 2;
-        const height = 2;
-        const size = width * height;
-        const data = new Uint8Array( size * 4 ); // RGBA format
-
-        // Fill with 4 colors (R, G, B, White)
-        data.set([
-            255, 0, 0, 255,    // Red
-            0, 255, 0, 255,    // Green
-            0, 0, 255, 255,    // Blue
-            255, 255, 255, 255, // White
-        ]);
-
-        const texture = new DataTexture(data, width, height, RGBAFormat);
-        texture.magFilter = LinearFilter;
-        texture.needsUpdate = true;
-
-        // Set the texture as the scene background
-        this.scene.background = texture;
-    }
-
     setEnvironmentMap() {
         this.texture = this.resources.items.environmentMapTexture;
         this.texture.colorSpace = SRGBColorSpace;

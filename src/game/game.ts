@@ -1,3 +1,7 @@
+// This program has two main sections: the startup stuff reached from this
+// constructor; and the per-frame stuff reached from the respondToTick
+// function.
+
 import {
     Scene, Mesh,
 } from '../../three/threebuild/three_module.js';
@@ -34,7 +38,7 @@ export default class Game {
         this.scene = new Scene();
         this.skyScene = new Scene();
         this.resources = new Resources(sources, this.utils);
-        this.world = new World(this.scene, this.skyScene, this.resources, this.utils);
+        this.world = new World(this.resources, this.utils);
         this.player = new Player(this.utils);
         this.renderer = new Renderer(canvas, this.scene, this.skyScene,
             this.player, this.world.mirror, this.utils);
