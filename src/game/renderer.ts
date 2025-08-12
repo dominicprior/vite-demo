@@ -128,10 +128,6 @@ export default class Renderer {
 // currentViewport is Viewport multiplied by window.devicePixelRatio
 // https://discourse.threejs.org/t/using-viewport-with-rendertarget/42081/1
 
-// These views were surprisingly unintuitive:
-// this.views.push(new View(this.sizes, 1.0, 55,  0,   0,  0.1, 0.2,   Math.PI * 0.75));
-// this.views.push(new View(this.sizes, 1.0, 55,  0.9, 0,  0.1, 0.2, - Math.PI * 0.75));
-
 // alpha: true,  stops Three.js making the whole canvas opaque:
 // https://threejs.org/manual/#en/tips#transparent-canvas
 
