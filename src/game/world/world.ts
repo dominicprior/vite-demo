@@ -5,7 +5,6 @@ import Environment from './environment.js';
 import Resources from '../utils/resources.js';
 import Sky from './sky.js';
 import Floor from './floor.js';
-import Mirror from './mirror.js';
 import Cubes from './cubes.js';
 import Moon from './moon.js';
 import CrossHairs from './crosshairs.js';
@@ -17,8 +16,6 @@ export default class World {
     brep: Brep;
     // @ts-ignore: no initializer
     floor: Floor;
-    // @ts-ignore: no initializer
-    mirror: Mirror;
     // @ts-ignore: no initializer
     sky: Sky;
     // @ts-ignore: no initializer
@@ -36,7 +33,6 @@ export default class World {
         this.brep = new Brep();
         this.resources = resources;
         this.utils = utils;
-        this.mirror = new Mirror();
 
         this.utils.debug.gui.addFolder('World');
     }

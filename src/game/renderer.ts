@@ -3,11 +3,10 @@
 import {
     // PCFSoftShadowMap,
     Scene, WebGLRenderer, WebGLRenderTarget, OrthographicCamera,
-    MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
+    Vector3, MeshBasicMaterial, PlaneGeometry, Mesh, BackSide,
 } from '../../three/threebuild/three_module.js';
 import Player from './player.js';
 import View from './view.js';
-import Mirror from './world/mirror.js'
 import type Utils from './utils/utils.js';
 
 export default class Renderer {
@@ -20,18 +19,16 @@ export default class Renderer {
     views: Array<View> = [];
     rearViewVisible: boolean = false;
     instance: WebGLRenderer;
-    mirror: Mirror;
 
     constructor(canvas: HTMLCanvasElement,
                 scene: Scene, skyScene: Scene, player: Player,
-                mirror: Mirror, utils: Utils) {
+                utils: Utils) {
         this.canvas = canvas;
         this.scene = scene;
         this.skyScene = skyScene;
         this.player = player;
         this.utils = utils;
         const sizes = utils.sizes;
-        this.mirror = mirror;
         this.views.push(new View(sizes, 1.0, 95,
                                  {x: 0, y: 0, w: 1, h: 1},
                                  0, false, utils));
@@ -95,6 +92,11 @@ export default class Renderer {
         this.drawBothScenes(view);
         this.instance.setRenderTarget(null);
 
+        // Set up an ortho camera (mirroring by looking backwards).
+        const orthoCamera = new OrthographicCamera(-1, 1,  1, -1,  0.1, 10 );
+        orthoCamera.position.set(0, 0, -2);
+        orthoCamera.lookAt(new Vector3);
+
         // Create a scene containing a plane textured from the buffer.
         const orthoScene = new Scene();
         const material = new MeshBasicMaterial({
@@ -121,7 +123,7 @@ export default class Renderer {
         this.instance.setViewport(viewport);
         this.instance.setScissor(viewport);
         this.instance.setScissorTest(view.port.w !== 1 || view.port.h !== 1);
-        this.instance.render(orthoScene, this.mirror.orthoCamera);
+        this.instance.render(orthoScene, orthoCamera);
     }
 }
 
