@@ -1,14 +1,12 @@
 // Lights and environment maps.
 
-import { Scene, DirectionalLight, MeshStandardMaterial,
-    SRGBColorSpace, Texture, Mesh, Object3D, DataTexture,
-    RGBAFormat, LinearFilter,
+import { DirectionalLight, MeshStandardMaterial,
+    SRGBColorSpace, Texture, Mesh, Object3D,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
 import Utils from '../utils/utils.js';
 
 export default class Environment {
-    scene: Scene;
     resources: Resources;
     utils: Utils;
     // @ts-ignore: no initializer
@@ -19,8 +17,7 @@ export default class Environment {
     // @ts-ignore: no initializer
     updateMaterial: () => void;
 
-    constructor(scene: Scene, resources: Resources, utils: Utils) {
-        this.scene = scene;
+    constructor(resources: Resources, utils: Utils) {
         this.resources = resources;
         this.utils = utils;
         this.setSunlight();
@@ -33,16 +30,16 @@ export default class Environment {
         this.sunlight.castShadow = true;
         this.sunlight.shadow.mapSize.width = 1024;
         this.sunlight.shadow.mapSize.height = 1024;
-        this.scene.add(this.sunlight);
+        this.utils.game.scene.add(this.sunlight);
     }
 
     setEnvironmentMap() {
         this.texture = this.resources.items.environmentMapTexture;
         this.texture.colorSpace = SRGBColorSpace;
-        this.scene.environment = this.texture;
+        this.utils.game.scene.environment = this.texture;
 
         this.updateMaterial = () => {
-            this.scene.traverse((child: Object3D) => {
+            this.utils.game.scene.traverse((child: Object3D) => {
                 // @ts-ignore: property does not exist
                 if (child.isMesh && child.material instanceof MeshStandardMaterial) {
                     const material = (child as Mesh).material as MeshStandardMaterial;

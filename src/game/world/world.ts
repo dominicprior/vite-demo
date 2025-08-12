@@ -1,8 +1,5 @@
-// Simply invokes various constructors.
-
-import {
-    Scene,
-} from '../../../three/threebuild/three_module.js';
+// Simply the constructors for the game geometry to add themselves
+// to the scene.
 
 import Environment from './environment.js';
 import Resources from '../utils/resources.js';
@@ -48,7 +45,7 @@ export default class World {
         console.log('Resources are ready');
         const scene    = this.utils.game.scene;
         const skyScene = this.utils.game.skyScene;
-        this.environment = new Environment(scene, this.resources, this.utils);
+        this.environment = new Environment(this.resources, this.utils);
         this.sky = new Sky(skyScene, this.utils);
         this.floor = new Floor(scene, this.utils);
         this.cubes = new Cubes(scene, this.brep, this.utils);
