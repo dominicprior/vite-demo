@@ -76,7 +76,7 @@ export default class Cubes {
         mesh.position.y = centre.y;
         mesh.position.z = centre.z;
         mesh.layers.enableAll();
-        // mesh.receiveShadow = true
+        mesh.castShadow = true;
         this.cubes.push({centre: centre, mesh: mesh});
         scene.add(mesh);
         const box = new BoxDist(centre, this.boxSize, this.boxSize, this.boxSize, new Euler);

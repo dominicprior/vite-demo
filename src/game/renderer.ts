@@ -1,7 +1,7 @@
 // Redrawing the screen
 
 import {
-    // PCFSoftShadowMap,
+    PCFSoftShadowMap,
     Scene, WebGLRenderer, OrthographicCamera,
 } from '../../three/threebuild/three_module.js';
 import View from './view.js';
@@ -41,6 +41,8 @@ export default class Renderer {
         });
         this.instance.setSize(sizes.width, sizes.height);
         this.instance.setPixelRatio(sizes.pixelRatio);
+        this.instance.shadowMap.enabled = true;
+        this.instance.shadowMap.type = PCFSoftShadowMap;
         this.skyCamera = new OrthographicCamera();
         this.skyCamera.position.z = 2;
         window.addEventListener('keydown', (event) => { 
@@ -104,5 +106,3 @@ export default class Renderer {
 // alpha: true,  stops Three.js making the whole canvas opaque:
 // https://threejs.org/manual/#en/tips#transparent-canvas
 
-// this.instance.shadowMap.enabled = true;
-// this.instance.shadowMap.type = PCFSoftShadowMap;

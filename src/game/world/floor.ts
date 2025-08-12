@@ -92,7 +92,7 @@ export default class Floor {
         mesh.name = 'floor';
         mesh.frustumCulled = false;
         mesh.rotation.x = - Math.PI * 0.5;
-        // mesh.receiveShadow = true
+        mesh.receiveShadow = true;
         return mesh;
     }
 

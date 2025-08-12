@@ -1,5 +1,4 @@
 import {
-    // PCFSoftShadowMap,
     Scene,
     WebGLRenderTarget,
     OrthographicCamera,
