@@ -47,7 +47,7 @@ export default class Player {
 
     // variables
     bearing = 0;  // radians from North (negative Z) round towards negative X.
-    pos: Vector3 = new Vector3(2, 0.6, -3);
+    pos: Vector3 = new Vector3(0, 0.6, 0);
     fwdBkSpeed  = 0;  // These two speeds give the user's intended velocity.
     strafeSpeed = 0;
     trueVelocity = new Vector3;  // This is the velocity accounting for walls.

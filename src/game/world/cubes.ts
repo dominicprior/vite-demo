@@ -24,7 +24,7 @@ interface Cube {
 
 export default class Cubes {
     locations: string = `
-73736263737
+73636263637
 3.........3
 7.........7
 3.........3
@@ -34,7 +34,7 @@ export default class Cubes {
 3.........3
 7.........7
 3.........3
-73736263737
+73736463737
 `;
     numBands: number = 5;
     stride: number = 1;
@@ -54,8 +54,9 @@ export default class Cubes {
             for (let col = 0; col < line.length; col++) {
                 const char = line[col];
                 if (char !== '.') {
-                    for (let level=0, pow=1; level <= 3; level++, pow *= 2) {
-                        if ((+char & pow) !== 0) {
+                    let n = char.match(/[0-9]/) ? +char : char.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+                    for (let level=0, pow=1; level <= 5; level++, pow *= 2) {
+                        if ((n & pow) !== 0) {
                             this.addCube(row, col, level, scene, brep, lines.length, line.length);
                         }
                     }
