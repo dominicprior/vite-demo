@@ -23,6 +23,14 @@ Based on https://www.youtufbe.com/watch?v=p4BHphMBlFA
 * (I didn't do "npm install three" since I want local stuff I can edit or step into)
 * npm run dev (from the VSCode terminal)  -  it launched a localhost server showing the Vite demo webpage
 
+# To install on a new device
+
+* Install Node.js, VS Code and Git.
+* git clone
+* npm i
+* Inside VS Code, npm run dev
+* Maybe type this: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 # Copied files
 
 * `three/threebuild/three_core.js` from `r177 Three.js`.  Note the underscore instead of the dot.
