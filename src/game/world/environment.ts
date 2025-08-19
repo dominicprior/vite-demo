@@ -1,6 +1,6 @@
 // Lights and environment maps.
 
-import { DirectionalLight, MeshStandardMaterial,
+import { DirectionalLight, MeshStandardMaterial, AmbientLight,
     SRGBColorSpace, Texture, Mesh, Object3D,
 } from '../../../three/threebuild/three_module.js';
 import Resources from '../utils/resources.js';
@@ -11,7 +11,11 @@ export default class Environment {
     utils: Utils;
     // @ts-ignore: no initializer
     sunlight: DirectionalLight;
-    intensity: number = 0.4;
+    sunlightIntensity = 0.5;
+    // @ts-ignore: no initializer
+    ambient: AmbientLight;
+    ambientIntensity = 0.3;
+    intensity: number = 0.0;
     // @ts-ignore: no initializer
     texture: Texture;
     // @ts-ignore: no initializer
@@ -20,8 +24,16 @@ export default class Environment {
     constructor(resources: Resources, utils: Utils) {
         this.resources = resources;
         this.utils = utils;
+        this.setAmbient();
         this.setSunlight();
-        this.setEnvironmentMap();
+        // this.setEnvironmentMap();
+    }
+
+    setAmbient() {
+        this.ambient = new AmbientLight(0xffffff, this.ambientIntensity);
+        this.utils.game.scene.add(this.ambient);
+        this.utils.debug.gui.add(this.ambient, 'intensity', 0, 2, 0.01)
+                .name('Ambient Intensity');
     }
 
     setSunlight() {
@@ -35,6 +47,8 @@ export default class Environment {
         this.sunlight.shadow.camera.left   = -10;
         this.sunlight.shadow.camera.right  =  10;
         this.utils.game.scene.add(this.sunlight);
+        this.utils.debug.gui.add(this.sunlight, 'intensity', 0, 2, 0.01)
+                .name('Sunlight Intensity');
     }
 
     setEnvironmentMap() {
