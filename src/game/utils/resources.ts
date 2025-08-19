@@ -23,6 +23,12 @@ export default class Resources {
         this.utils = utils;
         this.setLoaders();
         this.startLoading();
+        if (sources.length === 0) {
+            setTimeout(() => {
+                this.utils.game.respondToReady();
+                this.utils.game.world.respondToResourcesReady();
+            }, 0);
+        }
     }
     setLoaders() {
         this.loaders = {};
